@@ -1,4 +1,5 @@
 node_modules/
+dist/
 .env
 GEMINI.md
 CLAUDE.md
@@ -6,9 +7,9 @@ CLAUDE.md
 __pycache__/
 refresh_token
 .venv/
-.DS_Store/
-.github/copilot-instructions.md
+**/.DS_Store
 .github/
 .claude/
-.node_modules/
 .vscode/
+nginx.conf
+assets/

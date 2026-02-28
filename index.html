@@ -4,203 +4,48 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Adrian Eddy's Portfolio</title>
-        <link rel="stylesheet" href="styles.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+        <!-- Open Graph -->
+        <meta property="og:title" content="Adrian Eddy - Economics @ NYU" />
+        <meta
+            property="og:description"
+            content="Econ major with a passion for econometrics, financial markets, and programming. Exploring IoT systems and AI development with practical applications in trading and automation."
+        />
+        <meta
+            property="og:image"
+            content="https://adrianeddy.com/assets/img.JPG"
+        />
+        <meta
+            property="og:url"
+            content="https://adrianeddy.com/"
+        />
+        <meta property="og:type" content="website" />
+
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Adrian Eddy - Economics @ NYU" />
+        <meta
+            name="twitter:description"
+            content="Econ major with a passion for econometrics, financial markets, and programming."
+        />
+        <meta
+            name="twitter:image"
+            content="https://adrianeddy.com/assets/img.JPG"
+        />
+
+        <!-- General meta -->
+        <meta
+            name="description"
+            content="Adrian Eddy's portfolio - Economics student at NYU with a passion for econometrics, financial markets, IoT systems, and AI development."
+        />
+
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        />
     </head>
     <body>
-        <div class="scroll-progress-bar" id="scrollProgressBar"></div>
-
-        <nav class="floating-nav">
-            <ul class="nav">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="#resume">Resume</a></li>
-                <li><a href="dev-roadtrip.html">More</a></li>
-            </ul>
-        </nav>
-
-        <section class="hero">
-            <div class="hero-content">
-                <div class="hero-image">
-                    <img src="assets/img.JPG" alt="Adrian Eddy" />
-                </div>
-                <div class="hero-text">
-                    <h1 class="typewrite" data-period="1500" data-type='["Hi, I&apos;m Adrian.", "Nice 2 meet u."]'></h1>
-                    <p class="subtitle">Economics @ NYU</p>
-                    <p class="about-me with-margin">
-                        I am an Econ major with a passion for econometrics, financial markets, and programming.
-                        As of right now, I am learning more about IoT systems and AI Development with practical applications
-                        in trading and automation, while also exploring market anomalies and behavioral finance in my thesis.
-                    </p>
-                    <p class="about-me">
-                        Let's connect: <a href="mailto:ae2422@nyu.edu">ae2422@nyu.edu</a>
-                    </p>
-                    <div class="cta-buttons">
-                        <a href="#resume" class="cta-resume">Skip to Resume</a>
-                        <a href="#light-greeting" class="cta-lights">Try me!</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="light-greeting" class="interactive-demo-section">
-            <div class="interactive-demo-wrapper">
-                <h2>Interactive Demos</h2>
-                <p class="demo-intro">
-                    Two live demos powered by my home server. One could wake me up, the other is just digital matrix fun.
-                </p>
-
-                <div class="demo-cards">
-                    <div class="demo-card">
-                        <div class="demo-card-header">
-                            <h3>Wake Me Up</h3>
-                            <p class="demo-tagline">Control my bedroom lights</p>
-                        </div>
-                        <div class="demo-card-body">
-                            <p class="demo-description">
-                                A live lighting control system via Flask API running on my Raspberry Pi. This could literally wake me up so I should probably implement
-                                a timer or something... Navigate to <a href="dev-roadtrip.html">More</a> to see how I built the architecture behind this, and lightbulb metrics.
-                                <a href="https://github.com/Halyconer/Welcome-to-my-Portfolio/tree/main/backend" target="_blank" rel="noopener" style="color: #4a90e2; font-weight: 500;">View code</a>
-                            </p>
-                            <div class="minimal-slider-container">
-                                <div class="brightness-label">
-                                    <span>Brightness</span>
-                                    <div class="brightness-percentage">
-                                        <span id="brightnessValue">75</span>%
-                                    </div>
-                                </div>
-                                <input type="range" id="brightnessSlider" min="1" max="100" value="75" class="minimal-slider" title="Adjust Brightness" />
-                            </div>
-                            <button id="setBrightnessBtn" class="send-button" title="Set Brightness">ZAP</button>
-                            <p id="brightnessStatus" class="status-text"></p>
-                        </div>
-                    </div>
-
-                    <a href="https://github.com/Halyconer/ConnectX" target="_blank" rel="noopener" class="demo-card">
-                        <div class="demo-card-header">
-                            <h3>Challenge My AI</h3>
-                            <p class="demo-tagline">Try to beat my Connect 4 algorithm</p>
-                        </div>
-                        <p class="demo-description">
-                            It's on medium difficulty right now, but it's still pretty good. Currently using a minimax algorithm; my next step is to train a neural network with optimal scoring weights so lmk if you can help.
-                        </p>
-                        <div class="demo-card-body">
-                            <div class="demo-image">
-                                <img src="assets/connect4.jpg" alt="Connect 4 Game" />
-                            </div>
-                            <button onclick="event.preventDefault(); event.stopPropagation(); showConnect4Game();" class="play-button-large" title="Start Game">ZIP</button>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="architecture-note">
-                    <p>
-                        <strong>How it works:</strong> Both demos hit my Raspberry Pi through an ngrok tunnel → nginx reverse proxy → Flask APIs. This demonstrates my ability to build IoT systems with remote access and real-time control.
-                        <a href="dev-roadtrip.html">See the architecture</a>
-                    </p>
-                </div>
-
-                <div class="demo-navigation">
-                    <a href="#resume" class="demo-nav-link">View Work Experience →</a>
-                    <a href="#projects" class="demo-nav-link">See More Projects →</a>
-                </div>
-            </div>
-        </section>
-
-        <section id="projects" class="projects-section">
-            <div class="projects-container">
-                <h2>Other Projects</h2>                
-                <div class="projects-grid">
-                    <a href="https://github.com/thompgt/black-scholes" target="_blank" rel="noopener" class="project-card">
-                        <div class="project-image">
-                            <img src="assets/Screenshot 2025-09-04 at 11.46.01.png" alt="Financial Models" />
-                        </div>
-                        <div class="project-content">
-                            <h3>Financial Derivatives Pricing Engine</h3>
-                            <p>Suite of financial modeling tools including Black-Scholes options pricing, Monte Carlo simulations, CAPM, and stochastic models</p>
-                        </div>
-                    </a>
-
-                    <a href="https://github.com/Halyconer/trading" target="_blank" rel="noopener" class="project-card">
-                        <div class="project-image">
-                            <img src="assets/ibkr.jpg" alt="Trading Bot" />
-                        </div>
-                        <div class="project-content">
-                            <h3>Algorithmic Trading System</h3>
-                            <p>Autonomous trading system that calculates risk parity weights and executes trades in real-time to balance personal investment portfolio</p>
-                        </div>
-                    </a>
-
-                    <a href="https://www.federalreserve.gov/conferences/fedchallenge.htm" target="_blank" rel="noopener" class="project-card">
-                        <div class="project-image">
-                            <img src="assets/fed.png" alt="Federal Reserve" />
-                        </div>
-                        <div class="project-content">
-                            <h3>Federal Reserve Policy Analysis</h3>
-                            <p>Comprehensive macroeconomic analysis and monetary policy recommendations presented to Federal Reserve Bank officials</p>
-                        </div>
-                    </a>
-
-                    <a href="https://github.com/Halyconer/biokind-projectteam1" target="_blank" rel="noopener" class="project-card">
-                        <div class="project-image">
-                            <img src="assets/biokind.jpeg" alt="NYU BioKind" />
-                        </div>
-                        <div class="project-content">
-                            <h3>NYU BioKind - Tech Lead</h3>
-                            <p>Building full-stack BI solutions for nonprofits using database management, data pipeline construction, and automated machine learning workflows. Leading technical development, saving organizations up to $10,000 in outsourcing costs through custom analytics platforms.</p>
-                        </div>
-                    </a>
-
-                    <div class="project-card">
-                        <div class="project-content">
-                            <h3>My Economics Thesis</h3>
-                            <p>Market anomalies research studying the statistical significance of calendar effect trading strategies. Cross-sectional stock analysis across long-short trading strategies using Python and R to identify alpha generation on specific days.</p>
-                        </div>
-                    </div>
-
-                    <div class="project-card">
-                        <div class="project-image">
-                            <img src="assets/duino.png" alt="DuinoCoin Mining" />
-                        </div>
-                        <div class="project-content">
-                            <h3>DuinoCoin Mining</h3>
-                            <p>Coming soon... Currently learning about cryptocurrency mining and exploring low-power mining solutions with Arduino-based systems.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="resume" class="resume-embed-section">
-            <div class="resume-container">
-                <h2>Resume</h2>
-                <div class="resume-controls">
-                    <button id="openResumeFullscreen" class="resume-btn">Open Full Screen</button>
-                    <a href="assets/AdrianEddy.pdf" download class="resume-btn">Download PDF</a>
-                </div>
-                <div class="resume-embed">
-                    <iframe src="assets/AdrianEddy.pdf" id="resumeEmbed" title="Adrian Eddy Resume PDF"></iframe>
-                </div>
-            </div>
-        </section>
-
-        <div id="connect4Modal" class="connect4-modal">
-            <div class="connect4-modal-content">
-                <div class="connect4-header">
-                    <h2>Connect 4 vs AI</h2>
-                    <span class="connect4-close" onclick="closeConnect4Game()">&times;</span>
-                </div>
-                <div class="connect4-status" id="connect4Status">Click "New Game" to start!</div>
-                <div class="connect4-controls">
-                    <button id="connect4NewGameBtn" onclick="newConnect4Game()">New Game</button>
-                </div>
-                <div class="connect4-board" id="connect4Board"></div>
-            </div>
-        </div>
-
-        <footer>
-            <p>© 2025 Adrian Eddy. All rights reserved.</p>
-        </footer>
-
-        <script src="script.js"></script>
+        <div id="root"></div>
+        <script type="module" src="/src/main.tsx"></script>
     </body>
 </html>
