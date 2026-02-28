@@ -1,0 +1,187 @@
+@import url('https://fonts.googleapis.com/css2?family=Poly:ital@0;1&family=Inter:wght@400;600&display=swap');
+@import 'tailwindcss';
+
+@theme {
+    --font-poly: 'Poly', serif;
+    --font-inter: 'Inter', sans-serif;
+
+    --color-ink: #1a1a1a;
+    --color-heading: #0d3b66;
+    --color-primary: #4a90e2;
+    --color-primary-dark: #357abd;
+    --color-primary-deep: #2c5a7c;
+    --color-primary-light: #5ba0f2;
+    --color-muted: #555555;
+    --color-slate-dark: #2c3e50;
+    --color-slate-muted: #5a6c7d;
+    --color-link: #007acc;
+    --color-link-dark: #005fa3;
+    --color-border: #e0e0e0;
+    --color-board: #0066cc;
+    --color-board-dark: #004499;
+    --color-player-red: #ff4444;
+    --color-player-yellow: #ffdd44;
+    --color-footer: #777777;
+    --color-bg-light: #f8f9fa;
+    --color-slider-bg: #e3f2fd;
+
+    --breakpoint-xs: 390px;
+    --breakpoint-sm: 600px;
+    --breakpoint-md: 900px;
+    --breakpoint-lg: 1200px;
+}
+
+/* Global resets */
+html {
+    scrollbar-width: none;
+}
+html::-webkit-scrollbar {
+    display: none;
+}
+
+/* Custom slider styles (can't be done in Tailwind) */
+input[type='range'].brightness-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    background: #e3f2fd;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+input[type='range'].brightness-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #4a90e2;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+input[type='range'].brightness-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    background: #357abd;
+    box-shadow: 0 2px 8px rgba(74, 144, 226, 0.3);
+}
+
+input[type='range'].brightness-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #4a90e2;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+input[type='range'].brightness-slider::-moz-range-thumb:hover {
+    transform: scale(1.2);
+    background: #357abd;
+    box-shadow: 0 2px 8px rgba(74, 144, 226, 0.3);
+}
+
+input[type='range'].brightness-slider::-moz-range-track {
+    width: 100%;
+    height: 4px;
+    cursor: pointer;
+    background: #e3f2fd;
+    border-radius: 2px;
+    border: none;
+}
+
+/* Typewriter cursor */
+.typewriter-cursor {
+    border-right: 0.08em solid rgba(13, 59, 102, 0.7);
+}
+
+/* Profile glow animation */
+@keyframes profileGlow {
+    0%,
+    100% {
+        box-shadow:
+            0 10px 40px rgba(0, 0, 0, 0.15),
+            0 0 20px rgba(74, 144, 226, 0.3);
+        filter: brightness(1);
+    }
+    25% {
+        box-shadow:
+            0 10px 40px rgba(0, 0, 0, 0.15),
+            0 0 30px rgba(255, 193, 7, 0.4);
+        filter: brightness(1.05);
+    }
+    50% {
+        box-shadow:
+            0 10px 40px rgba(0, 0, 0, 0.15),
+            0 0 25px rgba(76, 175, 80, 0.4);
+        filter: brightness(1.02);
+    }
+    75% {
+        box-shadow:
+            0 10px 40px rgba(0, 0, 0, 0.15),
+            0 0 35px rgba(156, 39, 176, 0.3);
+        filter: brightness(1.03);
+    }
+}
+
+/* Gentle glow for CTA button */
+@keyframes gentle-glow {
+    0% {
+        box-shadow:
+            0 2px 8px rgba(0, 0, 0, 0.1),
+            0 0 8px rgba(74, 144, 226, 0.3);
+    }
+    100% {
+        box-shadow:
+            0 2px 8px rgba(0, 0, 0, 0.1),
+            0 0 15px rgba(74, 144, 226, 0.6);
+    }
+}
+
+.animate-profile-glow {
+    animation: profileGlow 3s ease-in-out infinite;
+}
+
+.animate-gentle-glow {
+    animation: gentle-glow 2s ease-in-out infinite alternate;
+}
+
+/* Mobile touch feedback */
+@media (hover: none) and (pointer: coarse) {
+    .demo-card-touch:hover {
+        transform: none !important;
+        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.12) !important;
+    }
+
+    .project-card-touch:hover {
+        transform: none !important;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .demo-card-touch:active,
+    .project-card-touch:active {
+        transform: scale(0.98) !important;
+        transition: transform 0.1s ease !important;
+    }
+}
+
+/* Loading spinner */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin-slow {
+    animation: spin 1s linear infinite;
+}
