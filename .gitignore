@@ -12,4 +12,4 @@ refresh_token
 .claude/
 .vscode/
 nginx.conf
-assets/
+/assets/
