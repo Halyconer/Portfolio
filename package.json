@@ -1,5 +1,5 @@
 {
-    "homepage": "https://halyconer.github.io/Welcome-to-my-Portfolio",
+    "homepage": "https://adrianeddy.com",
     "scripts": {
         "dev": "vite",
         "build": "tsc && vite build",
@@ -24,6 +24,8 @@
         "framer-motion": "^12.34.3",
         "react": "^19.2.4",
         "react-dom": "^19.2.4",
-        "react-router-dom": "^7.13.1"
+        "react-router-dom": "^7.13.1",
+        "@supabase/ssr": "^0.8.0",
+        "@supabase/supabase-js": "^2.96.0"
     }
 }

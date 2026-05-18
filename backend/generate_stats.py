@@ -18,7 +18,8 @@ try:
         'update_frequency': 'daily',
         
         'total_calls_all_time': conn.execute('SELECT COUNT(*) FROM calls').fetchone()[0],
-        'avg_brightness_all_time': conn.execute('SELECT AVG(brightness) FROM calls').fetchone()[0]
+        'avg_brightness_all_time': conn.execute('SELECT AVG(brightness) FROM calls').fetchone()[0],
+        'color_calls_all_time': conn.execute('SELECT COUNT(*) FROM calls WHERE r IS NOT NULL').fetchone()[0]
         }
 
     conn.close()
