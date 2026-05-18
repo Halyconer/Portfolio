@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect4 Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+            background-color: #f0f0f0;
+        }
+        
+        .game-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .board {
+            display: grid;
+            grid-template-columns: repeat(7, 60px);
+            grid-template-rows: repeat(6, 60px);
+            gap: 5px;
+            background-color: #0066cc;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .cell {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid #004499;
+            cursor: pointer;
+            background-color: white;
+            transition: background-color 0.3s;
+        }
+        
+        .cell.player1 {
+            background-color: #ff4444;
+        }
+        
+        .cell.player2 {
+            background-color: #ffdd44;
+        }
+        
+        .cell:hover:not(.player1):not(.player2) {
+            background-color: #e0e0e0;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #0066cc;
+            color: white;
+        }
+        
+        button:hover {
+            background-color: #0052a3;
+        }
+        
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .status {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 0;
+            min-height: 25px;
+        }
+        
+        .loading {
+            color: #666;
+            font-style: italic;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Connect4 vs AI</h1>
+        
+        <div class="status" id="status">Click "New Game" to start!</div>
+        
+        <div class="controls">
+            <button id="newGameBtn" onclick="newGame()">New Game</button>
+        </div>
+        
+        <div class="board" id="board"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://127.0.0.1:5000'; 
+        let gameState = null;
+        let isProcessing = false;
+
+        // Initialize empty board display
+        function createBoard() {
+            const board = document.getElementById('board');
+            board.innerHTML = '';
+            
+            // Create 42 cells (6 rows × 7 cols), displayed top to bottom
+            for (let row = 5; row >= 0; row--) {
+                for (let col = 0; col < 7; col++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.dataset.row = row;
+                    cell.dataset.col = col;
+                    cell.onclick = () => makeMove(col);
+                    board.appendChild(cell);
+                }
+            }
+        }
+
+        // Update board display based on game state
+        function updateBoard() {
+            // this function bases its updates on the gameState object which is updated by the API
+            if (!gameState) return; // No game state available
+            
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach(cell => { // Loops through each cell
+                cell.className = 'cell'; // Reset class so that we can reapply styles
+                const row = parseInt(cell.dataset.row); 
+                const col = parseInt(cell.dataset.col);
+                const piece = gameState.board[row][col]; // gameState.board is a 2D array from the API
+                
+                cell.className = 'cell'; // Resets the old colour
+                // player1 and player2 are defined in the CSS in line 30 and 34
+                if (piece === 1) cell.classList.add('player1'); // red
+                if (piece === 2) cell.classList.add('player2'); // yellow
+            });
+        }
+
+        // Update status message
+        function updateStatus(message) {
+            document.getElementById('status').textContent = message;
+        }
+
+        // Attempt to make an API request
+        async function apiRequest(endpoint, method = 'GET', data = null) {
+            try {
+                const options = {
+                    method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                };
+                
+                if (data) {
+                    options.body = JSON.stringify(data);
+                }
+                
+                const response = await fetch(API_BASE + endpoint, options);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                return await response.json();
+            } catch (error) {
+                console.error('API request failed:', error);
+                updateStatus('Connection error! Make sure Flask server is running.');
+                return null;
+            }
+        }
+
+        async function startGame() {
+            isProcessing = true;  // Prevent clicks during setup
+            updateStatus('Starting new game...');
+            
+            const response = await apiRequest('/play', 'POST');
+            console.log('New game response:', response); // DEBUG
+            
+            if (response) {
+                gameState = response;
+                createBoard();  // Recreate the board with fresh event handlers
+                updateBoard();  // Update the visual state
+                updateStatus('Your turn! Click a column to drop your piece.');
+            } else {
+                updateStatus('Failed to start new game. Check server connection.');
+            }
+            
+            isProcessing = false;  // Allow clicks after setup is complete
+        }
+
+        async function newGame() {
+            await startGame();
+        }
+
+        // Add debugging to makeMove
+        async function makeMove(col) {
+            console.log('makeMove called with column:', col); // DEBUG
+            console.log('isProcessing:', isProcessing, 'gameState:', gameState); // DEBUG
+            
+            if (isProcessing || !gameState || gameState.game_over) {
+                console.log('Move blocked - isProcessing:', isProcessing, 'gameState exists:', !!gameState, 'game_over:', gameState?.game_over);
+                return;
+            }
+            
+            const validCols = gameState.valid_cols || [];
+            console.log('Valid columns:', validCols); // DEBUG
+            console.log('Clicked column:', col, 'Type:', typeof col); // DEBUG
+            
+            if (!validCols.includes(col)) {  
+                console.log('Invalid move detected!'); // DEBUG
+                updateStatus('Invalid move! Column is full.');
+                return;
+            }
+            
+            isProcessing = true;
+            updateStatus('Processing move...');
+            
+            const response = await apiRequest('/move', 'POST', { column: col }); 
+            
+            if (response) {
+                if (response.game_over) {
+                    // Game over - show final state
+                    gameState = { ...response, board: response.board_after_ai || response.board };
+                    updateBoard();
+                    
+                    if (response.winner === 'player') {
+                        updateStatus('🎉 You won! Great job!');
+                    } else if (response.winner === 'ai') {
+                        updateStatus('🤖 AI wins! Try again?');
+                    } else {
+                        updateStatus('Game over!');
+                    }
+                } else {
+                    // Show player's move first
+                    gameState = { ...response, board: response.board_before_ai };
+                    updateBoard();
+                    updateStatus('Your move made! AI is thinking...');
+                    
+                    // Add delay before showing AI move
+                    setTimeout(() => {
+                        gameState = { ...response, board: response.board_after_ai };
+                        updateBoard();
+                        
+                        if (response.ai_move !== null && response.ai_move !== undefined) {
+                            updateStatus(`AI dropped in column ${response.ai_move + 1}. Your turn!`);
+                        } else {
+                            updateStatus('Your turn! Click a column to drop your piece.');
+                        }
+                    }, 1000); // 1 second delay
+                }
+            }
+            
+            isProcessing = false;
+        }
+    </script>
+</body>
+</html>
