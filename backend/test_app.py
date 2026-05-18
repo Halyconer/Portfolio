@@ -15,7 +15,9 @@ def test_set_brightness_success(mock_get_bulb, client):
 	# Arrange: mock a bulb whose set_brightness just records the call
 	fake_bulb = mock_get_bulb.return_value
 	calls = []
-	fake_bulb.set_brightness = lambda br, effect="smooth", duration=500: calls.append((br, effect, duration))
+	# lifxlan signature: set_brightness(value, duration=0, rapid=False)
+	fake_bulb.set_brightness = lambda val, duration=0, rapid=False: calls.append((val, duration, rapid))
+	fake_bulb.set_power = lambda state: None  # no-op for power-on
 
 	# Act: send a valid brightness payload
 	response = client.post(
@@ -29,7 +31,9 @@ def test_set_brightness_success(mock_get_bulb, client):
 	body = response.get_json()
 	assert body['status'] == 'success'
 	assert body['brightness_set'] == 42
-	assert calls == [(42, "smooth", 500)]
+	# 42% of 65535 = 27524.7 → 27525
+	expected_lifx_val = int(round(42 / 100 * 65535))
+	assert calls == [(expected_lifx_val, 0, False)]
 
 @patch('app.get_bulb')
 def test_set_brightness_missing(mock_get_bulb, client):

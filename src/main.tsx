@@ -3,7 +3,12 @@ import { createRoot } from 'react-dom/client'
 import { createHashRouter, RouterProvider } from 'react-router-dom'
 import { App } from './App'
 import { HomePage } from './pages/HomePage'
+import { CartProvider } from './ecommerce/context/CartProvider'
+import { SearchProvider } from './ecommerce/context/SearchProvider'
 import { DevRoadtripPage } from './pages/DevRoadtripPage'
+import { EcommerceSite } from './ecommerce/page'
+import { EcommerceLayout } from './ecommerce/layout'
+import { CartPage } from './ecommerce/pages/CartPage'
 import './index.css'
 
 const router = createHashRouter([
@@ -13,6 +18,20 @@ const router = createHashRouter([
         children: [
             { index: true, element: <HomePage /> },
             { path: 'dev-roadtrip', element: <DevRoadtripPage /> },
+        ],
+    },
+    {
+        path: '/e-commerce',
+        element: (
+            <CartProvider>
+                <SearchProvider>
+                    <EcommerceSite />
+                </SearchProvider>
+            </CartProvider>
+        ),
+        children: [
+            { index: true, element: <EcommerceSite /> },
+            { path: 'cart', element: <CartPage /> },
         ],
     },
 ])

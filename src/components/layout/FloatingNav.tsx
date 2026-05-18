@@ -8,6 +8,7 @@ export function FloatingNav() {
     const navigate = useNavigate()
     const location = useLocation()
     const isHome = location.pathname === '/'
+    const isEcommerce = location.pathname === '/e-commerce'
     const activeId = useActiveSection(isHome ? sectionIds : [])
 
     const goHome = (e: React.MouseEvent) => {
@@ -35,12 +36,18 @@ export function FloatingNav() {
         window.scrollTo({ top: 0 })
     }
 
+    const goEcommerce = (e: React.MouseEvent) => {
+        e.preventDefault()
+        navigate('/e-commerce')
+        window.scrollTo({ top: 0 })
+    }
+
     const linkBase =
         'text-ink font-medium py-2 px-4 rounded transition-all duration-200 no-underline hover:text-primary hover:bg-primary/10 max-xs:py-1.5 max-xs:px-3 max-xs:text-[0.9rem] cursor-pointer'
     const activeClass = 'text-primary bg-primary/10'
 
     return (
-        <nav className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-[10px] z-[1000] py-4 border-b border-black/10">
+        <nav className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-[10px] z-1000 py-4 border-b border-black/10">
             <ul className="flex justify-center gap-8 list-none m-0 p-0 max-xs:gap-4 max-xs:flex-wrap max-xs:py-2 max-xs:px-4">
                 <li>
                     <a
@@ -64,9 +71,18 @@ export function FloatingNav() {
                     <a
                         href="#/dev-roadtrip"
                         onClick={goMore}
-                        className={`${linkBase} ${!isHome ? activeClass : ''}`}
+                        className={`${linkBase} ${!isHome && !isEcommerce ? activeClass : ''}`}
                     >
                         More
+                    </a>
+                </li>
+                <li>
+                    <a
+                        href="#/e-commerce"
+                        onClick={goEcommerce}
+                        className={`${linkBase} ${isEcommerce ? activeClass : ''}`}
+                    >
+                        Ecommerce
                     </a>
                 </li>
             </ul>
