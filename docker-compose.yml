@@ -1,0 +1,86 @@
+# docker-compose.yml
+# Compose file format version is implicit in modern Docker Compose (v2+).
+# You can omit the `version:` key entirely — it's deprecated and ignored.
+
+services:
+
+  # ── Flask portfolio app ──────────────────────────────────────────────────────
+  portfolio:
+
+    # build: tells Compose to build the image from a Dockerfile rather than
+    # pulling a pre-built one from a registry. `context` is the directory
+    # Docker uses as the build root — it's what gets sent to the Docker daemon
+    # and is the base for COPY instructions in the Dockerfile.
+    build:
+      context: ./backend        # path relative to this docker-compose.yml file
+      dockerfile: Dockerfile    # explicit, though "Dockerfile" is the default
+
+    # container_name: gives the running container a stable, human-readable name.
+    # Without this, Compose generates something like "welcome-to-my-portfolio-portfolio-1".
+    container_name: portfolio
+
+    # restart: controls what happens if the container exits unexpectedly.
+    # "unless-stopped" means: restart automatically on crash OR after a reboot,
+    # but DON'T restart if you explicitly ran `docker compose stop` or `docker stop`.
+    # This is the right default for a home server service.
+    restart: unless-stopped
+
+    # network_mode: host — the container shares the Pi's network interface directly
+    # rather than getting its own virtual one. Required for lifxlan's UDP broadcast
+    # discovery to reach your LIFX bulb on the LAN. The tradeoff is reduced network
+    # isolation, which is acceptable for a single-service home server.
+    # NOTE: with host networking, `ports` mappings are ignored — the container
+    # binds directly to the host's ports, so Flask on 5001 is just Pi port 5001.
+    network_mode: host
+
+    # env_file: loads key=value pairs from a file into the container's environment.
+    # Your .env lives next to app.py in the backend directory.
+    # These become environment variables the app reads (via os.environ / python-dotenv).
+    # The file is read at `docker compose up` time — secrets never end up in the image.
+    env_file:
+      - ./backend/.env
+
+    # volumes: the bind mount.
+    # Format: host_path:container_path
+    #
+    # HOST PATH (left side):
+    #   ./data — a local directory next to this compose file, used as a
+    #   temporary stand-in for /mnt/hdd/portfolio (which is on an HDD not yet
+    #   connected). When the HDD is ready, change this to /mnt/hdd/portfolio.
+    #   Create this directory on the Pi before running: mkdir -p ~/Welcome-to-my-Portfolio/data
+    #
+    # CONTAINER PATH (right side):
+    #   /data — the directory we created in the Dockerfile. At runtime, the
+    #   host directory is "overlaid" here. Any file the container writes to
+    #   /data actually lands on the host filesystem, surviving container restarts.
+    #
+    # This is why bind mounts exist: calls.db and stats.json persist even if
+    # you destroy and recreate the container entirely.
+    volumes:
+      - ./data:/data
+
+    # working_dir: overrides the WORKDIR set in the Dockerfile AT RUNTIME.
+    # The Dockerfile sets WORKDIR /app so that `COPY . .` and pip install
+    # land correctly during the build. But at runtime, we want the app's
+    # working directory to be /data so that relative file paths in app.py —
+    # open("calls.db"), open("stats.json") — resolve against the bind-mounted
+    # data directory, not the source code directory.
+    #
+    # Python doesn't care where its source files are relative to cwd;
+    # it finds app.py because we tell it `python /app/app.py` (or because
+    # /app is in sys.path). But file I/O uses cwd, so this matters.
+    working_dir: /data
+
+    # command: overrides CMD from the Dockerfile. We specify the full path to
+    # app.py here because working_dir is now /data, not /app — so a bare
+    # `python app.py` would fail (there's no app.py in /data).
+    command: ["python", "/app/app.py"]
+
+# ── What's NOT here yet (coming in step 5) ──────────────────────────────────
+# An `nginx` service will be added as a second entry under `services:`, with:
+#   - its own build or image
+#   - ports: ["80:80", "443:443"]
+#   - a depends_on: portfolio
+#   - a volume mounting an nginx.conf
+# Compose will wire the two containers into a shared default network automatically,
+# so Nginx can proxy to `http://portfolio:5001` by service name — no IP needed.
