@@ -76,11 +76,65 @@ services:
     # `python app.py` would fail (there's no app.py in /data).
     command: ["python", "/app/app.py"]
 
-# ── What's NOT here yet (coming in step 5) ──────────────────────────────────
-# An `nginx` service will be added as a second entry under `services:`, with:
-#   - its own build or image
-#   - ports: ["80:80", "443:443"]
-#   - a depends_on: portfolio
-#   - a volume mounting an nginx.conf
-# Compose will wire the two containers into a shared default network automatically,
-# so Nginx can proxy to `http://portfolio:5001` by service name — no IP needed.
+  # ── ConnectX Flask app (Connect4 game) ──────────────────────────────────────
+  connectx:
+    build:
+      context: ./connectX
+      dockerfile: Dockerfile
+    container_name: connectx
+    restart: unless-stopped
+
+    # network_mode: host — same reasoning as portfolio above, BUT for a different
+    # reason. ConnectX doesn't strictly need host networking (no LAN broadcast),
+    # so we could put it on the default bridge. We use host anyway so all three
+    # services (portfolio, connectx, nginx) share one networking model, which
+    # means nginx can reach both Flasks at localhost:5001 / localhost:5002 with
+    # no special config. Mixing host + bridge would force us to use the
+    # `host-gateway` hack to let bridged nginx reach the host-networked
+    # portfolio. Not worth the complexity for a home server.
+    network_mode: host
+
+    # environment: inline env vars, distinct from env_file (which loads a file).
+    # connectX/app.py reads PORT and FLASK_ENV at startup to decide its bind
+    # port and whether to enable Flask's debug mode.
+    environment:
+      - PORT=5002
+      - FLASK_ENV=production
+
+    # No volumes — connectX has no SQLite database or JSON cache. Game state
+    # lives in process memory (the global `game = Connect4()` in app.py) and
+    # resets when the container restarts. That matches the pre-Docker behavior.
+
+  # ── nginx reverse proxy ─────────────────────────────────────────────────────
+  nginx:
+    # `image:` pulls a pre-built image from Docker Hub instead of building one
+    # from a local Dockerfile. We don't need a custom nginx image — we just
+    # need stock nginx with our config mounted in.
+    # Alpine variant: ~25MB vs ~150MB for the Debian-based default. Plenty for
+    # serving as a reverse proxy.
+    image: nginx:1.27-alpine
+    container_name: nginx
+    restart: unless-stopped
+
+    # Host networking so nginx binds to the Pi's port 8080 directly and can
+    # reach the other two services at localhost:5001 / localhost:5002.
+    network_mode: host
+
+    # Bind-mount our config into the path the official nginx image reads at
+    # startup. `:ro` (read-only) is defensive — nginx doesn't write to its own
+    # config, but mounting read-only prevents accidental modification.
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+
+    # `ports:` is intentionally absent — with network_mode: host, port
+    # publishing is ignored. nginx binds to whatever the conf file says
+    # (port 8080). ngrok then points at host:8080 to expose this stack.
+
+    # depends_on: tells Compose to start `portfolio` and `connectx` BEFORE
+    # nginx. This only guarantees container start order, not application
+    # readiness — if Flask is slow to boot, nginx might briefly 502 on the
+    # first request. Acceptable for our scale; healthchecks fix it properly
+    # if it becomes a problem.
+    depends_on:
+      - portfolio
+      - connectx

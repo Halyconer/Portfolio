@@ -12,5 +12,4 @@ refresh_token
 **/.DS_Store
 .claude/
 .vscode/
-nginx.conf
 /assets/
