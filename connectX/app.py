@@ -1,6 +1,7 @@
 from copy import copy
 from flask import Flask, request, jsonify, send_from_directory
 import json
+import os
 from Connect4 import Connect4
 
 app = Flask(__name__)
@@ -97,4 +98,10 @@ def make_move():
     })
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    # Read port and debug flag from the environment so the same code runs
+    # locally (debug on, default port 5000) and in Docker (debug off, port 5002
+    # as set in docker-compose.yml's `environment:` block). 12-factor config —
+    # behavior changes via env, not code edits.
+    port = int(os.environ.get('PORT', 5000))
+    debug = os.environ.get('FLASK_ENV', 'development') == 'development'
+    app.run(host='0.0.0.0', port=port, debug=debug)
