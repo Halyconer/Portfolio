@@ -1,29 +1,25 @@
-import { useLocation, Outlet } from 'react-router-dom'
-import { AnimatePresence, motion } from 'framer-motion'
+import { Outlet } from 'react-router-dom'
 import { FloatingNav } from './components/layout/FloatingNav'
-import { ScrollProgressBar } from './components/layout/ScrollProgressBar'
 import { Footer } from './components/layout/Footer'
 import { ChocolatePopup } from './components/chocolate/ChocolatePopup'
 
+// Editorial pass:
+//   - Default font swapped from font-poly to font-inter. Body text in a
+//     decorative serif reads heavy at small sizes. Poly is now reserved for
+//     headings (h1/h2) where it earns its keep.
+//   - Removed `text-justify`. Justified text creates ugly word spacing,
+//     especially on narrow widths. Editorial typography is left-aligned.
+//   - Removed <ScrollProgressBar> (the thick blue gradient bar on the right).
+//   - Removed the <AnimatePresence><motion.div> page-transition wrapper.
+//     The brief fade-and-slide between routes was a "feels dynamic" effect
+//     that mainly told users "this site is animated." A confident editorial
+//     layout doesn't need to announce route changes.
 export function App() {
-    const location = useLocation()
-
     return (
-        <div className="font-poly text-ink leading-relaxed p-4 max-w-[1400px] mx-auto overflow-x-hidden box-border text-justify max-sm:text-left">
-            <ScrollProgressBar />
+        <div className="font-inter text-ink leading-relaxed p-4 max-w-[1400px] mx-auto overflow-x-hidden box-border">
             <FloatingNav />
             <ChocolatePopup />
-            <AnimatePresence mode="wait">
-                <motion.div
-                    key={location.pathname}
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -12 }}
-                    transition={{ duration: 0.3, ease: 'easeInOut' }}
-                >
-                    <Outlet />
-                </motion.div>
-            </AnimatePresence>
+            <Outlet />
             <Footer />
         </div>
     )

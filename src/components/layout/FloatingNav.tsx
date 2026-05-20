@@ -42,12 +42,19 @@ export function FloatingNav() {
         window.scrollTo({ top: 0 })
     }
 
+    // Editorial pass: hover state is now a 1px underline appearing beneath the
+    // word (via border-b on a transparent border that becomes ink on hover).
+    // The old style was a rounded pill highlight with a blue tint background —
+    // too SaaS-y. The underline pattern is what magazine navigation actually
+    // looks like.
     const linkBase =
-        'text-ink font-medium py-2 px-4 rounded transition-all duration-200 no-underline hover:text-primary hover:bg-primary/10 max-xs:py-1.5 max-xs:px-3 max-xs:text-[0.9rem] cursor-pointer'
-    const activeClass = 'text-primary bg-primary/10'
+        'text-ink font-medium py-2 px-3 transition-colors duration-200 no-underline border-b border-transparent hover:border-ink max-xs:py-1.5 max-xs:px-2 max-xs:text-[0.9rem] cursor-pointer'
+    const activeClass = 'border-ink'
 
     return (
-        <nav className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-[10px] z-1000 py-4 border-b border-black/10">
+        // Translucent dark page color so the nav sits over content with a
+        // glassy fade instead of a hard bar. Hairline border below.
+        <nav className="fixed top-0 left-0 right-0 bg-[#111008]/85 backdrop-blur-[10px] z-1000 py-4 border-b border-border">
             <ul className="flex justify-center gap-8 list-none m-0 p-0 max-xs:gap-4 max-xs:flex-wrap max-xs:py-2 max-xs:px-4">
                 <li>
                     <a
@@ -77,13 +84,12 @@ export function FloatingNav() {
                     </a>
                 </li>
                 <li>
-                    <a
-                        href="#/e-commerce"
-                        onClick={goEcommerce}
-                        className={`${linkBase} ${isEcommerce ? activeClass : ''}`}
+                    <span
+                        className="text-muted font-medium py-2 px-3 border-b border-transparent cursor-not-allowed opacity-40 text-[0.95rem] max-xs:py-1.5 max-xs:px-2 max-xs:text-[0.9rem]"
+                        title="Coming soon"
                     >
-                        Ecommerce
-                    </a>
+                        Photography
+                    </span>
                 </li>
             </ul>
         </nav>

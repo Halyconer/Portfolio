@@ -1,29 +1,48 @@
-@import url('https://fonts.googleapis.com/css2?family=Poly:ital@0;1&family=Inter:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import 'tailwindcss';
 
 @theme {
-    --font-poly: 'Poly', serif;
-    --font-inter: 'Inter', sans-serif;
+    /* Single sans family. Linear/Vercel rely on weight + spacing for hierarchy
+     * rather than serif/sans contrast. Inter at multiple weights covers
+     * everything. --font-poly is kept as an alias so existing `font-poly`
+     * classNames keep resolving (no-op now) — a cleanup pass can grep them out. */
+    --font-inter: 'Inter', system-ui, sans-serif;
+    --font-poly: 'Inter', system-ui, sans-serif;
 
-    --color-ink: #1a1a1a;
-    --color-heading: #0d3b66;
-    --color-primary: #4a90e2;
-    --color-primary-dark: #357abd;
-    --color-primary-deep: #2c5a7c;
-    --color-primary-light: #5ba0f2;
-    --color-muted: #555555;
-    --color-slate-dark: #2c3e50;
-    --color-slate-muted: #5a6c7d;
-    --color-link: #007acc;
-    --color-link-dark: #005fa3;
-    --color-border: #e0e0e0;
+    /* Dark minimal palette — near-black surfaces, warm off-white ink, hairline
+     * neutral borders. No chromatic accent: CTAs invert (white-on-dark), which
+     * is the Vercel "Deploy" pattern. Hover states brighten borders rather
+     * than introducing color. Token NAMES preserved from the previous palette
+     * so existing className refs keep compiling — they resolve to the new
+     * dark-mode values. */
+
+    /* Surfaces — earthy dark palette: deep olive-black base, warm parchment text */
+    --color-bg-page: #111008;       /* deep olive-black page bg */
+    --color-bg-light: #1c1a10;      /* elevated card surface — warm dark */
+    --color-ink: #d4c9b0;           /* primary text — aged parchment */
+    --color-heading: #ede3cc;       /* headings — warm off-white */
+    --color-muted: #8a7e68;         /* secondary text — warm stone */
+    --color-footer: #6b6352;
+    --color-border: #2a2510;        /* hairline divider — warm dark brown */
+
+    /* Primary tokens — parchment CTA on dark bg */
+    --color-primary: #c0b49a;       /* warm parchment — inverted CTA bg */
+    --color-primary-dark: #a89f87;
+    --color-primary-deep: #8a7e68;
+    --color-primary-light: #d4c9b0;
+    --color-link: #d4c9b0;
+    --color-link-dark: #ede3cc;
+
+    /* Slate aliases — warm equivalents */
+    --color-slate-dark: #d4c9b0;
+    --color-slate-muted: #8a7e68;
+
+    /* Connect4 game-specific — functional colors stay vivid. */
     --color-board: #0066cc;
     --color-board-dark: #004499;
     --color-player-red: #ff4444;
     --color-player-yellow: #ffdd44;
-    --color-footer: #777777;
-    --color-bg-light: #f8f9fa;
-    --color-slider-bg: #e3f2fd;
+    --color-slider-bg: #2a2510;
 
     --breakpoint-xs: 390px;
     --breakpoint-sm: 600px;
@@ -31,7 +50,7 @@
     --breakpoint-lg: 1200px;
 }
 
-/* Global resets */
+/* Hide native scrollbar — purely cosmetic */
 html {
     scrollbar-width: none;
 }
@@ -39,136 +58,59 @@ html::-webkit-scrollbar {
     display: none;
 }
 
-/* Custom slider styles (can't be done in Tailwind) */
+/* Set bg + base text color at body level so route transitions don't flash and
+ * default text inherits the off-white ink. */
+body {
+    background-color: #111008;
+    color: #d4c9b0;
+}
+
+/* Brightness slider — dark track, white thumb. */
 input[type='range'].brightness-slider {
     -webkit-appearance: none;
     appearance: none;
     width: 100%;
     height: 4px;
     border-radius: 2px;
-    background: #e3f2fd;
+    background: #2a2510;
     outline: none;
     cursor: pointer;
-    transition: all 0.3s ease;
 }
 
 input[type='range'].brightness-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
-    background: #4a90e2;
+    background: #ffffff;
     cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border: none;
-}
-
-input[type='range'].brightness-slider::-webkit-slider-thumb:hover {
-    transform: scale(1.2);
-    background: #357abd;
-    box-shadow: 0 2px 8px rgba(74, 144, 226, 0.3);
 }
 
 input[type='range'].brightness-slider::-moz-range-thumb {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
-    background: #4a90e2;
+    background: #ffffff;
     cursor: pointer;
     border: none;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-input[type='range'].brightness-slider::-moz-range-thumb:hover {
-    transform: scale(1.2);
-    background: #357abd;
-    box-shadow: 0 2px 8px rgba(74, 144, 226, 0.3);
 }
 
 input[type='range'].brightness-slider::-moz-range-track {
     width: 100%;
     height: 4px;
-    cursor: pointer;
-    background: #e3f2fd;
+    background: #2a2510;
     border-radius: 2px;
     border: none;
 }
 
-/* Typewriter cursor */
-.typewriter-cursor {
-    border-right: 0.08em solid rgba(13, 59, 102, 0.7);
-}
-
-/* Profile glow animation */
-@keyframes profileGlow {
-    0%,
-    100% {
-        box-shadow:
-            0 10px 40px rgba(0, 0, 0, 0.15),
-            0 0 20px rgba(74, 144, 226, 0.3);
-        filter: brightness(1);
-    }
-    25% {
-        box-shadow:
-            0 10px 40px rgba(0, 0, 0, 0.15),
-            0 0 30px rgba(255, 193, 7, 0.4);
-        filter: brightness(1.05);
-    }
-    50% {
-        box-shadow:
-            0 10px 40px rgba(0, 0, 0, 0.15),
-            0 0 25px rgba(76, 175, 80, 0.4);
-        filter: brightness(1.02);
-    }
-    75% {
-        box-shadow:
-            0 10px 40px rgba(0, 0, 0, 0.15),
-            0 0 35px rgba(156, 39, 176, 0.3);
-        filter: brightness(1.03);
-    }
-}
-
-/* Gentle glow for CTA button */
-@keyframes gentle-glow {
-    0% {
-        box-shadow:
-            0 2px 8px rgba(0, 0, 0, 0.1),
-            0 0 8px rgba(74, 144, 226, 0.3);
-    }
-    100% {
-        box-shadow:
-            0 2px 8px rgba(0, 0, 0, 0.1),
-            0 0 15px rgba(74, 144, 226, 0.6);
-    }
-}
-
-.animate-profile-glow {
-    animation: profileGlow 3s ease-in-out infinite;
-}
-
-.animate-gentle-glow {
-    animation: gentle-glow 2s ease-in-out infinite alternate;
-}
-
-/* Mobile touch feedback */
+/* Touch-device override — kill any residual hover transforms on touch. */
 @media (hover: none) and (pointer: coarse) {
-    .demo-card-touch:hover {
-        transform: none !important;
-        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.12) !important;
-    }
-
+    .demo-card-touch:hover,
     .project-card-touch:hover {
         transform: none !important;
-        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1) !important;
-    }
-
-    .demo-card-touch:active,
-    .project-card-touch:active {
-        transform: scale(0.98) !important;
-        transition: transform 0.1s ease !important;
+        box-shadow: none !important;
     }
 }
 

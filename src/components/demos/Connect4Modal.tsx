@@ -36,13 +36,13 @@ export function Connect4Modal({ state }: Connect4ModalProps) {
                     }}
                 >
                     <motion.div
-                        className="bg-white p-8 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.3)] max-w-[600px] w-[90%] max-h-[90vh] overflow-y-auto max-sm:w-[95%] max-sm:p-4 max-sm:mx-2.5 max-sm:my-5"
+                        className="bg-bg-light border border-border p-8 rounded-sm max-w-[600px] w-[90%] max-h-[90vh] overflow-y-auto max-sm:w-[95%] max-sm:p-4 max-sm:mx-2.5 max-sm:my-5"
                         initial={{ scale: 0.9, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 0.9, opacity: 0 }}
                         transition={{ duration: 0.3 }}
                     >
-                        <div className="flex justify-between items-center mb-5 border-b-2 border-[#f0f0f0] pb-4">
+                        <div className="flex justify-between items-center mb-5 border-b border-border pb-4">
                             <h2 className="text-heading font-semibold text-xl max-sm:text-2xl">
                                 Connect 4 vs AI
                             </h2>

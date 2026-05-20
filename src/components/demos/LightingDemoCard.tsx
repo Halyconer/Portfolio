@@ -9,45 +9,38 @@ export function LightingDemoCard() {
 
     return (
         <DemoCard>
-            <div>
-                <h3 className="text-slate-dark text-[1.8rem] font-semibold m-0 mb-0.5">
+            <p className="text-[0.68rem] text-muted/40 font-inter tracking-[0.1em] mb-4">01</p>
+            <div className="mb-4">
+                <h3 className="text-heading text-[1.3rem] font-normal font-poly m-0 mb-1">
                     Wake Me Up
                 </h3>
-                <p className="text-primary text-[0.95rem] font-medium m-0 mb-0.5">
+                <p className="text-muted text-[0.8rem] font-inter m-0">
                     Control my bedroom lights
                 </p>
             </div>
             <div>
-                <p className="text-slate-muted text-[0.9rem] leading-snug m-0 mb-1 text-justify max-sm:text-left">
+                <p className="text-muted text-[0.85rem] font-inter leading-relaxed m-0 mb-4">
                     A live lighting control system via Flask API running on my
                     Raspberry Pi. This could literally wake me up so I should
-                    probably implement a timer or something... Navigate to{' '}
-                    <Link
-                        to="/dev-roadtrip"
-                        className="text-link hover:text-link-dark hover:underline"
-                    >
-                        More
-                    </Link>{' '}
-                    to see how I built the architecture behind this, and
-                    lightbulb metrics.{' '}
+                    probably implement a timer or something...{' '}
                     <a
                         href="https://github.com/Halyconer/Welcome-to-my-Portfolio/tree/main/backend"
                         target="_blank"
                         rel="noopener"
-                        className="text-primary font-medium hover:underline"
+                        className="text-ink hover:text-heading underline underline-offset-2 transition-colors"
                     >
                         View code
                     </a>
                 </p>
 
-                <div className="bg-white rounded-lg p-5 shadow-[0_2px_8px_rgba(0,41,162,0.06)] my-4">
-                    <div className="flex justify-between items-baseline mb-2 text-slate-dark">
-                        <span className="text-[0.9rem] uppercase tracking-wider opacity-70">
+                <div className="p-4 my-4 border border-border" style={{ backgroundColor: '#1c1a10' }}>
+                    <div className="flex justify-between items-baseline mb-3">
+                        <span className="text-[0.7rem] uppercase tracking-[0.15em] text-muted font-inter">
                             Brightness
                         </span>
-                        <div className="text-base font-extralight text-primary">
-                            <span>{brightness}</span>%
-                        </div>
+                        <span className="text-[0.85rem] text-ink font-inter">
+                            {brightness}%
+                        </span>
                     </div>
                     <input
                         type="range"
@@ -62,14 +55,11 @@ export function LightingDemoCard() {
                     />
                 </div>
 
-                <Button
-                    onClick={sendBrightness}
-                    disabled={isSending}
-                >
+                <Button onClick={sendBrightness} disabled={isSending}>
                     {isSending ? 'Sending...' : 'ZAP'}
                 </Button>
 
-                <p className="mt-2 text-[0.85rem] text-slate-muted min-h-4">
+                <p className="mt-2 text-[0.8rem] text-muted font-inter min-h-4">
                     {status}
                 </p>
             </div>
