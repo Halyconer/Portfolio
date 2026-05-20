@@ -8,7 +8,6 @@ export function FloatingNav() {
     const navigate = useNavigate()
     const location = useLocation()
     const isHome = location.pathname === '/'
-    const isEcommerce = location.pathname === '/e-commerce'
     const activeId = useActiveSection(isHome ? sectionIds : [])
 
     const goHome = (e: React.MouseEvent) => {
@@ -33,12 +32,6 @@ export function FloatingNav() {
     const goMore = (e: React.MouseEvent) => {
         e.preventDefault()
         navigate('/dev-roadtrip')
-        window.scrollTo({ top: 0 })
-    }
-
-    const goEcommerce = (e: React.MouseEvent) => {
-        e.preventDefault()
-        navigate('/e-commerce')
         window.scrollTo({ top: 0 })
     }
 
@@ -78,7 +71,7 @@ export function FloatingNav() {
                     <a
                         href="#/dev-roadtrip"
                         onClick={goMore}
-                        className={`${linkBase} ${!isHome && !isEcommerce ? activeClass : ''}`}
+                        className={`${linkBase} ${!isHome ? activeClass : ''}`}
                     >
                         More
                     </a>
