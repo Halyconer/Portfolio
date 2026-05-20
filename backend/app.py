@@ -30,18 +30,27 @@ else:
     print(f"Production mode - CORS handled by nginx for: {ALLOWED_ORIGIN}")
 
 def get_bulb():
-    """Return a cached LIFX Light, or discover it via LAN broadcast."""
+    """Return a cached LIFX Light. Prefer unicast (env-configured), fall back to discovery.
+
+    If BULB_MAC and BULB_IP are set in the environment, construct the Light
+    object directly — no broadcast needed. This is the production path on
+    networks where the router drops broadcast UDP between mesh nodes
+    (notably Linksys Velop), which silently breaks LifxLAN's discovery
+    even though unicast LIFX traffic on UDP 56700 works fine.
+
+    Without those vars, fall back to LAN broadcast discovery. Useful for
+    quick local testing on simpler networks where broadcast works.
+    """
     global _lifx_light
     if _lifx_light is not None:
         return _lifx_light
     try:
-        from lifxlan import LifxLAN
-        # num_lights=1 tells the discovery layer to stop as soon as one bulb
-        # answers, instead of waiting the full timeout for ALL bulbs on the
-        # LAN to respond. We only ever control one, so this is both faster
-        # (first request returns in ~1s instead of ~10s) and explicit about
-        # intent. If both RGB bulbs are powered on, whichever responds to
-        # the broadcast first is the one we'll cache for the process lifetime.
+        from lifxlan import Light, LifxLAN
+        mac = os.getenv("BULB_MAC")
+        ip = os.getenv("BULB_IP")
+        if mac and ip:
+            _lifx_light = Light(mac, ip)
+            return _lifx_light
         lan = LifxLAN(1)
         devices = lan.get_lights()
         if not devices:
