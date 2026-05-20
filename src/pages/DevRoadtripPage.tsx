@@ -26,8 +26,8 @@ export function DevRoadtripPage() {
             </section>
 
             {/* Diagram */}
-            <section className="bg-white py-8">
-                <div className="max-w-[1200px] mx-auto flex justify-center items-center bg-white">
+            <section className="bg-bg-light py-8">
+                <div className="max-w-[1200px] mx-auto flex justify-center items-center bg-bg-light">
                     <img
                         src={asset('lightbulb_diagram.jpg')}
                         alt="System Architecture Diagram"
@@ -42,7 +42,7 @@ export function DevRoadtripPage() {
                     Live Database Stats
                 </h2>
                 <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-6 my-8">
-                    <div className="bg-white rounded-xl p-6 text-center shadow-[0_2px_10px_rgba(0,0,0,0.08)] transition-transform duration-300 hover:-translate-y-0.5">
+                    <div className="bg-bg-light rounded-xl p-6 text-center border border-border transition-transform duration-300 hover:-translate-y-0.5">
                         <div className="text-[2rem] font-semibold text-primary mb-2">
                             {statsError
                                 ? 'Error'
@@ -52,7 +52,7 @@ export function DevRoadtripPage() {
                             Total Calls
                         </div>
                     </div>
-                    <div className="bg-white rounded-xl p-6 text-center shadow-[0_2px_10px_rgba(0,0,0,0.08)] transition-transform duration-300 hover:-translate-y-0.5">
+                    <div className="bg-bg-light rounded-xl p-6 text-center border border-border transition-transform duration-300 hover:-translate-y-0.5">
                         <div className="text-[2rem] font-semibold text-primary mb-2">
                             {statsError
                                 ? 'Error'
@@ -78,7 +78,7 @@ export function DevRoadtripPage() {
                         Spotify&apos;s API and a cron job.
                     </p>
 
-                    <div className="bg-white rounded-xl p-8 shadow-[0_2px_10px_rgba(0,0,0,0.08)]">
+                    <div className="bg-bg-light rounded-xl p-8 border border-border">
                         {spotifyError ? (
                             <div className="py-8 opacity-80">
                                 Musical data temporarily unavailable — my Pi
@@ -86,7 +86,7 @@ export function DevRoadtripPage() {
                             </div>
                         ) : !spotifyData ? (
                             <div className="flex items-center justify-center p-8 text-[0.9rem] text-slate-muted">
-                                <div className="w-5 h-5 border-2 border-[#e0e7ff] border-t-primary rounded-full animate-spin-slow mr-2" />
+                                <div className="w-5 h-5 border-2 border-border border-t-primary rounded-full animate-spin-slow mr-2" />
                                 Fetching latest listening data...
                             </div>
                         ) : spotifyData.artists.length === 0 ? (
@@ -107,10 +107,10 @@ export function DevRoadtripPage() {
                                                 <img
                                                     src={artist.image_url}
                                                     alt={artist.name}
-                                                    className="w-20 h-20 rounded-full object-cover mb-2 shadow-[0_4px_12px_rgba(0,0,0,0.1)] border-2 border-[#e0e7ff]"
+                                                    className="w-20 h-20 rounded-full object-cover mb-2 shadow-[0_4px_12px_rgba(0,0,0,0.1)] border-2 border-border"
                                                 />
                                             ) : (
-                                                <div className="w-20 h-20 rounded-full bg-[#e8f0fe] text-primary flex items-center justify-center mb-2 text-2xl">
+                                                <div className="w-20 h-20 rounded-full bg-bg-page text-primary flex items-center justify-center mb-2 text-2xl">
                                                     🎵
                                                 </div>
                                             )}

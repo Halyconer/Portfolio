@@ -10,17 +10,18 @@ export function InteractiveDemosSection() {
     const connect4 = useConnect4()
 
     return (
-        <section id="light-greeting" className="py-4 px-0.5 mt-4">
-            <div className="max-w-[1200px] mx-auto text-center">
-                <h2 className="text-slate-dark text-[2rem] font-bold mb-1">
-                    Interactive Demos
-                </h2>
-                <p className="text-slate-muted text-[0.95rem] mb-4 text-justify leading-snug max-sm:text-left">
-                    Two live demos powered by my home server. One could wake me
-                    up, the other is just digital matrix fun.
-                </p>
+        <section id="light-greeting" className="py-8 px-0.5 mt-4 border-t border-border">
+            <div className="max-w-[1200px] mx-auto">
+                <div className="flex justify-between items-baseline mb-6 px-0.5">
+                    <p className="text-[0.7rem] tracking-[0.22em] uppercase text-muted font-inter">
+                        Live demos
+                    </p>
+                    <p className="text-[0.7rem] text-muted/50 font-inter">
+                        Server online
+                    </p>
+                </div>
 
-                <div className="grid grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-3 mb-2 max-md:grid-cols-1">
+                <div className="grid grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-4 mb-2 max-md:grid-cols-1">
                     <LightingDemoCard />
                     <Connect4DemoCard
                         onPlay={() => connect4.setIsOpen(true)}
@@ -29,29 +30,21 @@ export function InteractiveDemosSection() {
 
                 <ArchitectureNote />
 
-                <div className="flex gap-2 justify-center mt-2 mb-1 flex-wrap">
-                    <LinkButton
+                <div className="flex gap-6 justify-center mt-4 mb-1 flex-wrap">
+                    <a
                         href="#resume"
-                        variant="secondary"
-                        onClick={(e) => {
-                            e.preventDefault()
-                            scrollTo('resume')
-                        }}
-                        className="py-2 px-4 text-[0.85rem]"
+                        onClick={(e) => { e.preventDefault(); scrollTo('resume') }}
+                        className="text-[0.8rem] text-muted hover:text-ink transition-colors duration-200 no-underline tracking-[0.06em]"
                     >
-                        View Work Experience &rarr;
-                    </LinkButton>
-                    <LinkButton
+                        Work experience →
+                    </a>
+                    <a
                         href="#projects"
-                        variant="secondary"
-                        onClick={(e) => {
-                            e.preventDefault()
-                            scrollTo('projects')
-                        }}
-                        className="py-2 px-4 text-[0.85rem]"
+                        onClick={(e) => { e.preventDefault(); scrollTo('projects') }}
+                        className="text-[0.8rem] text-muted hover:text-ink transition-colors duration-200 no-underline tracking-[0.06em]"
                     >
-                        See More Projects &rarr;
-                    </LinkButton>
+                        More projects →
+                    </a>
                 </div>
             </div>
 

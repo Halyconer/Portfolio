@@ -31,7 +31,7 @@ export function ChocolatePopup() {
             <AnimatePresence>
                 {isVisible && (
                     <motion.div
-                        className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-border shadow-[0_-2px_10px_rgba(0,0,0,0.1)] p-4"
+                        className="fixed bottom-0 left-0 right-0 z-50 bg-bg-light border-t border-border p-4"
                         initial={{ y: 100, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: 100, opacity: 0 }}
@@ -45,13 +45,13 @@ export function ChocolatePopup() {
                             <div className="flex gap-2">
                                 <button
                                     onClick={handleAccept}
-                                    className="py-2 px-4 rounded-md font-medium text-[0.85rem] bg-gradient-to-br from-primary to-primary-light text-white border-none cursor-pointer transition-all duration-200 hover:from-primary-dark hover:to-primary"
+                                    className="py-2 px-4 rounded-sm font-medium text-[0.85rem] bg-primary text-bg-page border border-primary cursor-pointer transition-colors duration-200 hover:bg-primary-dark hover:border-primary-dark"
                                 >
                                     Accept Chocolate
                                 </button>
                                 <button
                                     onClick={handleDecline}
-                                    className="py-2 px-4 rounded-md font-medium text-[0.85rem] bg-white text-slate-dark border border-border cursor-pointer transition-all duration-200 hover:bg-[#f8f9fa]"
+                                    className="py-2 px-4 rounded-sm font-medium text-[0.85rem] bg-transparent text-ink border border-border cursor-pointer transition-colors duration-200 hover:border-ink"
                                 >
                                     Decline
                                 </button>

@@ -45,4 +45,10 @@ export const projects: Project[] = [
             'Coming soon... Currently learning about cryptocurrency mining and exploring low-power mining solutions with Arduino-based systems.',
         image: 'duino.png',
     },
+    {
+        title: 'Virellio — Ecommerce Store',
+        description:
+            'Full-stack storefront built with React, Vite, and Supabase. Features product listings, routing, and a live checkout flow — built for a real interview brief.',
+        url: '/e-commerce',
+    },
 ]
