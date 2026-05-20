@@ -36,11 +36,17 @@ def get_bulb():
         return _lifx_light
     try:
         from lifxlan import LifxLAN
-        lan = LifxLAN()
+        # num_lights=1 tells the discovery layer to stop as soon as one bulb
+        # answers, instead of waiting the full timeout for ALL bulbs on the
+        # LAN to respond. We only ever control one, so this is both faster
+        # (first request returns in ~1s instead of ~10s) and explicit about
+        # intent. If both RGB bulbs are powered on, whichever responds to
+        # the broadcast first is the one we'll cache for the process lifetime.
+        lan = LifxLAN(1)
         devices = lan.get_lights()
         if not devices:
             return None
-        _lifx_light = devices[0]  # grab the first bulb found
+        _lifx_light = devices[0]
         return _lifx_light
     except Exception:
         return None
