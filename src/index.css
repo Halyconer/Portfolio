@@ -1,48 +1,50 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import 'tailwindcss';
 
 @theme {
-    /* Single sans family. Linear/Vercel rely on weight + spacing for hierarchy
-     * rather than serif/sans contrast. Inter at multiple weights covers
-     * everything. --font-poly is kept as an alias so existing `font-poly`
-     * classNames keep resolving (no-op now) — a cleanup pass can grep them out. */
+    /* Typography — Fraunces (serif display) + Inter (body) + IBM Plex Mono
+     * (labels, dates, tags). --font-poly kept as an alias so any leftover
+     * font-poly classNames now render the serif. */
     --font-inter: 'Inter', system-ui, sans-serif;
-    --font-poly: 'Inter', system-ui, sans-serif;
+    --font-poly: 'Fraunces', Georgia, serif;
+    --font-serif: 'Fraunces', Georgia, serif;
+    --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
 
-    /* Dark minimal palette — near-black surfaces, warm off-white ink, hairline
-     * neutral borders. No chromatic accent: CTAs invert (white-on-dark), which
-     * is the Vercel "Deploy" pattern. Hover states brighten borders rather
-     * than introducing color. Token NAMES preserved from the previous palette
-     * so existing className refs keep compiling — they resolve to the new
-     * dark-mode values. */
+    /* Editorial white palette — paper, ink, terracotta accent. */
+    --color-paper: #ffffff;
+    --color-paper-warm: #f8f7f2;
+    --color-ink: #1a1a17;
+    --color-ink-soft: #2a2a26;
+    --color-muted: #6b6657;
+    --color-muted-hi: #9a9483;
+    --color-accent: #b34a1f;
+    --color-accent-deep: #7a1d24;
+    --color-rule: #e5e3dc;
+    --color-rule-strong: #756d5c;
+    --color-panel: #ffffff;
+    --color-panel-ink: #1a1a17;
+    --color-placeholder: #eeede8;
 
-    /* Surfaces — earthy dark palette: deep olive-black base, warm parchment text */
-    --color-bg-page: #111008;       /* deep olive-black page bg */
-    --color-bg-light: #1c1a10;      /* elevated card surface — warm dark */
-    --color-ink: #d4c9b0;           /* primary text — aged parchment */
-    --color-heading: #ede3cc;       /* headings — warm off-white */
-    --color-muted: #8a7e68;         /* secondary text — warm stone */
-    --color-footer: #6b6352;
-    --color-border: #2a2510;        /* hairline divider — warm dark brown */
-
-    /* Primary tokens — parchment CTA on dark bg */
-    --color-primary: #c0b49a;       /* warm parchment — inverted CTA bg */
-    --color-primary-dark: #a89f87;
-    --color-primary-deep: #8a7e68;
-    --color-primary-light: #d4c9b0;
-    --color-link: #d4c9b0;
-    --color-link-dark: #ede3cc;
-
-    /* Slate aliases — warm equivalents */
-    --color-slate-dark: #d4c9b0;
-    --color-slate-muted: #8a7e68;
-
-    /* Connect4 game-specific — functional colors stay vivid. */
+    /* Connect4 game — functional colors stay vivid. */
     --color-board: #0066cc;
     --color-board-dark: #004499;
     --color-player-red: #ff4444;
     --color-player-yellow: #ffdd44;
-    --color-slider-bg: #2a2510;
+    --color-slider-bg: #d8cfb8;
+
+    /* Legacy aliases — preserve class-name compatibility with any old code. */
+    --color-bg-page: #ffffff;
+    --color-bg-light: #f8f7f2;
+    --color-heading: #1a1a17;
+    --color-border: #e5e3dc;
+    --color-footer: #6b6657;
+    --color-primary: #1a1a17;
+    --color-primary-dark: #2a2a26;
+    --color-primary-deep: #6b6657;
+    --color-primary-light: #2a2a26;
+    --color-link: #b34a1f;
+    --color-link-dark: #7a1d24;
+    --color-slate-dark: #1a1a17;
+    --color-slate-muted: #6b6657;
 
     --breakpoint-xs: 390px;
     --breakpoint-sm: 600px;
@@ -58,21 +60,38 @@ html::-webkit-scrollbar {
     display: none;
 }
 
-/* Set bg + base text color at body level so route transitions don't flash and
- * default text inherits the off-white ink. */
+/* Set bg + base text at body level so route transitions don't flash. */
 body {
-    background-color: #111008;
-    color: #d4c9b0;
+    background-color: #ffffff;
+    color: #1a1a17;
+    font-family: 'Inter', system-ui, sans-serif;
 }
 
-/* Brightness slider — dark track, white thumb. */
+/* Paper grain — subtle linen texture. Stacked tiny radial dots with
+ * mix-blend-multiply so the noise reads as paper fiber, not pixels.
+ * Applied via .paper-grain on the App wrapper. */
+.paper-grain::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+        radial-gradient(circle at 20% 30%, rgba(0, 0, 0, 0.022) 0 1px, transparent 1.5px),
+        radial-gradient(circle at 70% 80%, rgba(0, 0, 0, 0.018) 0 1px, transparent 1.5px),
+        radial-gradient(circle at 40% 60%, rgba(0, 0, 0, 0.015) 0 1px, transparent 1.5px);
+    background-size: 7px 7px, 11px 11px, 13px 13px;
+    z-index: 1;
+    mix-blend-mode: multiply;
+}
+
+/* Editorial brightness slider — ink track + thumb on white. */
 input[type='range'].brightness-slider {
     -webkit-appearance: none;
     appearance: none;
     width: 100%;
-    height: 4px;
-    border-radius: 2px;
-    background: #2a2510;
+    height: 2px;
+    border-radius: 0;
+    background: rgba(26, 26, 23, 0.18);
     outline: none;
     cursor: pointer;
 }
@@ -80,29 +99,43 @@ input[type='range'].brightness-slider {
 input[type='range'].brightness-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
     border-radius: 50%;
-    background: #ffffff;
+    background: #1a1a17;
     cursor: pointer;
     border: none;
 }
 
 input[type='range'].brightness-slider::-moz-range-thumb {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
     border-radius: 50%;
-    background: #ffffff;
+    background: #1a1a17;
     cursor: pointer;
     border: none;
 }
 
 input[type='range'].brightness-slider::-moz-range-track {
     width: 100%;
-    height: 4px;
-    background: #2a2510;
-    border-radius: 2px;
+    height: 2px;
+    background: rgba(26, 26, 23, 0.18);
+    border-radius: 0;
     border: none;
+}
+
+/* Drop-cap utility — used on the About paragraph. Sized to occupy ~3 lines
+ * so the paragraph wraps cleanly around it without orphaning the last word.
+ * font-variation-settings tunes Fraunces' optical-size axis for display use. */
+.drop-cap::first-letter {
+    font-family: 'Fraunces', Georgia, serif;
+    font-variation-settings: 'opsz' 144;
+    font-weight: 400;
+    font-size: 4.2em;
+    line-height: 0.85;
+    float: left;
+    margin: 0.05em 0.1em -0.05em 0;
+    color: var(--color-accent);
 }
 
 /* Touch-device override — kill any residual hover transforms on touch. */

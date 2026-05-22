@@ -7,7 +7,6 @@ import { CartProvider } from './ecommerce/context/CartProvider'
 import { SearchProvider } from './ecommerce/context/SearchProvider'
 import { DevRoadtripPage } from './pages/DevRoadtripPage'
 import { EcommerceSite } from './ecommerce/page'
-import { EcommerceLayout } from './ecommerce/layout'
 import { CartPage } from './ecommerce/pages/CartPage'
 import './index.css'
 

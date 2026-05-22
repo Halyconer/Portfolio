@@ -1,1 +1,3 @@
-export function CartPage() {}
+export function CartPage() {
+    return null
+}
