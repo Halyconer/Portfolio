@@ -17,8 +17,8 @@ export function MetaField({
 }: MetaFieldProps) {
     const labelClass =
         variant === 'card'
-            ? 'font-mono text-[10px] tracking-[0.18em] uppercase text-muted mb-2.5 pb-2 border-b border-rule'
-            : 'font-mono text-[10px] tracking-[0.2em] uppercase text-muted mb-1'
+            ? 'text-eyebrow-sm mb-2.5 pb-2 border-b border-rule'
+            : 'text-label mb-1'
 
     const valueClass =
         variant === 'card'

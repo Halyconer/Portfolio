@@ -18,7 +18,7 @@ export function Colophon() {
                     </a>
                 </div>
                 <div
-                    className="font-mono text-[11px] tracking-[0.18em] uppercase text-muted text-right leading-[2] max-md:text-left"
+                    className="text-eyebrow text-right leading-[2] max-md:text-left"
                 >
                     Set in Fraunces &amp; IBM Plex Mono <br />
                     Built with React + Vite <br />

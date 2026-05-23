@@ -44,7 +44,7 @@ export function ResumePDF() {
             </div>
 
             {/* Filename strip — gives the embed a "real document" frame. */}
-            <div className="flex justify-between font-mono text-[10px] tracking-[0.18em] uppercase text-muted py-2.5 px-3.5 bg-paper border border-rule border-b-0 max-w-[920px] mx-auto whitespace-nowrap gap-4">
+            <div className="flex justify-between text-eyebrow-sm py-2.5 px-3.5 bg-paper border border-rule border-b-0 max-w-[920px] mx-auto whitespace-nowrap gap-4">
                 <span>
                     <span className="text-accent">&#8251;</span> AdrianEddy.pdf
                 </span>

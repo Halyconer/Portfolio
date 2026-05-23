@@ -8,6 +8,7 @@ export type ApiError =
     | { kind: 'network'; cause: unknown }
     | { kind: 'http'; status: number; statusText: string; body: unknown }
     | { kind: 'parse'; cause: unknown }
+    | { kind: 'aborted' }
 
 export class ApiFetchError extends Error {
     detail: ApiError
@@ -17,11 +18,17 @@ export class ApiFetchError extends Error {
                 ? `HTTP ${detail.status} ${detail.statusText}`
                 : detail.kind === 'network'
                   ? 'Network error'
-                  : 'Response parse error'
+                  : detail.kind === 'aborted'
+                    ? 'Request aborted'
+                    : 'Response parse error'
         )
         this.name = 'ApiFetchError'
         this.detail = detail
     }
+}
+
+export function isAbortError(err: unknown): boolean {
+    return err instanceof ApiFetchError && err.detail.kind === 'aborted'
 }
 
 async function safeParse(res: Response): Promise<unknown> {
@@ -52,6 +59,10 @@ export async function apiFetch<T>(
             },
         })
     } catch (cause) {
+        // AbortError is the standard DOMException name for fetch cancellation.
+        if (cause instanceof DOMException && cause.name === 'AbortError') {
+            throw new ApiFetchError({ kind: 'aborted' })
+        }
         throw new ApiFetchError({ kind: 'network', cause })
     }
 

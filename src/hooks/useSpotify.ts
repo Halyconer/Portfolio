@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { apiFetch } from '../lib/api'
+import { apiFetch, isAbortError } from '../lib/api'
 
 interface Artist {
     name: string
@@ -16,18 +16,16 @@ export function useSpotify() {
     const [error, setError] = useState(false)
 
     useEffect(() => {
-        const load = async () => {
-            try {
-                const result = await apiFetch<SpotifyData>(
-                    '/spotify_stats.json',
-                    { method: 'GET' }
-                )
-                setData(result)
-            } catch {
-                setError(true)
-            }
-        }
-        load()
+        const ctrl = new AbortController()
+        apiFetch<SpotifyData>('/spotify_stats.json', {
+            method: 'GET',
+            signal: ctrl.signal,
+        })
+            .then(setData)
+            .catch((err) => {
+                if (!isAbortError(err)) setError(true)
+            })
+        return () => ctrl.abort()
     }, [])
 
     return { data, error }

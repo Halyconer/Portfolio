@@ -47,7 +47,7 @@ export function Connect4Inline() {
 
     return (
         <div className="p-8 relative border border-rule max-sm:p-5">
-            <div className="flex justify-between items-baseline font-mono text-[10px] tracking-[0.18em] uppercase text-muted mb-3 gap-3 flex-wrap">
+            <div className="flex justify-between items-baseline text-eyebrow-sm mb-3 gap-3 flex-wrap">
                 <span>
                     Demo 02 &mdash; Connect 4 &middot; Minimax + &alpha;-&beta;
                 </span>
@@ -62,7 +62,7 @@ export function Connect4Inline() {
             </p>
 
             {/* Player legend */}
-            <div className="mt-5 flex gap-5 items-center font-mono text-[10px] tracking-[0.18em] uppercase text-muted">
+            <div className="mt-5 flex gap-5 items-center text-eyebrow-sm">
                 <span className="flex items-center gap-2">
                     <span
                         className="inline-block w-3 h-3 rounded-full"
@@ -122,6 +122,7 @@ export function Connect4Inline() {
                         return (
                             <button
                                 key={`${displayRow}-${col}`}
+                                type="button"
                                 onClick={() => canClick && makeMove(col)}
                                 onMouseEnter={() => setHoverCol(col)}
                                 onMouseLeave={() => setHoverCol(null)}
@@ -146,12 +147,17 @@ export function Connect4Inline() {
             {/* Status + restart. Status reads as editorial italic; the button
              * is the same mono CTA shape as the rest of the page. */}
             <div className="mt-5 flex justify-between items-center gap-4 flex-wrap">
-                <p className="font-serif italic text-ink-soft text-[1rem] flex-1 min-w-[200px] m-0">
+                <p
+                    role="status"
+                    aria-live="polite"
+                    className="font-serif italic text-ink-soft text-[1rem] flex-1 min-w-[200px] m-0"
+                >
                     {hasNotStarted
                         ? 'Click Start to spin up a game.'
                         : status}
                 </p>
                 <button
+                    type="button"
                     onClick={startGame}
                     className="bg-ink text-paper border-none py-3 px-5 font-mono text-[11px] tracking-[0.16em] uppercase cursor-pointer hover:bg-ink-soft transition-colors whitespace-nowrap"
                 >

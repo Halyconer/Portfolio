@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { apiFetch } from '../lib/api'
+import { apiFetch, isAbortError } from '../lib/api'
 
 interface Stats {
     total_calls_all_time: number
@@ -11,17 +11,16 @@ export function useStats() {
     const [error, setError] = useState(false)
 
     useEffect(() => {
-        const load = async () => {
-            try {
-                const data = await apiFetch<Stats>('/stats.json', {
-                    method: 'GET',
-                })
-                setStats(data)
-            } catch {
-                setError(true)
-            }
-        }
-        load()
+        const ctrl = new AbortController()
+        apiFetch<Stats>('/stats.json', {
+            method: 'GET',
+            signal: ctrl.signal,
+        })
+            .then(setStats)
+            .catch((err) => {
+                if (!isAbortError(err)) setError(true)
+            })
+        return () => ctrl.abort()
     }, [])
 
     return { stats, error }
