@@ -1,4 +1,5 @@
 import { asset } from '../../lib/assets'
+import { SectionEyebrow } from './SectionEyebrow'
 
 export function ResumePDF() {
     const pdfUrl = asset('AdrianEddy.pdf')
@@ -10,13 +11,15 @@ export function ResumePDF() {
         >
             <div className="flex justify-between items-baseline gap-6 mb-7 max-md:flex-col max-md:items-start max-md:gap-4">
                 <div>
-                    <div className="font-mono text-[11px] tracking-[0.22em] uppercase text-muted mb-1.5">
-                        &sect; 04 &mdash; The Whole Thing
-                    </div>
+                    <SectionEyebrow
+                        numeral="04"
+                        label="The Whole Thing"
+                        className="mb-1.5"
+                    />
                     <h2 className="font-serif font-normal text-[3.5rem] tracking-[-0.03em] m-0 text-ink leading-[1] max-md:text-[2.5rem] max-sm:text-[2rem]">
                         Résumé, embedded.
                     </h2>
-                    <p className="mt-3.5 font-sans text-[0.95rem] leading-[1.55] text-muted max-w-[520px]">
+                    <p className="mt-3.5 font-sans text-[0.95rem] leading-[1.55] text-muted measure">
                         One page. The full CV. Open or download from the buttons
                         on the right.
                     </p>

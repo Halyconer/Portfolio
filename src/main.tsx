@@ -1,14 +1,38 @@
-import { StrictMode } from 'react'
+import { StrictMode, lazy, Suspense } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createHashRouter, RouterProvider } from 'react-router-dom'
 import { App } from './App'
 import { HomePage } from './pages/HomePage'
 import { CartProvider } from './ecommerce/context/CartProvider'
 import { SearchProvider } from './ecommerce/context/SearchProvider'
-import { DevRoadtripPage } from './pages/DevRoadtripPage'
-import { EcommerceSite } from './ecommerce/page'
-import { CartPage } from './ecommerce/pages/CartPage'
 import './index.css'
+
+// Lazy-load non-home routes so a first visit only ships the home bundle.
+// React resolves these on demand the first time the route is matched.
+const DevRoadtripPage = lazy(() =>
+    import('./pages/DevRoadtripPage').then((m) => ({ default: m.DevRoadtripPage }))
+)
+const CreativePage = lazy(() =>
+    import('./pages/CreativePage').then((m) => ({ default: m.CreativePage }))
+)
+const EcommerceSite = lazy(() =>
+    import('./ecommerce/page').then((m) => ({ default: m.EcommerceSite }))
+)
+const CartPage = lazy(() =>
+    import('./ecommerce/pages/CartPage').then((m) => ({ default: m.CartPage }))
+)
+
+function RouteFallback() {
+    return (
+        <div className="px-8 py-20 text-center font-mono text-[11px] tracking-[0.18em] uppercase text-muted">
+            Loading…
+        </div>
+    )
+}
+
+function lazyRoute(node: React.ReactNode) {
+    return <Suspense fallback={<RouteFallback />}>{node}</Suspense>
+}
 
 const router = createHashRouter([
     {
@@ -16,21 +40,20 @@ const router = createHashRouter([
         element: <App />,
         children: [
             { index: true, element: <HomePage /> },
-            { path: 'dev-roadtrip', element: <DevRoadtripPage /> },
+            { path: 'dev-roadtrip', element: lazyRoute(<DevRoadtripPage />) },
+            { path: 'creative', element: lazyRoute(<CreativePage />) },
         ],
     },
     {
         path: '/e-commerce',
         element: (
             <CartProvider>
-                <SearchProvider>
-                    <EcommerceSite />
-                </SearchProvider>
+                <SearchProvider>{lazyRoute(<EcommerceSite />)}</SearchProvider>
             </CartProvider>
         ),
         children: [
-            { index: true, element: <EcommerceSite /> },
-            { path: 'cart', element: <CartPage /> },
+            { index: true, element: lazyRoute(<EcommerceSite />) },
+            { path: 'cart', element: lazyRoute(<CartPage />) },
         ],
     },
 ])

@@ -31,6 +31,8 @@ export function DevRoadtripPage() {
                     <img
                         src={asset('lightbulb_diagram.jpg')}
                         alt="System Architecture Diagram"
+                        loading="lazy"
+                        decoding="async"
                         className="max-w-full h-auto"
                     />
                 </div>
@@ -107,6 +109,8 @@ export function DevRoadtripPage() {
                                                 <img
                                                     src={artist.image_url}
                                                     alt={artist.name}
+                                                    loading="lazy"
+                                                    decoding="async"
                                                     className="w-20 h-20 rounded-full object-cover mb-2 shadow-[0_4px_12px_rgba(0,0,0,0.1)] border-2 border-border"
                                                 />
                                             ) : (
