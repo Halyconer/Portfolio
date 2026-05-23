@@ -34,7 +34,7 @@ function Fig({ project: p, featured = false }: FigProps) {
                     backgroundPosition: '0 50%',
                 }}
             />
-            <div className="flex justify-between items-baseline relative font-mono text-[10px] tracking-[0.18em] uppercase text-muted">
+            <div className="flex justify-between items-baseline relative text-eyebrow-sm">
                 <span className="whitespace-nowrap">[&nbsp;{p.kind}&nbsp;]</span>
                 <span>{p.year}</span>
             </div>
@@ -69,7 +69,7 @@ function Fig({ project: p, featured = false }: FigProps) {
 
 function ProjectMeta({ p }: { p: Project }) {
     return (
-        <div className="flex gap-3 items-baseline font-mono text-[11px] tracking-[0.18em] uppercase text-muted mb-3 flex-wrap">
+        <div className="flex gap-3 items-baseline text-eyebrow mb-3 flex-wrap">
             <span className="text-accent whitespace-nowrap">&#8470;&nbsp;{p.n}</span>
             <span>&middot;</span>
             <span>{p.year}</span>
@@ -206,7 +206,7 @@ export function Projects() {
                         Seven things, built recently.
                     </h2>
                 </div>
-                <div className="font-mono text-[11px] tracking-[0.18em] uppercase text-muted text-right max-sm:text-left">
+                <div className="text-eyebrow text-right max-sm:text-left">
                     {projects.length.toString().padStart(2, '0')} entries / 2024&ndash;2026
                 </div>
             </div>

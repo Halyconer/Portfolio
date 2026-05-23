@@ -53,7 +53,7 @@ export function Lightbox({
                 if (e.target === e.currentTarget) onClose()
             }}
         >
-            <div className="flex justify-between items-center px-7 py-5 font-mono text-[11px] tracking-[0.18em] uppercase text-muted">
+            <div className="flex justify-between items-center px-7 py-5 text-eyebrow">
                 <div>
                     <span className="text-ink">
                         {String(activeIndex + 1).padStart(2, '0')}
@@ -64,7 +64,7 @@ export function Lightbox({
                 <button
                     type="button"
                     onClick={onClose}
-                    className="bg-transparent text-ink font-mono text-[11px] tracking-[0.18em] uppercase cursor-pointer pb-1.5 border-b border-ink hover:text-accent hover:border-accent transition-colors duration-200"
+                    className="btn-reset text-eyebrow text-ink pb-1.5 border-b border-ink hover:text-accent hover:border-accent transition-colors duration-200"
                 >
                     Close ⎋
                 </button>
@@ -114,7 +114,7 @@ export function Lightbox({
                 </button>
             </div>
 
-            <div className="text-center px-7 pt-5 pb-7 font-mono text-[11px] tracking-[0.18em] uppercase text-muted">
+            <div className="text-center px-7 pt-5 pb-7 text-eyebrow">
                 <b className="text-ink font-medium">{photo.sectionLabel}</b>{' '}
                 &nbsp;·&nbsp; <span>{photo.label}</span>
             </div>

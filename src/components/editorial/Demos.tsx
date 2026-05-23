@@ -13,7 +13,7 @@ function LightDemo() {
         <div
             className="p-8 relative border border-rule bg-[linear-gradient(135deg,rgba(179,74,31,0.04),transparent_60%)] max-sm:p-5"
         >
-            <div className="flex justify-between items-baseline font-mono text-[10px] tracking-[0.18em] uppercase text-muted mb-3 gap-3 flex-wrap">
+            <div className="flex justify-between items-baseline text-eyebrow-sm mb-3 gap-3 flex-wrap">
                 <span>Demo 01 &mdash; Smart Light &middot; LIFX + Pi</span>
                 <span className="text-status-online">● API online</span>
             </div>
@@ -58,6 +58,7 @@ function LightDemo() {
 
             <div className="flex gap-3 mt-5 items-center max-sm:flex-wrap">
                 <button
+                    type="button"
                     onClick={sendBrightness}
                     disabled={isSending}
                     className="bg-ink text-paper border-none py-3 px-5 font-mono text-[11px] tracking-[0.16em] uppercase cursor-pointer hover:bg-ink-soft transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
@@ -80,7 +81,11 @@ function LightDemo() {
                 </div>
             </div>
 
-            <p className="mt-3 text-[0.8rem] text-muted font-mono min-h-[1rem]">
+            <p
+                role="status"
+                aria-live="polite"
+                className="mt-3 text-[0.8rem] text-muted font-mono min-h-[1rem]"
+            >
                 {status}
             </p>
         </div>
@@ -105,7 +110,7 @@ export function Demos() {
                         <em className="italic text-accent">touch</em>.
                     </h2>
                 </div>
-                <div className="font-mono text-[11px] tracking-[0.18em] uppercase text-muted whitespace-nowrap">
+                <div className="text-eyebrow whitespace-nowrap">
                     <StatusDot>Hardware online</StatusDot>
                 </div>
             </div>
@@ -115,7 +120,7 @@ export function Demos() {
                 <Connect4Inline />
             </div>
 
-            <div className="mt-8 pt-5 border-t border-rule flex justify-between items-baseline font-mono text-[10px] tracking-[0.18em] uppercase text-muted gap-3 flex-wrap">
+            <div className="mt-8 pt-5 border-t border-rule flex justify-between items-baseline text-eyebrow-sm gap-3 flex-wrap">
                 <span>
                     Both demos: ngrok &rarr; nginx &rarr; Flask on Raspberry Pi.
                 </span>
