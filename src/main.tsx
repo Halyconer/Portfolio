@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { createHashRouter, RouterProvider } from 'react-router-dom'
 import { App } from './App'
 import { HomePage } from './pages/HomePage'
+import { NotFoundPage } from './pages/NotFoundPage'
 import { CartProvider } from './ecommerce/context/CartProvider'
 import { SearchProvider } from './ecommerce/context/SearchProvider'
 import './index.css'
@@ -42,6 +43,7 @@ const router = createHashRouter([
             { index: true, element: <HomePage /> },
             { path: 'dev-roadtrip', element: lazyRoute(<DevRoadtripPage />) },
             { path: 'creative', element: lazyRoute(<CreativePage />) },
+            { path: '*', element: <NotFoundPage /> },
         ],
     },
     {

@@ -1,6 +1,7 @@
 import { Outlet, useLocation } from 'react-router-dom'
 import { Masthead } from './components/editorial/Masthead'
 import { Colophon } from './components/editorial/Colophon'
+import { ErrorBoundary } from './components/ErrorBoundary'
 
 export function App() {
     const location = useLocation()
@@ -17,7 +18,9 @@ export function App() {
                         isHome ? 'full' : isCreative ? 'bare' : 'minimal'
                     }
                 />
-                <Outlet />
+                <ErrorBoundary>
+                    <Outlet />
+                </ErrorBoundary>
                 {!isCreative && <Colophon />}
             </div>
         </div>
