@@ -66,17 +66,20 @@ function LightDemo() {
                     {isSending ? 'Sending…' : 'ZAP'}
                 </button>
                 <div className="flex-1 ml-3 max-sm:ml-0 max-sm:w-full">
-                    <div className="font-mono text-[10px] tracking-[0.16em] uppercase text-muted mb-1.5">
+                    <label
+                        htmlFor="brightness-slider"
+                        className="block font-mono text-[10px] tracking-[0.16em] uppercase text-muted mb-1.5"
+                    >
                         Brightness &middot; {brightness}%
-                    </div>
+                    </label>
                     <input
+                        id="brightness-slider"
                         type="range"
                         min={1}
                         max={100}
                         value={brightness}
                         onChange={(e) => setBrightness(+e.target.value)}
                         className="brightness-slider"
-                        title="Adjust Brightness"
                     />
                 </div>
             </div>
