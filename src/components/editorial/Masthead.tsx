@@ -1,14 +1,15 @@
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { scrollTo } from '../../lib/scroll'
+import { StatusDot } from './StatusDot'
 
 interface MastheadProps {
-    variant?: 'full' | 'minimal'
+    variant?: 'full' | 'minimal' | 'bare'
 }
 
 const sectionNav: Array<{ label: string; target: string }> = [
     { label: 'Home', target: 'top' },
-    { label: 'Work', target: 'work' },
     { label: 'Demos', target: 'demos' },
+    { label: 'Work', target: 'work' },
     { label: 'Résumé', target: 'resume' },
 ]
 
@@ -17,23 +18,15 @@ export function Masthead({ variant = 'full' }: MastheadProps) {
     const location = useLocation()
     const isHome = location.pathname === '/'
 
-    const handleSection = (e: React.MouseEvent, target: string) => {
-        e.preventDefault()
-        if (!isHome) {
-            navigate('/')
-            setTimeout(() => {
-                if (target === 'top') {
-                    window.scrollTo({ top: 0, behavior: 'smooth' })
-                } else {
-                    scrollTo(target)
-                }
-            }, 100)
-            return
-        }
-        if (target === 'top') {
-            window.scrollTo({ top: 0, behavior: 'smooth' })
-        } else {
+    // When already on home, scroll directly. When elsewhere, navigate home and
+    // pass the target via location state — `HomePage` reads it on mount and
+    // scrolls once the DOM exists. This replaces a brittle setTimeout(100)
+    // race that assumed render completed within 100ms.
+    const handleSection = (target: string) => {
+        if (isHome) {
             scrollTo(target)
+        } else {
+            navigate('/', { state: { scrollTo: target } })
         }
     }
 
@@ -41,26 +34,19 @@ export function Masthead({ variant = 'full' }: MastheadProps) {
         <header className="px-8 pt-8 max-md:px-5 max-sm:px-4 max-sm:pt-5">
             {/* Brand bar — left: name with terracotta star; right: status pill. */}
             <div className="flex justify-between items-center font-mono text-[11px] tracking-[0.16em] uppercase text-muted gap-4 whitespace-nowrap max-sm:text-[10px]">
-                <a
-                    href="#/"
-                    onClick={(e) => handleSection(e, 'top')}
-                    className="text-ink no-underline"
+                <button
+                    type="button"
+                    onClick={() => handleSection('top')}
+                    className="btn-reset text-ink"
                 >
-                    <span className="text-accent">&#8251;</span> Adrian Eddy
-                </a>
-                <span className="flex items-center gap-2.5">
-                    <span
-                        className="inline-block w-[7px] h-[7px] rounded-full"
-                        style={{
-                            background: '#3a8c4f',
-                            boxShadow: '0 0 8px #3a8c4f',
-                        }}
-                    />
+                    <span className="text-accent">※</span> Adrian Eddy
+                </button>
+                <StatusDot>
                     <span className="max-xs:hidden">
                         Open to Summer &amp; Fall 2026
                     </span>
                     <span className="xs:hidden">Open '26</span>
-                </span>
+                </StatusDot>
             </div>
 
             {/* Editorial double-rule — heavy/hairline pair, the classic magazine masthead divider. */}
@@ -72,39 +58,33 @@ export function Masthead({ variant = 'full' }: MastheadProps) {
                 <nav className="flex justify-between items-center pt-3.5 font-mono text-[11px] tracking-[0.18em] uppercase max-sm:text-[10px] max-sm:flex-wrap max-sm:gap-2">
                     <div className="flex gap-7 flex-wrap max-sm:gap-4">
                         {sectionNav.map((item) => (
-                            <a
+                            <button
                                 key={item.label}
-                                href={`#${item.target}`}
-                                onClick={(e) => handleSection(e, item.target)}
-                                className="text-ink no-underline border-b border-transparent pb-0.5 transition-colors duration-200 hover:border-accent hover:text-accent cursor-pointer"
+                                type="button"
+                                onClick={() => handleSection(item.target)}
+                                className="btn-reset text-ink border-b border-transparent pb-0.5 transition-colors duration-200 hover:border-accent hover:text-accent"
                             >
                                 {item.label}
-                            </a>
+                            </button>
                         ))}
                     </div>
-                    <a
-                        href="#/dev-roadtrip"
-                        onClick={(e) => {
-                            e.preventDefault()
-                            navigate('/dev-roadtrip')
-                            window.scrollTo({ top: 0 })
-                        }}
-                        className="text-accent no-underline border-b border-accent pb-0.5 inline-flex items-center gap-2 whitespace-nowrap cursor-pointer"
+                    <Link
+                        to="/creative"
+                        className="text-accent no-underline border-b border-accent pb-0.5 inline-flex items-center gap-2 whitespace-nowrap"
                     >
-                        The Creative Page <span className="opacity-70">&#x2197;</span>
-                    </a>
+                        The Creative Page <span className="opacity-70">↗</span>
+                    </Link>
                 </nav>
             )}
 
             {variant === 'minimal' && (
                 <div className="pt-3.5 font-mono text-[11px] tracking-[0.18em] uppercase">
-                    <a
-                        href="#/"
-                        onClick={(e) => handleSection(e, 'top')}
-                        className="text-ink no-underline border-b border-transparent pb-0.5 hover:border-accent hover:text-accent transition-colors duration-200 cursor-pointer"
+                    <Link
+                        to="/"
+                        className="text-ink no-underline border-b border-transparent pb-0.5 hover:border-accent hover:text-accent transition-colors duration-200"
                     >
-                        &#x2190; Back to Portfolio
-                    </a>
+                        ← Back to Portfolio
+                    </Link>
                 </div>
             )}
         </header>

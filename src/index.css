@@ -31,6 +31,9 @@
     --color-player-yellow: #ffdd44;
     --color-slider-bg: #d8cfb8;
 
+    /* Status indicators — the live/online green pulse. */
+    --color-status-online: #3a8c4f;
+
     /* Legacy aliases — preserve class-name compatibility with any old code. */
     --color-bg-page: #ffffff;
     --color-bg-light: #f8f7f2;
@@ -50,6 +53,63 @@
     --breakpoint-sm: 600px;
     --breakpoint-md: 900px;
     --breakpoint-lg: 1200px;
+}
+
+/* Newspaper-style measure — applied to all body prose for consistent
+ * readable line length. Tweak --measure to change the column across the
+ * whole site at once. */
+:root {
+    --measure: 36rem;
+}
+
+.measure {
+    max-width: var(--measure);
+}
+
+/* Anchor-scroll offset so smooth-scrolled sections aren't flush against
+ * the masthead. Applied to every element with an id so #top/#about/etc all
+ * land at the same visual offset. */
+[id] {
+    scroll-margin-top: 20px;
+}
+
+/* Reusable typography tokens. The site repeats a few mono-uppercase label
+ * patterns; defining them once means changing tracking or color in one place. */
+@layer components {
+    .text-eyebrow {
+        font-family: 'IBM Plex Mono', ui-monospace, monospace;
+        font-size: 11px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--color-muted);
+    }
+    .text-eyebrow-sm {
+        font-family: 'IBM Plex Mono', ui-monospace, monospace;
+        font-size: 10px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--color-muted);
+    }
+    .text-label {
+        font-family: 'IBM Plex Mono', ui-monospace, monospace;
+        font-size: 10px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--color-muted);
+    }
+    /* Strip native button chrome so a <button> can be styled like a link or
+     * label while keeping its semantics. Safari notably refuses to inherit
+     * font on buttons without an explicit reset. */
+    .btn-reset {
+        background: transparent;
+        border: 0;
+        padding: 0;
+        margin: 0;
+        font: inherit;
+        letter-spacing: inherit;
+        color: inherit;
+        cursor: pointer;
+    }
 }
 
 /* Hide native scrollbar — purely cosmetic */
@@ -159,4 +219,28 @@ input[type='range'].brightness-slider::-moz-range-track {
 
 .animate-spin-slow {
     animation: spin 1s linear infinite;
+}
+
+/* Diagonal-stripe placeholder used in the Creative mosaic when a photo
+ * src is missing. Pure CSS hairlines on a near-paper tint. */
+.photo-placeholder {
+    background-color: #f5f4ef;
+    background-image: repeating-linear-gradient(
+        135deg,
+        transparent 0,
+        transparent 9px,
+        rgba(0, 0, 0, 0.045) 9px,
+        rgba(0, 0, 0, 0.045) 10px
+    );
+}
+
+.photo-placeholder-lg {
+    background-color: #f5f4ef;
+    background-image: repeating-linear-gradient(
+        135deg,
+        transparent 0,
+        transparent 14px,
+        rgba(0, 0, 0, 0.045) 14px,
+        rgba(0, 0, 0, 0.045) 15px
+    );
 }

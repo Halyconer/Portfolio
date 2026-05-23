@@ -1,8 +1,7 @@
 export function Colophon() {
     return (
         <footer
-            className="px-8 pt-14 pb-16 relative max-md:px-5 max-md:pt-10 max-md:pb-12 max-sm:px-4"
-            style={{ borderTop: '3px solid var(--color-rule-strong)' }}
+            className="px-8 pt-14 pb-16 relative border-t-[3px] border-rule-strong max-md:px-5 max-md:pt-10 max-md:pb-12 max-sm:px-4"
         >
             <div className="flex justify-between items-end gap-6 flex-wrap max-md:items-start max-md:flex-col">
                 <div>
@@ -19,8 +18,7 @@ export function Colophon() {
                     </a>
                 </div>
                 <div
-                    className="font-mono text-[11px] tracking-[0.18em] uppercase text-muted text-right max-md:text-left"
-                    style={{ lineHeight: 2 }}
+                    className="font-mono text-[11px] tracking-[0.18em] uppercase text-muted text-right leading-[2] max-md:text-left"
                 >
                     Set in Fraunces &amp; IBM Plex Mono <br />
                     Built with React + Vite <br />

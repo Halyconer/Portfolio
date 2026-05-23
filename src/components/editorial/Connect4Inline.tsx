@@ -7,9 +7,9 @@ const EMPTY_BOARD: number[][] = Array.from({ length: ROWS }, () =>
     Array(COLS).fill(0)
 )
 
-const COLOR_YOU = '#b34a1f'
-const COLOR_AI = '#1a1a17'
-const COLOR_EMPTY = '#ffffff'
+const COLOR_YOU = 'var(--color-accent)'
+const COLOR_AI = 'var(--color-ink)'
+const COLOR_EMPTY = 'var(--color-paper)'
 
 export function Connect4Inline() {
     const { gameState, status, startGame, makeMove } = useConnect4()
@@ -42,14 +42,11 @@ export function Connect4Inline() {
     const stateColor = isPlaying
         ? '#c8801f'
         : isGameOver
-          ? '#7a1d24'
-          : '#3a8c4f'
+          ? 'var(--color-accent-deep)'
+          : 'var(--color-status-online)'
 
     return (
-        <div
-            className="p-8 relative max-sm:p-5"
-            style={{ border: '1px solid var(--color-rule)' }}
-        >
+        <div className="p-8 relative border border-rule max-sm:p-5">
             <div className="flex justify-between items-baseline font-mono text-[10px] tracking-[0.18em] uppercase text-muted mb-3 gap-3 flex-wrap">
                 <span>
                     Demo 02 &mdash; Connect 4 &middot; Minimax + &alpha;-&beta;
@@ -59,7 +56,7 @@ export function Connect4Inline() {
             <h3 className="font-serif font-light text-[2.2rem] tracking-[-0.02em] m-0 text-ink max-sm:text-[1.6rem]">
                 Beat a search algorithm.
             </h3>
-            <p className="mt-3 text-muted text-[0.95rem] leading-[1.55] max-w-[460px]">
+            <p className="mt-3 text-muted text-[0.95rem] leading-[1.55] measure">
                 Minimax with alpha-beta pruning at medium depth. Drop pieces
                 into any column. You're terracotta, I'm ink.
             </p>
@@ -86,10 +83,7 @@ export function Connect4Inline() {
                     />
                     AI
                 </span>
-                <span
-                    className="ml-auto opacity-70"
-                    style={{ fontVariantNumeric: 'tabular-nums' }}
-                >
+                <span className="ml-auto opacity-70 tabular-nums">
                     depth=6
                 </span>
             </div>

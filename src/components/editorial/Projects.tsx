@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { projects, type Project } from '../../data/projects'
+import { SectionEyebrow } from './SectionEyebrow'
 
 interface FigProps {
     project: Project
@@ -164,7 +165,7 @@ function ProjectArticle({ p, span, featured = false, firstRow }: ArticleProps) {
                         {p.title}
                     </h3>
                     <p
-                        className={`mt-3.5 font-sans text-muted leading-[1.55] max-w-[560px] ${
+                        className={`mt-3.5 font-sans text-muted leading-[1.55] measure ${
                             featured ? 'text-[1.05rem]' : 'text-[0.95rem]'
                         }`}
                     >
@@ -196,9 +197,11 @@ export function Projects() {
         >
             <div className="flex justify-between items-baseline gap-6 max-sm:flex-col max-sm:items-start max-sm:gap-3">
                 <div>
-                    <div className="font-mono text-[11px] tracking-[0.22em] uppercase text-muted mb-2">
-                        &sect; 02 &mdash; Selected Work
-                    </div>
+                    <SectionEyebrow
+                        numeral="03"
+                        label="Selected Work"
+                        className="mb-2"
+                    />
                     <h2 className="font-serif font-normal text-[3.5rem] tracking-[-0.03em] m-0 text-ink leading-[1] max-md:text-[2.5rem] max-sm:text-[2rem]">
                         Seven things, built recently.
                     </h2>

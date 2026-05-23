@@ -1,6 +1,26 @@
 import { useState } from 'react'
-import { apiFetch } from '../lib/api'
+import { apiFetch, ApiFetchError } from '../lib/api'
 import type { BrightnessResponse } from '../types/lighting'
+
+function statusForError(err: unknown): string {
+    if (err instanceof ApiFetchError) {
+        switch (err.detail.kind) {
+            case 'network':
+                return '× My personal high-tech self-built server is offline — please try again later'
+            case 'http':
+                if (err.detail.status === 404) {
+                    return '× Light control endpoint not found — I messed up the code...'
+                }
+                if (err.detail.status >= 500) {
+                    return '× Server error — my Raspberry Pi is probably overloaded'
+                }
+                return `× ${err.message}`
+            case 'parse':
+                return '× Got an unreadable response from the server'
+        }
+    }
+    return `× ${err instanceof Error ? err.message : 'Unknown error'}`
+}
 
 export function useLighting() {
     const [brightness, setBrightness] = useState(75)
@@ -21,32 +41,13 @@ export function useLighting() {
             )
             if (data.status === 'success') {
                 setStatus(
-                    `\u2713 Lights set to ${data.brightness_set}% \u2014 thanks for the greeting!`
+                    `✓ Lights set to ${data.brightness_set}% — thanks for the greeting!`
                 )
             } else {
-                setStatus(`\u00d7 ${data.error || 'Unknown error'}`)
+                setStatus(`× ${data.error || 'Unknown error'}`)
             }
         } catch (err) {
-            const message =
-                err instanceof Error ? err.message : 'Unknown error'
-            if (
-                message.includes('Failed to fetch') ||
-                message.includes('NetworkError')
-            ) {
-                setStatus(
-                    '\u00d7 My personal high-tech self-built server is offline - please try again later'
-                )
-            } else if (message.includes('404')) {
-                setStatus(
-                    '\u00d7 Light control endpoint not found - I messed up the code...'
-                )
-            } else if (message.includes('500')) {
-                setStatus(
-                    '\u00d7 Server error - my raspberry pi is probably overloaded'
-                )
-            } else {
-                setStatus(`\u00d7 Connection failed: ${message}`)
-            }
+            setStatus(statusForError(err))
         } finally {
             setIsSending(false)
         }
