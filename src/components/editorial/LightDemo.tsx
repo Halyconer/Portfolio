@@ -1,20 +1,9 @@
 import { useLighting } from '../../hooks/useLighting'
-import type { StatusTone } from './StatusDot'
+import { StatusDot } from './StatusDot'
+import type { StatusTone } from '../../types/status'
 
 interface LightDemoProps {
     apiStatus: { tone: StatusTone; label: string }
-}
-
-const PILL_COLOR: Record<StatusTone, string> = {
-    online: 'var(--color-status-online)',
-    offline: 'var(--color-accent-deep)',
-    probing: 'var(--color-muted-hi)',
-}
-
-const PILL_LABEL: Record<StatusTone, string> = {
-    online: 'API online',
-    offline: 'API offline',
-    probing: 'Checking…',
 }
 
 export function LightDemo({ apiStatus }: LightDemoProps) {
@@ -28,9 +17,7 @@ export function LightDemo({ apiStatus }: LightDemoProps) {
         >
             <div className="flex justify-between items-baseline text-eyebrow-sm mb-3 gap-3 flex-wrap">
                 <span>Demo 01 &mdash; Smart Light &middot; LIFX + Pi</span>
-                <span style={{ color: PILL_COLOR[apiStatus.tone] }}>
-                    &#9679; {PILL_LABEL[apiStatus.tone]}
-                </span>
+                <StatusDot tone={apiStatus.tone}>{apiStatus.label}</StatusDot>
             </div>
             <h3 className="font-serif font-light text-[2.2rem] tracking-[-0.02em] m-0 text-ink max-sm:text-[1.6rem]">
                 Turn on the light under my desk.

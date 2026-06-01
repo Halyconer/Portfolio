@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react'
-
-export type StatusTone = 'online' | 'offline' | 'probing'
+import type { StatusTone } from '../../types/status'
 
 interface StatusDotProps {
     children: ReactNode
