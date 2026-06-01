@@ -21,9 +21,9 @@
         "vite": "^7.3.1"
     },
     "dependencies": {
+        "@uiw/react-color-hue": "^2.10.3",
         "framer-motion": "^12.34.3",
         "react": "^19.2.4",
-        "react-colorful": "^5.7.0",
         "react-dom": "^19.2.4",
         "react-router-dom": "^7.13.1"
     }

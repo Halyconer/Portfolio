@@ -1,4 +1,4 @@
-import { HsvColorPicker } from 'react-colorful'
+import Hue from '@uiw/react-color-hue'
 import { useLighting } from '../../hooks/useLighting'
 import { StatusDot } from './StatusDot'
 import type { StatusTone } from '../../types/status'
@@ -14,21 +14,15 @@ export function LightDemo({ apiStatus }: LightDemoProps) {
         hue,
         setHue,
         saturation,
-        setSaturation,
         status,
         isSending,
         sendBrightness,
         sendColor,
     } = useLighting()
 
-    // The picker drives hue + saturation; "value" (V) is bound to the
-    // brightness slider so the picker square dims as brightness drops.
-    const pickerColor = { h: hue, s: saturation, v: brightness }
-    const onPickerChange = ({ h, s, v }: { h: number; s: number; v: number }) => {
-        setHue(h)
-        setSaturation(s)
-        setBrightness(Math.max(1, Math.round(v)))
-    }
+    // Saturation is pinned to 100% — for LIFX, that's "vivid color"; lower
+    // saturation just washes everything out toward white. The Hue slider is
+    // the only color control we need.
 
     // CSS preview of the chosen color — hsl() approximates HSV well enough
     // for a glow visualisation; LIFX's HSBK is converted server-side.
@@ -80,19 +74,29 @@ export function LightDemo({ apiStatus }: LightDemoProps) {
                 </div>
             </div>
 
-            {/* Color picker — HsvColorPicker is a 2D saturation/value plane
-             * plus a hue bar. Styled in index.css (.light-color-picker) to
-             * square off corners and match the editorial rule colors. */}
-            <div className="mt-5 flex gap-5 items-start max-md:flex-col">
-                <HsvColorPicker
-                    color={pickerColor}
-                    onChange={onPickerChange}
-                    className="light-color-picker"
-                />
-                <div className="flex-1 min-w-0 max-md:w-full">
+            {/* Controls — hue bar and brightness slider share a centered
+             * column at the same width, so they read as aligned controls
+             * rather than two unrelated widgets. */}
+            <div className="mt-5 flex flex-col items-center gap-4">
+                <div className="w-full max-w-[320px]">
+                    <label
+                        htmlFor="hue-slider"
+                        className="block font-mono text-[10px] tracking-[0.16em] uppercase text-muted mb-1.5 text-center"
+                    >
+                        Hue &middot; {Math.round(hue)}&deg;
+                    </label>
+                    <Hue
+                        hue={hue}
+                        width="100%"
+                        height={14}
+                        radius="0"
+                        onChange={(c) => setHue(c.h)}
+                    />
+                </div>
+                <div className="w-full max-w-[320px]">
                     <label
                         htmlFor="brightness-slider"
-                        className="block font-mono text-[10px] tracking-[0.16em] uppercase text-muted mb-1.5"
+                        className="block font-mono text-[10px] tracking-[0.16em] uppercase text-muted mb-1.5 text-center"
                     >
                         Brightness &middot; {brightness}%
                     </label>
@@ -105,31 +109,31 @@ export function LightDemo({ apiStatus }: LightDemoProps) {
                         onChange={(e) => setBrightness(+e.target.value)}
                         className="brightness-slider"
                     />
-                    <div className="mt-4 flex gap-2 flex-wrap">
-                        <button
-                            type="button"
-                            onClick={sendBrightness}
-                            disabled={isSending}
-                            className="bg-ink text-paper border-none py-3 px-5 font-mono text-[11px] tracking-[0.16em] uppercase cursor-pointer hover:bg-ink-soft transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            {isSending ? 'Sending…' : 'Set brightness'}
-                        </button>
-                        <button
-                            type="button"
-                            onClick={sendColor}
-                            disabled={isSending}
-                            className="bg-ink text-paper border-none py-3 px-5 font-mono text-[11px] tracking-[0.16em] uppercase cursor-pointer hover:bg-ink-soft transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            Set color
-                        </button>
-                    </div>
+                </div>
+                <div className="flex gap-2 flex-wrap justify-center">
+                    <button
+                        type="button"
+                        onClick={sendBrightness}
+                        disabled={isSending}
+                        className="bg-ink text-paper border-none py-3 px-5 font-mono text-[11px] tracking-[0.16em] uppercase cursor-pointer hover:bg-ink-soft transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        {isSending ? 'Sending…' : 'Set brightness'}
+                    </button>
+                    <button
+                        type="button"
+                        onClick={sendColor}
+                        disabled={isSending}
+                        className="bg-ink text-paper border-none py-3 px-5 font-mono text-[11px] tracking-[0.16em] uppercase cursor-pointer hover:bg-ink-soft transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        Set color
+                    </button>
                 </div>
             </div>
 
             <p
                 role="status"
                 aria-live="polite"
-                className="mt-3 text-[0.8rem] text-muted font-mono min-h-[1rem]"
+                className="mt-3 text-[0.8rem] text-muted font-mono min-h-[1rem] text-center"
             >
                 {status}
             </p>

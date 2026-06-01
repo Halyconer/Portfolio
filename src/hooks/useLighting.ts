@@ -22,12 +22,15 @@ function statusForError(err: unknown): string {
     return `× ${err instanceof Error ? err.message : 'Unknown error'}`
 }
 
+// Saturation is fixed at full — for LIFX, anything lower just washes the
+// color toward white, which isn't useful as a demo control.
+const FIXED_SATURATION = 100
+
 export function useLighting() {
     const [brightness, setBrightness] = useState(75)
-    // Default to a warm orange (~30°) at full saturation — matches the
-    // editorial accent and lines up with the original yellow-glow bulb.
+    // Default to a warm orange (~30°) — matches the editorial accent and
+    // lines up with the original yellow-glow bulb.
     const [hue, setHue] = useState(30)
-    const [saturation, setSaturation] = useState(85)
     const [status, setStatus] = useState('')
     const [isSending, setIsSending] = useState(false)
 
@@ -58,18 +61,16 @@ export function useLighting() {
     }
 
     const sendColor = async () => {
-        setStatus(`Setting color to hue=${Math.round(hue)}°, sat=${saturation}%...`)
+        setStatus(`Setting color to hue=${Math.round(hue)}°...`)
         setIsSending(true)
 
         try {
             const data = await apiFetch<ColorResponse>('/lighting/set_color', {
                 method: 'POST',
-                body: JSON.stringify({ hue, saturation }),
+                body: JSON.stringify({ hue, saturation: FIXED_SATURATION }),
             })
             if (data.status === 'success') {
-                setStatus(
-                    `✓ Color set to hue=${data.hue_set}°, sat=${data.saturation_set}%`
-                )
+                setStatus(`✓ Color set to hue=${data.hue_set}°`)
             } else {
                 setStatus(`× ${data.error || 'Unknown error'}`)
             }
@@ -85,8 +86,7 @@ export function useLighting() {
         setBrightness,
         hue,
         setHue,
-        saturation,
-        setSaturation,
+        saturation: FIXED_SATURATION,
         status,
         isSending,
         sendBrightness,
