@@ -30,9 +30,18 @@ function StatCard({
     )
 }
 
+const STATS_LABEL = {
+    online: 'Live',
+    offline: 'Database unreachable',
+    probing: 'Fetching…',
+} as const
+
 export function DevRoadtripPage() {
-    const { data: stats, error: statsError } =
-        useApiResource<Stats>('/stats.json')
+    const {
+        data: stats,
+        error: statsError,
+        tone: statsTone,
+    } = useApiResource<Stats>('/stats.json')
     const { data: spotifyData, error: spotifyError } =
         useApiResource<SpotifyData>('/spotify_stats.json')
 
@@ -95,20 +104,8 @@ export function DevRoadtripPage() {
                         </h2>
                     </div>
                     <div className="text-eyebrow whitespace-nowrap">
-                        <StatusDot
-                            tone={
-                                statsError
-                                    ? 'offline'
-                                    : stats
-                                      ? 'online'
-                                      : 'probing'
-                            }
-                        >
-                            {statsError
-                                ? 'Database unreachable'
-                                : stats
-                                  ? 'Live'
-                                  : 'Fetching…'}
+                        <StatusDot tone={statsTone}>
+                            {STATS_LABEL[statsTone]}
                         </StatusDot>
                     </div>
                 </div>

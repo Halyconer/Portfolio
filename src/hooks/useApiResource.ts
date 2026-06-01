@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
 import { apiFetch, isAbortError } from '../lib/api'
+import type { StatusTone } from '../types/status'
 
 /**
  * One-shot GET against the Pi backend, with abort-on-unmount.
- * Returns `{ data, error }`: data is null until the response arrives,
- * error is `true` for any non-abort failure.
+ * `data` is null until the response arrives; `error` is true for any
+ * non-abort failure; `tone` maps the request lifecycle to a StatusTone
+ * so consumers can render <StatusDot> without re-deriving the state.
  */
 export function useApiResource<T>(endpoint: string) {
     const [data, setData] = useState<T | null>(null)
@@ -25,5 +27,6 @@ export function useApiResource<T>(endpoint: string) {
         return () => ctrl.abort()
     }, [endpoint])
 
-    return { data, error }
+    const tone: StatusTone = data ? 'online' : error ? 'offline' : 'probing'
+    return { data, error, tone }
 }

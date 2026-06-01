@@ -3,21 +3,20 @@ import { useApiResource } from '../../hooks/useApiResource'
 import { Connect4Inline } from './Connect4Inline'
 import { LightDemo } from './LightDemo'
 import { SectionEyebrow } from './SectionEyebrow'
-import { StatusDot, type StatusTone } from './StatusDot'
+import { StatusDot } from './StatusDot'
 
-// Probe the Pi once on mount via the lightweight stats endpoint. We don't
-// care about the payload — just whether we get one. That single fetch backs
-// both the section-header pill and the LightDemo card pill, so the page
-// can't claim "online" in one spot and "offline" in another.
-function useHardwareOnline(): { tone: StatusTone; label: string } {
-    const { data, error } = useApiResource<unknown>('/stats.json')
-    if (data) return { tone: 'online', label: 'Hardware online' }
-    if (error) return { tone: 'offline', label: 'Hardware offline' }
-    return { tone: 'probing', label: 'Probing Pi…' }
-}
+const STATUS_LABEL = {
+    online: 'Hardware online',
+    offline: 'Hardware offline',
+    probing: 'Probing Pi…',
+} as const
 
 export function Demos() {
-    const status = useHardwareOnline()
+    // A single probe backs both the section-header pill and the LightDemo
+    // card pill, so the page can't claim "online" in one spot and "offline"
+    // in another.
+    const { tone } = useApiResource<unknown>('/stats.json')
+    const status = { tone, label: STATUS_LABEL[tone] }
 
     return (
         <section
