@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { apiFetch, ApiFetchError } from '../lib/api'
-import type { BrightnessResponse } from '../types/lighting'
+import type { BrightnessResponse, ColorResponse } from '../types/lighting'
 
 function statusForError(err: unknown): string {
     if (err instanceof ApiFetchError) {
@@ -24,6 +24,10 @@ function statusForError(err: unknown): string {
 
 export function useLighting() {
     const [brightness, setBrightness] = useState(75)
+    // Default to a warm orange (~30°) at full saturation — matches the
+    // editorial accent and lines up with the original yellow-glow bulb.
+    const [hue, setHue] = useState(30)
+    const [saturation, setSaturation] = useState(85)
     const [status, setStatus] = useState('')
     const [isSending, setIsSending] = useState(false)
 
@@ -53,5 +57,39 @@ export function useLighting() {
         }
     }
 
-    return { brightness, setBrightness, status, isSending, sendBrightness }
+    const sendColor = async () => {
+        setStatus(`Setting color to hue=${Math.round(hue)}°, sat=${saturation}%...`)
+        setIsSending(true)
+
+        try {
+            const data = await apiFetch<ColorResponse>('/lighting/set_color', {
+                method: 'POST',
+                body: JSON.stringify({ hue, saturation }),
+            })
+            if (data.status === 'success') {
+                setStatus(
+                    `✓ Color set to hue=${data.hue_set}°, sat=${data.saturation_set}%`
+                )
+            } else {
+                setStatus(`× ${data.error || 'Unknown error'}`)
+            }
+        } catch (err) {
+            setStatus(statusForError(err))
+        } finally {
+            setIsSending(false)
+        }
+    }
+
+    return {
+        brightness,
+        setBrightness,
+        hue,
+        setHue,
+        saturation,
+        setSaturation,
+        status,
+        isSending,
+        sendBrightness,
+        sendColor,
+    }
 }

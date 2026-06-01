@@ -161,6 +161,31 @@ input[type='range'].brightness-slider::-moz-range-track {
     border: none;
 }
 
+/* react-colorful picker — squared off and re-bordered to match the
+ * editorial palette. The library renders three nested elements per area
+ * (.react-colorful__saturation, .react-colorful__hue) which we restyle here. */
+.light-color-picker.react-colorful {
+    width: 180px;
+    height: 180px;
+    gap: 10px;
+}
+.light-color-picker .react-colorful__saturation,
+.light-color-picker .react-colorful__hue {
+    border-radius: 0;
+    border: 1px solid var(--color-rule-strong);
+}
+.light-color-picker .react-colorful__hue {
+    height: 14px;
+}
+.light-color-picker .react-colorful__saturation {
+    border-bottom: 1px solid var(--color-rule-strong);
+}
+.light-color-picker .react-colorful__pointer {
+    width: 16px;
+    height: 16px;
+    border-width: 2px;
+}
+
 /* Drop-cap utility — used on the About paragraph. Sized to occupy ~3 lines
  * so the paragraph wraps cleanly around it without orphaning the last word.
  * font-variation-settings tunes Fraunces' optical-size axis for display use. */
