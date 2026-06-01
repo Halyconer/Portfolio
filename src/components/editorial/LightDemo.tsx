@@ -1,3 +1,4 @@
+import { HsvColorPicker } from 'react-colorful'
 import { useLighting } from '../../hooks/useLighting'
 import { StatusDot } from './StatusDot'
 import type { StatusTone } from '../../types/status'
@@ -7,14 +8,36 @@ interface LightDemoProps {
 }
 
 export function LightDemo({ apiStatus }: LightDemoProps) {
-    const { brightness, setBrightness, status, isSending, sendBrightness } =
-        useLighting()
-    const glow = 0.25 + (brightness / 100) * 0.45
+    const {
+        brightness,
+        setBrightness,
+        hue,
+        setHue,
+        saturation,
+        setSaturation,
+        status,
+        isSending,
+        sendBrightness,
+        sendColor,
+    } = useLighting()
+
+    // The picker drives hue + saturation; "value" (V) is bound to the
+    // brightness slider so the picker square dims as brightness drops.
+    const pickerColor = { h: hue, s: saturation, v: brightness }
+    const onPickerChange = ({ h, s, v }: { h: number; s: number; v: number }) => {
+        setHue(h)
+        setSaturation(s)
+        setBrightness(Math.max(1, Math.round(v)))
+    }
+
+    // CSS preview of the chosen color — hsl() approximates HSV well enough
+    // for a glow visualisation; LIFX's HSBK is converted server-side.
+    const lightness = 35 + (brightness / 100) * 25
+    const bulbColor = `hsl(${hue}deg, ${saturation}%, ${lightness}%)`
+    const glowAlpha = 0.3 + (brightness / 100) * 0.5
 
     return (
-        <div
-            className="p-8 relative border border-rule bg-[linear-gradient(135deg,rgba(179,74,31,0.04),transparent_60%)] max-sm:p-5"
-        >
+        <div className="p-8 relative border border-rule bg-[linear-gradient(135deg,rgba(179,74,31,0.04),transparent_60%)] max-sm:p-5">
             <div className="flex justify-between items-baseline text-eyebrow-sm mb-3 gap-3 flex-wrap">
                 <span>Demo 01 &mdash; Smart Light &middot; LIFX + Pi</span>
                 <StatusDot tone={apiStatus.tone}>{apiStatus.label}</StatusDot>
@@ -24,8 +47,7 @@ export function LightDemo({ apiStatus }: LightDemoProps) {
             </h3>
             <p className="mt-3 text-muted text-[0.95rem] leading-[1.55] measure">
                 A live lighting control system via Flask API on my Raspberry Pi.
-                Could literally wake me up — so I should probably implement a
-                timer.{' '}
+                Pick a color, set a brightness, send it down the wire.{' '}
                 <a
                     href="https://github.com/Halyconer/Welcome-to-my-Portfolio/tree/main/backend"
                     target="_blank"
@@ -36,38 +58,38 @@ export function LightDemo({ apiStatus }: LightDemoProps) {
                 </a>
             </p>
 
-            {/* Visualised bulb — pure CSS glow keyed to the brightness state.
+            {/* Visualised bulb — pure CSS glow keyed to the picker state.
              * Provides instant visual feedback even before the server responds. */}
             <div
                 className="mt-6 h-[200px] flex items-center justify-center relative border border-rule transition-[background] duration-[400ms] max-sm:h-[150px]"
                 style={{
-                    background: `radial-gradient(circle at 50% 45%, rgba(255,200,40,${glow * 0.5}), transparent 60%)`,
+                    background: `radial-gradient(circle at 50% 45%, hsla(${hue}, ${saturation}%, 60%, ${glowAlpha * 0.5}), transparent 60%)`,
                 }}
             >
                 <div
                     className="w-[90px] h-[90px] rounded-full max-sm:w-[64px] max-sm:h-[64px]"
                     style={{
-                        background: 'var(--color-player-yellow)',
-                        boxShadow: `0 0 ${30 + brightness * 0.6}px rgba(255,200,40,${0.4 + (brightness / 100) * 0.45}), 0 0 30px rgba(255,200,40,0.85)`,
+                        background: bulbColor,
+                        boxShadow: `0 0 ${30 + brightness * 0.6}px hsla(${hue}, ${saturation}%, 60%, ${0.4 + (brightness / 100) * 0.45}), 0 0 30px ${bulbColor}`,
                         opacity: 0.55 + (brightness / 100) * 0.45,
                         transition: 'all 0.3s',
                     }}
                 />
                 <div className="absolute bottom-3 right-3.5 font-mono text-[11px] text-status-online tabular-nums">
-                    ● ON &nbsp; brightness={brightness}%
+                    ● ON &nbsp; {Math.round(hue)}° &middot; {Math.round(saturation)}%
                 </div>
             </div>
 
-            <div className="flex gap-3 mt-5 items-center max-sm:flex-wrap">
-                <button
-                    type="button"
-                    onClick={sendBrightness}
-                    disabled={isSending}
-                    className="bg-ink text-paper border-none py-3 px-5 font-mono text-[11px] tracking-[0.16em] uppercase cursor-pointer hover:bg-ink-soft transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                    {isSending ? 'Sending…' : 'ZAP'}
-                </button>
-                <div className="flex-1 ml-3 max-sm:ml-0 max-sm:w-full">
+            {/* Color picker — HsvColorPicker is a 2D saturation/value plane
+             * plus a hue bar. Styled in index.css (.light-color-picker) to
+             * square off corners and match the editorial rule colors. */}
+            <div className="mt-5 flex gap-5 items-start max-md:flex-col">
+                <HsvColorPicker
+                    color={pickerColor}
+                    onChange={onPickerChange}
+                    className="light-color-picker"
+                />
+                <div className="flex-1 min-w-0 max-md:w-full">
                     <label
                         htmlFor="brightness-slider"
                         className="block font-mono text-[10px] tracking-[0.16em] uppercase text-muted mb-1.5"
@@ -83,6 +105,24 @@ export function LightDemo({ apiStatus }: LightDemoProps) {
                         onChange={(e) => setBrightness(+e.target.value)}
                         className="brightness-slider"
                     />
+                    <div className="mt-4 flex gap-2 flex-wrap">
+                        <button
+                            type="button"
+                            onClick={sendBrightness}
+                            disabled={isSending}
+                            className="bg-ink text-paper border-none py-3 px-5 font-mono text-[11px] tracking-[0.16em] uppercase cursor-pointer hover:bg-ink-soft transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            {isSending ? 'Sending…' : 'Set brightness'}
+                        </button>
+                        <button
+                            type="button"
+                            onClick={sendColor}
+                            disabled={isSending}
+                            className="bg-ink text-paper border-none py-3 px-5 font-mono text-[11px] tracking-[0.16em] uppercase cursor-pointer hover:bg-ink-soft transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            Set color
+                        </button>
+                    </div>
                 </div>
             </div>
 
