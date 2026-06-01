@@ -1,1 +1,1 @@
-export const API_BASE_URL = 'https://valid-goblin-full.ngrok-free.app'
+export const API_BASE_URL = 'https://api.adrianeddy.com'
