@@ -40,7 +40,7 @@ export function Connect4Inline() {
           ? 'GAME OVER'
           : 'AI READY'
     const stateColor = isPlaying
-        ? '#c8801f'
+        ? 'var(--color-status-active)'
         : isGameOver
           ? 'var(--color-accent-deep)'
           : 'var(--color-status-online)'

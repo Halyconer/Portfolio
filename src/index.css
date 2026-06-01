@@ -2,10 +2,8 @@
 
 @theme {
     /* Typography — Fraunces (serif display) + Inter (body) + IBM Plex Mono
-     * (labels, dates, tags). --font-poly kept as an alias so any leftover
-     * font-poly classNames now render the serif. */
+     * (labels, dates, tags). */
     --font-inter: 'Inter', system-ui, sans-serif;
-    --font-poly: 'Fraunces', Georgia, serif;
     --font-serif: 'Fraunces', Georgia, serif;
     --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
 
@@ -20,34 +18,16 @@
     --color-accent-deep: #7a1d24;
     --color-rule: #e5e3dc;
     --color-rule-strong: #756d5c;
-    --color-panel: #ffffff;
-    --color-panel-ink: #1a1a17;
     --color-placeholder: #eeede8;
 
-    /* Connect4 game — functional colors stay vivid. */
-    --color-board: #0066cc;
-    --color-board-dark: #004499;
-    --color-player-red: #ff4444;
+    /* Connect4 — only the yellow bulb glow uses this token; the board itself
+     * uses inline gradients tuned to the warm-wood palette. */
     --color-player-yellow: #ffdd44;
-    --color-slider-bg: #d8cfb8;
 
-    /* Status indicators — the live/online green pulse. */
+    /* Status indicators — the live/online green pulse, the warmer
+     * "in-progress / your-turn" orange (sits between accent and yellow). */
     --color-status-online: #3a8c4f;
-
-    /* Legacy aliases — preserve class-name compatibility with any old code. */
-    --color-bg-page: #ffffff;
-    --color-bg-light: #f8f7f2;
-    --color-heading: #1a1a17;
-    --color-border: #e5e3dc;
-    --color-footer: #6b6657;
-    --color-primary: #1a1a17;
-    --color-primary-dark: #2a2a26;
-    --color-primary-deep: #6b6657;
-    --color-primary-light: #2a2a26;
-    --color-link: #b34a1f;
-    --color-link-dark: #7a1d24;
-    --color-slate-dark: #1a1a17;
-    --color-slate-muted: #6b6657;
+    --color-status-active: #c8801f;
 
     --breakpoint-xs: 390px;
     --breakpoint-sm: 600px;
@@ -120,28 +100,25 @@ html::-webkit-scrollbar {
     display: none;
 }
 
+/* Bazaar-style product card — soft shadow on rest, lifted on hover. Used by
+ * the Virellio (`/e-commerce`) ProductCard. Lives here rather than in a
+ * scoped ecommerce stylesheet because Vite would otherwise need a separate
+ * @import to load it. */
+.bazaar-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(3, 0, 71, 0.09);
+    transition: box-shadow 0.2s ease-in-out;
+}
+.bazaar-card:hover {
+    box-shadow: 0 8px 30px rgba(3, 0, 71, 0.08);
+}
+
 /* Set bg + base text at body level so route transitions don't flash. */
 body {
     background-color: #ffffff;
     color: #1a1a17;
     font-family: 'Inter', system-ui, sans-serif;
-}
-
-/* Paper grain — subtle linen texture. Stacked tiny radial dots with
- * mix-blend-multiply so the noise reads as paper fiber, not pixels.
- * Applied via .paper-grain on the App wrapper. */
-.paper-grain::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background-image:
-        radial-gradient(circle at 20% 30%, rgba(0, 0, 0, 0.022) 0 1px, transparent 1.5px),
-        radial-gradient(circle at 70% 80%, rgba(0, 0, 0, 0.018) 0 1px, transparent 1.5px),
-        radial-gradient(circle at 40% 60%, rgba(0, 0, 0, 0.015) 0 1px, transparent 1.5px);
-    background-size: 7px 7px, 11px 11px, 13px 13px;
-    z-index: 1;
-    mix-blend-mode: multiply;
 }
 
 /* Editorial brightness slider — ink track + thumb on white. */
@@ -196,15 +173,6 @@ input[type='range'].brightness-slider::-moz-range-track {
     float: left;
     margin: 0.05em 0.1em -0.05em 0;
     color: var(--color-accent);
-}
-
-/* Touch-device override — kill any residual hover transforms on touch. */
-@media (hover: none) and (pointer: coarse) {
-    .demo-card-touch:hover,
-    .project-card-touch:hover {
-        transform: none !important;
-        box-shadow: none !important;
-    }
 }
 
 /* Loading spinner */
