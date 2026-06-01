@@ -25,30 +25,21 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
     async function addItem(product: Product) {
         const usdAmount = await convertToUSD(product.amount, product.currency)
-
         setItems((prev) => {
-            let existing
-            for (const item of prev) {
-                if (item.id === product.id) {
-                    existing = item
-                    break
-                }
-            }
-
+            const existing = prev.find((i) => i.id === product.id)
             if (existing) {
-                const updated = []
-                for (const item of prev) {
-                    if (item.id === product.id) {
-                        updated.push({ ...item, quantity: item.quantity + 1 })
-                    } else {
-                        updated.push(item)
-                    }
-                }
-                return updated
+                return prev.map((i) =>
+                    i.id === product.id
+                        ? { ...i, quantity: i.quantity + 1 }
+                        : i
+                )
             }
-
             return [...prev, { ...product, quantity: 1, usdAmount }]
         })
+    }
+
+    function removeItem(id: number) {
+        setItems((prev) => prev.filter((i) => i.id !== id))
     }
 
     function updateQuantity(id: number, quantity: number) {
@@ -56,35 +47,17 @@ export function CartProvider({ children }: { children: ReactNode }) {
             removeItem(id)
             return
         }
-        setItems((prev) => {
-            return prev.map((i) => {
-                if (i.id === id) {
-                    return { ...i, quantity }
-                }
-                return i
-            })
-        })
+        setItems((prev) =>
+            prev.map((i) => (i.id === id ? { ...i, quantity } : i))
+        )
     }
 
     function getItemQuantity(id: number) {
-        const item = items.find((i) => i.id === id)
-        return item ? item.quantity : 0
+        return items.find((i) => i.id === id)?.quantity ?? 0
     }
 
-    function removeItem(id: number) {
-        setItems((prev) => prev.filter((i) => i.id !== id))
-    }
-
-    function clear() {
-        setItems([])
-    }
-
-    let totalUSD = 0
-    let itemCount = 0
-    for (const item of items) {
-        totalUSD += item.usdAmount * item.quantity
-        itemCount += item.quantity
-    }
+    const totalUSD = items.reduce((sum, i) => sum + i.usdAmount * i.quantity, 0)
+    const itemCount = items.reduce((sum, i) => sum + i.quantity, 0)
 
     return (
         <CartContext.Provider
@@ -94,7 +67,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
                 addItem,
                 updateQuantity,
                 removeItem,
-                clear,
+                clear: () => setItems([]),
                 totalUSD,
                 itemCount,
             }}
