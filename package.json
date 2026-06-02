@@ -21,11 +21,10 @@
         "vite": "^7.3.1"
     },
     "dependencies": {
+        "@uiw/react-color-hue": "^2.10.3",
         "framer-motion": "^12.34.3",
         "react": "^19.2.4",
         "react-dom": "^19.2.4",
-        "react-router-dom": "^7.13.1",
-        "@supabase/ssr": "^0.8.0",
-        "@supabase/supabase-js": "^2.96.0"
+        "react-router-dom": "^7.13.1"
     }
 }

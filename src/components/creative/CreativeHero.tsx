@@ -1,8 +1,6 @@
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 export function CreativeHero() {
-    const navigate = useNavigate()
-
     return (
         <section className="px-8 pt-3.5 pb-6 max-md:px-5 max-sm:px-4">
             {/* Meta line above the headline — back link, volume, byline.
@@ -10,17 +8,12 @@ export function CreativeHero() {
              * the standalone back-link row in the masthead can be dropped. */}
             <div className="grid grid-cols-[1fr_auto_1fr] gap-6 items-end mb-5 max-md:grid-cols-1 max-md:gap-1.5">
                 <div className="font-mono text-[10.5px] tracking-[0.18em] uppercase text-muted">
-                    <a
-                        href="#/"
-                        onClick={(e) => {
-                            e.preventDefault()
-                            navigate('/')
-                            window.scrollTo({ top: 0 })
-                        }}
-                        className="text-ink no-underline border-b border-transparent pb-0.5 hover:border-accent hover:text-accent transition-colors duration-200 cursor-pointer"
+                    <Link
+                        to="/"
+                        className="text-ink no-underline border-b border-transparent pb-0.5 hover:border-accent hover:text-accent transition-colors duration-200"
                     >
                         &#x2190; Back to portfolio
-                    </a>
+                    </Link>
                 </div>
                 <div className="font-mono text-[10.5px] tracking-[0.32em] uppercase text-ink text-center max-md:text-left">
                     Vol. I &nbsp;·&nbsp; 2024 — 2026

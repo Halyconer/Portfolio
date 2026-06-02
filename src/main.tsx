@@ -5,7 +5,6 @@ import { App } from './App'
 import { HomePage } from './pages/HomePage'
 import { NotFoundPage } from './pages/NotFoundPage'
 import { CartProvider } from './ecommerce/context/CartProvider'
-import { SearchProvider } from './ecommerce/context/SearchProvider'
 import './index.css'
 
 // Lazy-load non-home routes so a first visit only ships the home bundle.
@@ -18,9 +17,6 @@ const CreativePage = lazy(() =>
 )
 const EcommerceSite = lazy(() =>
     import('./ecommerce/page').then((m) => ({ default: m.EcommerceSite }))
-)
-const CartPage = lazy(() =>
-    import('./ecommerce/pages/CartPage').then((m) => ({ default: m.CartPage }))
 )
 
 function RouteFallback() {
@@ -49,14 +45,8 @@ const router = createHashRouter([
     {
         path: '/e-commerce',
         element: (
-            <CartProvider>
-                <SearchProvider>{lazyRoute(<EcommerceSite />)}</SearchProvider>
-            </CartProvider>
+            <CartProvider>{lazyRoute(<EcommerceSite />)}</CartProvider>
         ),
-        children: [
-            { index: true, element: lazyRoute(<EcommerceSite />) },
-            { path: 'cart', element: lazyRoute(<CartPage />) },
-        ],
     },
 ])
 
