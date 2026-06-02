@@ -171,10 +171,6 @@ export function Projects() {
     // them line up across the row.
     const spans = [12, 7, 5, 6, 6, 7, 5]
 
-    // firstRow flag suppresses the top border. The 12-col featured row is one
-    // article (index 0); the next visual row contains indices 1 and 2.
-    const firstRowIndices = new Set([0, 1, 2])
-
     return (
         <section
             id="work"
@@ -205,7 +201,7 @@ export function Projects() {
                         p={p}
                         span={spans[i] ?? 6}
                         featured={i === 0}
-                        firstRow={firstRowIndices.has(i)}
+                        firstRow={i <= 2}
                     />
                 ))}
             </div>

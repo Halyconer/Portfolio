@@ -8,10 +8,14 @@ export function ProductCard({ product }: { product: Product }) {
     const [usd, setUSD] = useState<number | null>(null)
 
     useEffect(() => {
+        let cancelled = false
         convertToUSD(product.amount, product.currency).then((usd) => {
-            setUSD(usd)
+            if (!cancelled) setUSD(usd)
         })
-    }, [])
+        return () => {
+            cancelled = true
+        }
+    }, [product.amount, product.currency])
 
     return (
         <div className="bazaar-card flex flex-col overflow-hidden bg-white h-full border border-neutral-100">
@@ -42,9 +46,11 @@ export function ProductCard({ product }: { product: Product }) {
                         {quantity > 0 ? (
                             <div className="flex items-center gap-1 bg-[#FCE9EC] rounded-lg p-0.5 border border-[#D23F57]/10">
                                 <button
+                                    type="button"
                                     onClick={() =>
                                         updateQuantity(product.id, quantity - 1)
                                     }
+                                    aria-label="Decrease quantity"
                                     className="w-6 h-6 flex items-center justify-center text-[#D23F57] hover:bg-white rounded transition-colors text-xs font-bold cursor-pointer"
                                 >
                                     -
@@ -53,9 +59,11 @@ export function ProductCard({ product }: { product: Product }) {
                                     {quantity}
                                 </span>
                                 <button
+                                    type="button"
                                     onClick={() =>
                                         updateQuantity(product.id, quantity + 1)
                                     }
+                                    aria-label="Increase quantity"
                                     className="w-6 h-6 flex items-center justify-center text-[#D23F57] hover:bg-white rounded transition-colors text-xs font-bold cursor-pointer"
                                 >
                                     +
@@ -63,6 +71,7 @@ export function ProductCard({ product }: { product: Product }) {
                             </div>
                         ) : (
                             <button
+                                type="button"
                                 onClick={() => addItem(product)}
                                 className="p-2 border border-[#D23F57]/20 text-[#D23F57] rounded-lg hover:bg-[#D23F57] hover:text-white transition-all cursor-pointer"
                                 title="Add item to cart"

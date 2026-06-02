@@ -1,18 +1,28 @@
 import type { ReactNode } from 'react'
+import type { StatusTone } from '../../types/status'
 
 interface StatusDotProps {
     children: ReactNode
+    tone?: StatusTone
 }
 
-// Pulsing green status pip — used wherever something is "live" or "online".
-// Kept as inline-flex so it sits naturally next to text in flex rows or
-// inside typography containers without extra wrappers at the call site.
-export function StatusDot({ children }: StatusDotProps) {
+const DOT_STYLE: Record<StatusTone, string> = {
+    online:
+        'bg-status-online shadow-[0_0_8px_var(--color-status-online)]',
+    offline:
+        'bg-[var(--color-accent-deep)] shadow-[0_0_8px_var(--color-accent-deep)]',
+    probing:
+        'bg-[var(--color-muted-hi)] shadow-[0_0_6px_var(--color-muted-hi)] animate-pulse',
+}
+
+// Status pip — used wherever something is "live", "offline", or being probed.
+// Inline-flex so it sits naturally next to text without extra wrappers.
+export function StatusDot({ children, tone = 'online' }: StatusDotProps) {
     return (
         <span className="inline-flex items-center gap-2.5">
             <span
                 aria-hidden="true"
-                className="inline-block w-2 h-2 rounded-full bg-status-online shadow-[0_0_8px_var(--color-status-online)]"
+                className={`inline-block w-2 h-2 rounded-full ${DOT_STYLE[tone]}`}
             />
             {children}
         </span>
