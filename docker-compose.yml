@@ -25,6 +25,13 @@ services:
     # This is the right default for a home server service.
     restart: unless-stopped
 
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5001/stats.json', timeout=5)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
     # network_mode: host — the container shares the Pi's network interface directly
     # rather than getting its own virtual one. Required for lifxlan's UDP broadcast
     # discovery to reach your LIFX bulb on the LAN. The tradeoff is reduced network
@@ -84,6 +91,13 @@ services:
     container_name: connectx
     restart: unless-stopped
 
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5002/', timeout=5)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
     # network_mode: host — same reasoning as portfolio above, BUT for a different
     # reason. ConnectX doesn't strictly need host networking (no LAN broadcast),
     # so we could put it on the default bridge. We use host anyway so all three
@@ -115,6 +129,13 @@ services:
     image: nginx:1.27-alpine
     container_name: nginx
     restart: unless-stopped
+
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
 
     # Host networking so nginx binds to the Pi's port 8080 directly and can
     # reach the other two services at localhost:5001 / localhost:5002.
