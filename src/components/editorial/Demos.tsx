@@ -21,7 +21,7 @@ export function Demos() {
     return (
         <section
             id="demos"
-            className="px-8 py-20 bg-paper-warm border-t border-rule-strong relative max-md:px-5 max-md:py-12 max-sm:px-4 max-sm:py-10"
+            className="section-dark px-8 py-20 border-t border-rule-strong relative max-md:px-5 max-md:py-12 max-sm:px-4 max-sm:py-10"
         >
             <div className="flex justify-between items-baseline mb-8 gap-6 max-md:flex-col max-md:items-start max-md:gap-3">
                 <div>

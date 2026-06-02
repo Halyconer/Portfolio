@@ -7,7 +7,7 @@ export function ResumePDF() {
     return (
         <section
             id="resume"
-            className="px-8 py-20 bg-paper-warm border-t border-rule-strong max-md:px-5 max-md:py-12 max-sm:px-4 max-sm:py-10"
+            className="section-dark px-8 py-20 border-t border-rule-strong max-md:px-5 max-md:py-12 max-sm:px-4 max-sm:py-10"
         >
             <div className="flex justify-between items-baseline gap-6 mb-7 max-md:flex-col max-md:items-start max-md:gap-4">
                 <div>
@@ -59,7 +59,7 @@ export function ResumePDF() {
                 }}
             >
                 <iframe
-                    src={`${pdfUrl}#view=FitH&toolbar=0&navpanes=0`}
+                    src={pdfUrl}
                     title="Adrian Eddy résumé"
                     className="w-full h-full border-none block"
                 />

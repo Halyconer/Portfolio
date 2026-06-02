@@ -31,7 +31,7 @@ export function LightDemo({ apiStatus }: LightDemoProps) {
     const glowAlpha = 0.3 + (brightness / 100) * 0.5
 
     return (
-        <div className="p-8 relative border border-rule bg-[linear-gradient(135deg,rgba(179,74,31,0.04),transparent_60%)] max-sm:p-5">
+        <div className="p-8 relative border border-rule bg-[linear-gradient(135deg,rgba(179,74,31,0.04),transparent_60%)] flex flex-col max-sm:p-5">
             <div className="flex justify-between items-baseline text-eyebrow-sm mb-3 gap-3 flex-wrap">
                 <span>Demo 01 &mdash; Smart Light &middot; LIFX + Pi</span>
                 <StatusDot tone={apiStatus.tone}>{apiStatus.label}</StatusDot>
@@ -55,7 +55,7 @@ export function LightDemo({ apiStatus }: LightDemoProps) {
             {/* Visualised bulb — pure CSS glow keyed to the picker state.
              * Provides instant visual feedback even before the server responds. */}
             <div
-                className="mt-6 h-[200px] flex items-center justify-center relative border border-rule transition-[background] duration-[400ms] max-sm:h-[150px]"
+                className="mt-6 flex-1 min-h-[200px] flex items-center justify-center relative border border-rule transition-[background] duration-[400ms] max-sm:min-h-[150px]"
                 style={{
                     background: `radial-gradient(circle at 50% 45%, hsla(${hue}, ${saturation}%, 60%, ${glowAlpha * 0.5}), transparent 60%)`,
                 }}
@@ -74,14 +74,19 @@ export function LightDemo({ apiStatus }: LightDemoProps) {
                 </div>
             </div>
 
-            {/* Controls — hue bar and brightness slider share a centered
-             * column at the same width, so they read as aligned controls
-             * rather than two unrelated widgets. */}
-            <div className="mt-5 flex flex-col items-center gap-4">
-                <div className="w-full max-w-[320px]">
+            {/* mt-auto anchors the controls + status block to the card bottom
+             * so this card's button row lines up with Connect4's PLAY GAME
+             * button at the same vertical baseline. */}
+            <div className="mt-auto pt-5">
+
+            {/* Controls — sliders fill the card width; CTAs anchor to the
+             * right edge so they line up with the PLAY GAME button on the
+             * neighbouring Connect 4 card. */}
+            <div className="flex flex-col gap-4">
+                <div className="w-full">
                     <label
                         htmlFor="hue-slider"
-                        className="block font-mono text-[10px] tracking-[0.16em] uppercase text-muted mb-1.5 text-center"
+                        className="block font-mono text-[10px] tracking-[0.16em] uppercase text-muted mb-1.5"
                     >
                         Hue &middot; {Math.round(hue)}&deg;
                     </label>
@@ -93,10 +98,10 @@ export function LightDemo({ apiStatus }: LightDemoProps) {
                         onChange={(c) => setHue(c.h)}
                     />
                 </div>
-                <div className="w-full max-w-[320px]">
+                <div className="w-full">
                     <label
                         htmlFor="brightness-slider"
-                        className="block font-mono text-[10px] tracking-[0.16em] uppercase text-muted mb-1.5 text-center"
+                        className="block font-mono text-[10px] tracking-[0.16em] uppercase text-muted mb-1.5"
                     >
                         Brightness &middot; {brightness}%
                     </label>
@@ -107,10 +112,10 @@ export function LightDemo({ apiStatus }: LightDemoProps) {
                         max={100}
                         value={brightness}
                         onChange={(e) => setBrightness(+e.target.value)}
-                        className="brightness-slider"
+                        className="brightness-slider w-full"
                     />
                 </div>
-                <div className="flex gap-2 flex-wrap justify-center">
+                <div className="flex gap-2 flex-wrap justify-end">
                     <button
                         type="button"
                         onClick={sendBrightness}
@@ -130,13 +135,17 @@ export function LightDemo({ apiStatus }: LightDemoProps) {
                 </div>
             </div>
 
+            {/* min-h-6 + leading-6 reserves the same vertical space as the
+             * italic serif status under Connect4's PLAY GAME, so the two
+             * button rows land on the same baseline regardless of content. */}
             <p
                 role="status"
                 aria-live="polite"
-                className="mt-3 text-[0.8rem] text-muted font-mono min-h-[1rem] text-center"
+                className="mt-3 text-[0.8rem] text-muted font-mono min-h-6 leading-6 text-center"
             >
                 {status}
             </p>
+            </div>
         </div>
     )
 }

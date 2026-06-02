@@ -92,6 +92,24 @@
     }
 }
 
+/* Dark-theme scope. Re-binds the @theme color tokens inside this subtree so
+ * any descendant using bg-paper / text-ink / border-rule / etc. automatically
+ * picks up dark values — no need to swap classes in the JSX.
+ * Pair with section-level `bg-paper text-ink` to apply the inverted palette. */
+.section-dark {
+    --color-paper: #1a1a17;
+    --color-paper-warm: #232220;
+    --color-ink: #f5f3ec;
+    --color-ink-soft: #d6d4cb;
+    --color-muted: #9a9483;
+    --color-muted-hi: #c7c1b1;
+    --color-rule: #3a3833;
+    --color-rule-strong: #6b6657;
+    --color-placeholder: #2a2a26;
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+}
+
 /* Hide native scrollbar — purely cosmetic */
 html {
     scrollbar-width: none;
