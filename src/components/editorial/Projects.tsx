@@ -169,7 +169,7 @@ export function Projects() {
     // tear-sheet rhythm. Figures use a fixed pixel height (not aspect ratio),
     // so paired figures share the same Y baseline and the text blocks below
     // them line up across the row.
-    const spans = [12, 7, 5, 6, 6, 7, 5]
+    const spans = [12, 7, 5, 6, 6]
 
     return (
         <section
@@ -179,12 +179,12 @@ export function Projects() {
             <div className="flex justify-between items-baseline gap-6 max-sm:flex-col max-sm:items-start max-sm:gap-3">
                 <div>
                     <SectionEyebrow
-                        numeral="03"
+                        numeral="02"
                         label="Selected Work"
                         className="mb-2"
                     />
                     <h2 className="font-serif font-normal text-[3.5rem] tracking-[-0.03em] m-0 text-ink leading-[1] max-md:text-[2.5rem] max-sm:text-[2rem]">
-                        Seven things, built recently.
+                        Five things, built recently.
                     </h2>
                 </div>
                 <div className="text-eyebrow text-right max-sm:text-left">

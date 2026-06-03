@@ -77,6 +77,16 @@
         text-transform: uppercase;
         color: var(--color-muted);
     }
+    /* Trim the half-leading on a display heading so its rendered box equals
+     * cap-top → alphabetic-baseline of the visible glyphs. Without this, a
+     * portrait next to a large headline can never optically align: the H1's
+     * line-box is taller than the ink, so bottom-aligning the boxes still
+     * leaves the descender past the image and the cap below the image top.
+     * Driven by the font's own metrics — no magic numbers per breakpoint. */
+    .optical-trim {
+        text-box-trim: trim-both;
+        text-box-edge: cap alphabetic;
+    }
     /* Strip native button chrome so a <button> can be styled like a link or
      * label while keeping its semantics. Safari notably refuses to inherit
      * font on buttons without an explicit reset. */

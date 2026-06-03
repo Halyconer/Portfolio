@@ -149,131 +149,163 @@ export function Connect4Inline() {
             <dialog
                 ref={dialogRef}
                 onClick={onDialogClick}
-                className="bg-paper-warm border border-rule-strong p-0 w-[92vw] max-w-[560px] backdrop:bg-ink/60"
+                className="fixed inset-0 z-50 w-screen h-screen max-w-none max-h-none m-0 bg-paper-warm border-none p-0 overflow-hidden flex flex-col items-center justify-between open:flex hidden [&[open]]:flex select-none"
             >
-                <div className="p-8 max-sm:p-5">
-                    <div className="flex justify-between items-baseline text-eyebrow-sm mb-3 gap-3 flex-wrap">
-                        <span style={{ color: stateColor }}>
-                            &#9679; {stateLabel}
-                        </span>
-                        <button
-                            type="button"
-                            onClick={closeModal}
-                            aria-label="Close"
-                            className="btn-reset font-mono text-[11px] tracking-[0.16em] uppercase text-muted hover:text-ink transition-colors cursor-pointer"
-                        >
-                            Close &times;
-                        </button>
-                    </div>
-                    <h3 className="font-serif font-light text-[1.8rem] tracking-[-0.02em] m-0 text-ink max-sm:text-[1.4rem]">
-                        Connect 4 &middot;{' '}
-                        <em className="italic text-accent">minimax</em>.
-                    </h3>
-
-                    {/* Player legend */}
-                    <div className="mt-4 flex gap-5 items-center text-eyebrow-sm">
-                        <span className="flex items-center gap-2">
-                            <span
-                                className="inline-block w-3 h-3 rounded-full"
-                                style={{
-                                    background: COLOR_YOU,
-                                    boxShadow:
-                                        'inset 0 2px 4px rgba(0,0,0,0.25)',
-                                }}
-                            />
-                            You
-                        </span>
-                        <span className="flex items-center gap-2">
-                            <span
-                                className="inline-block w-3 h-3 rounded-full"
-                                style={{
-                                    background: COLOR_AI,
-                                    boxShadow:
-                                        'inset 0 2px 4px rgba(0,0,0,0.35)',
-                                }}
-                            />
-                            AI
-                        </span>
-                        <span className="ml-auto opacity-70 tabular-nums">
-                            depth=6
-                        </span>
-                    </div>
-
-                    {/* Live board */}
-                    <div
-                        className="mt-4 p-3 grid grid-cols-7 gap-1.5 mx-auto max-w-[440px] max-sm:gap-1 max-sm:p-2.5"
-                        style={{
-                            background:
-                                'linear-gradient(135deg, #f0ece0 0%, #d8d4c5 100%)',
-                            border: '1px solid rgba(0,0,0,0.08)',
-                            boxShadow:
-                                'inset 0 2px 6px rgba(0,0,0,0.08), 0 1px 0 rgba(255,255,255,0.6)',
-                        }}
+                {/* Floating close button at top-right of screen */}
+                <button
+                    type="button"
+                    onClick={closeModal}
+                    aria-label="Close game"
+                    className="fixed top-6 right-6 max-sm:top-4 max-sm:right-4 z-50 p-3 text-muted hover:text-ink hover:scale-110 active:scale-95 transition-all cursor-pointer bg-paper/85 backdrop-blur-md rounded-full border border-rule hover:border-rule-strong flex items-center justify-center shadow-sm"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={2.5}
+                        stroke="currentColor"
+                        className="w-5 h-5"
                     >
-                        {Array.from({ length: ROWS }).map((_, displayRow) => {
-                            const dataRow = ROWS - 1 - displayRow
-                            return Array.from({ length: COLS }).map((_, col) => {
-                                const v = board[dataRow]?.[col] ?? 0
-                                const canClick = isPlaying && v === 0
-                                const isLandingCell =
-                                    canClick &&
-                                    hoverCol === col &&
-                                    landingRow === dataRow
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M6 18L18 6M6 6l12 12"
+                        />
+                    </svg>
+                </button>
 
-                                let bg = COLOR_EMPTY
-                                if (v === 1) bg = COLOR_YOU
-                                else if (v === 2) bg = COLOR_AI
-                                else if (isLandingCell) bg = COLOR_YOU
-
-                                const opacity = isLandingCell ? 0.35 : 1
-
-                                return (
-                                    <button
-                                        key={`${displayRow}-${col}`}
-                                        type="button"
-                                        onClick={() =>
-                                            canClick && makeMove(col)
-                                        }
-                                        onMouseEnter={() => setHoverCol(col)}
-                                        onMouseLeave={() => setHoverCol(null)}
-                                        disabled={!canClick}
-                                        aria-label={`Drop into column ${col + 1}`}
-                                        className={`aspect-square rounded-full border-0 transition-all duration-200 ${
-                                            canClick
-                                                ? 'cursor-pointer'
-                                                : 'cursor-default'
-                                        }`}
-                                        style={{
-                                            background: bg,
-                                            opacity,
-                                            boxShadow: v
-                                                ? 'inset 0 2px 6px rgba(0,0,0,0.22), 0 1px 0 rgba(255,255,255,0.4)'
-                                                : 'inset 0 2px 4px rgba(0,0,0,0.12)',
-                                        }}
-                                    />
-                                )
-                            })
-                        })}
+                {/* Top header */}
+                <div className="w-full border-b border-rule px-8 py-5 max-sm:px-5 max-sm:py-4 flex justify-between items-center bg-paper/50 backdrop-blur-xs">
+                    <div className="flex flex-col gap-0.5">
+                        <h3 className="font-serif font-light text-[1.6rem] leading-none tracking-[-0.01em] m-0 text-ink max-sm:text-[1.25rem]">
+                            Connect 4 &middot; <em className="italic text-accent">minimax</em>
+                        </h3>
+                        <span className="text-[10px] font-mono tracking-[0.18em] uppercase text-muted opacity-75">
+                            depth=6 &bull; minimax search
+                        </span>
                     </div>
+                    <div className="flex items-center gap-6 pr-16 max-sm:pr-12">
+                        <span className="flex items-center gap-2 text-eyebrow-sm font-medium" style={{ color: stateColor }}>
+                            <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: stateColor }} />
+                            {stateLabel}
+                        </span>
+                    </div>
+                </div>
 
-                    <div className="mt-5 flex justify-between items-center gap-4 flex-wrap">
+                {/* Main body */}
+                <div className="flex-1 w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16 p-8 max-sm:p-5 min-h-0 overflow-hidden">
+                    <div className="flex flex-col justify-center w-full md:w-[320px] shrink-0 order-2 md:order-1 text-left max-md:mt-2">
+                        {/* Player legend */}
+                        <div className="flex gap-6 items-center text-eyebrow-sm border-b border-rule pb-4 mb-4">
+                            <span className="flex items-center gap-2">
+                                <span
+                                    className="inline-block w-4.5 h-4.5 rounded-full"
+                                    style={{
+                                        background: COLOR_YOU,
+                                        boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.25)',
+                                    }}
+                                />
+                                <span className="font-medium text-ink">You (Terracotta)</span>
+                            </span>
+                            <span className="flex items-center gap-2">
+                                <span
+                                    className="inline-block w-4.5 h-4.5 rounded-full"
+                                    style={{
+                                        background: COLOR_AI,
+                                        boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.35)',
+                                    }}
+                                />
+                                <span className="font-medium text-ink">AI (Ink)</span>
+                            </span>
+                        </div>
+
+                        {/* Status message */}
                         <p
                             role="status"
                             aria-live="polite"
-                            className="font-serif italic text-ink-soft text-[1rem] flex-1 min-w-[200px] m-0"
+                            className="font-serif italic text-ink-soft text-[1.1rem] leading-[1.5] m-0 min-h-[3rem]"
                         >
-                            {hasNotStarted
-                                ? 'Click Start to spin up a game.'
-                                : status}
+                            {hasNotStarted ? 'Click Start to spin up a game.' : status}
                         </p>
-                        <button
-                            type="button"
-                            onClick={startGame}
-                            className="bg-ink text-paper border-none py-3 px-5 font-mono text-[11px] tracking-[0.16em] uppercase cursor-pointer hover:bg-ink-soft transition-colors whitespace-nowrap"
-                        >
-                            {hasNotStarted ? 'Start game' : 'New game'} &rarr;
-                        </button>
+
+                        {/* Action button */}
+                        <div className="mt-6">
+                            <button
+                                type="button"
+                                onClick={startGame}
+                                className="w-full bg-ink text-paper border-none py-4 px-6 font-mono text-[11px] tracking-[0.16em] uppercase cursor-pointer hover:bg-ink-soft active:scale-[0.98] transition-all whitespace-nowrap shadow-sm text-center"
+                            >
+                                {hasNotStarted ? 'Start game' : 'New game'} &rarr;
+                            </button>
+                        </div>
                     </div>
+
+                    <div className="flex-1 flex items-center justify-center w-full min-h-0 order-1 md:order-2">
+                        {/* Live board container */}
+                        <div
+                            className="p-4 grid grid-cols-7 gap-2.5 w-full aspect-[7/6] max-w-[min(90vw,72vh*1.166)] max-sm:gap-1.5 max-sm:p-3"
+                            style={{
+                                background:
+                                    'linear-gradient(135deg, #f0ece0 0%, #d8d4c5 100%)',
+                                border: '1px solid rgba(0,0,0,0.08)',
+                                boxShadow:
+                                    'inset 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(255,255,255,0.6)',
+                                borderRadius: '8px',
+                            }}
+                        >
+                            {Array.from({ length: ROWS }).map((_, displayRow) => {
+                                const dataRow = ROWS - 1 - displayRow
+                                return Array.from({ length: COLS }).map((_, col) => {
+                                    const v = board[dataRow]?.[col] ?? 0
+                                    const canClick = isPlaying && v === 0
+                                    const isLandingCell =
+                                        canClick &&
+                                        hoverCol === col &&
+                                        landingRow === dataRow
+
+                                    let bg = COLOR_EMPTY
+                                    if (v === 1) bg = COLOR_YOU
+                                    else if (v === 2) bg = COLOR_AI
+                                    else if (isLandingCell) bg = COLOR_YOU
+
+                                    const opacity = isLandingCell ? 0.35 : 1
+
+                                    return (
+                                        <button
+                                            key={`${displayRow}-${col}`}
+                                            type="button"
+                                            onClick={() =>
+                                                canClick && makeMove(col)
+                                            }
+                                            onMouseEnter={() => setHoverCol(col)}
+                                            onMouseLeave={() => setHoverCol(null)}
+                                            disabled={!canClick}
+                                            aria-label={`Drop into column ${col + 1}`}
+                                            className={`aspect-square rounded-full border-0 transition-all duration-200 ${
+                                                canClick
+                                                    ? 'cursor-pointer hover:scale-105 active:scale-95'
+                                                    : 'cursor-default'
+                                            }`}
+                                            style={{
+                                                background: bg,
+                                                opacity,
+                                                boxShadow: v
+                                                    ? 'inset 0 4px 10px rgba(0,0,0,0.25), 0 1.5px 0 rgba(255,255,255,0.4)'
+                                                    : 'inset 0 3px 6px rgba(0,0,0,0.12)',
+                                            }}
+                                        />
+                                    )
+                                })
+                            })}
+                        </div>
+                    </div>
+                </div>
+
+                {/* Bottom footer */}
+                <div className="w-full border-t border-rule px-8 py-3 max-sm:px-5 text-center bg-paper/30">
+                    <span className="text-[10px] font-mono tracking-[0.18em] uppercase text-muted">
+                        Adrian Eddy &bull; Portfolio AI Experiments
+                    </span>
                 </div>
             </dialog>
         </>

@@ -26,7 +26,7 @@ export function Demos() {
             <div className="flex justify-between items-baseline mb-8 gap-6 max-md:flex-col max-md:items-start max-md:gap-3">
                 <div>
                     <SectionEyebrow
-                        numeral="02"
+                        numeral="01"
                         label="Live, in the browser"
                         className="mb-2"
                     />
