@@ -1,9 +1,36 @@
 import { useState } from 'react'
-import { apiFetch } from '../lib/api'
-import type { BrightnessResponse } from '../types/lighting'
+import { apiFetch, ApiFetchError } from '../lib/api'
+import type { BrightnessResponse, ColorResponse } from '../types/lighting'
+
+function statusForError(err: unknown): string {
+    if (err instanceof ApiFetchError) {
+        switch (err.detail.kind) {
+            case 'network':
+                return '× My personal high-tech self-built server is offline — please try again later'
+            case 'http':
+                if (err.detail.status === 404) {
+                    return '× Light control endpoint not found — I messed up the code...'
+                }
+                if (err.detail.status >= 500) {
+                    return '× Server error — my Raspberry Pi is probably overloaded'
+                }
+                return `× ${err.message}`
+            case 'parse':
+                return '× Got an unreadable response from the server'
+        }
+    }
+    return `× ${err instanceof Error ? err.message : 'Unknown error'}`
+}
+
+// Saturation is fixed at full — for LIFX, anything lower just washes the
+// color toward white, which isn't useful as a demo control.
+const FIXED_SATURATION = 100
 
 export function useLighting() {
     const [brightness, setBrightness] = useState(75)
+    // Default to a warm orange (~30°) — matches the editorial accent and
+    // lines up with the original yellow-glow bulb.
+    const [hue, setHue] = useState(30)
     const [status, setStatus] = useState('')
     const [isSending, setIsSending] = useState(false)
 
@@ -21,36 +48,48 @@ export function useLighting() {
             )
             if (data.status === 'success') {
                 setStatus(
-                    `\u2713 Lights set to ${data.brightness_set}% \u2014 thanks for the greeting!`
+                    `✓ Lights set to ${data.brightness_set}% — thanks for the greeting!`
                 )
             } else {
-                setStatus(`\u00d7 ${data.error || 'Unknown error'}`)
+                setStatus(`× ${data.error || 'Unknown error'}`)
             }
         } catch (err) {
-            const message =
-                err instanceof Error ? err.message : 'Unknown error'
-            if (
-                message.includes('Failed to fetch') ||
-                message.includes('NetworkError')
-            ) {
-                setStatus(
-                    '\u00d7 My personal high-tech self-built server is offline - please try again later'
-                )
-            } else if (message.includes('404')) {
-                setStatus(
-                    '\u00d7 Light control endpoint not found - I messed up the code...'
-                )
-            } else if (message.includes('500')) {
-                setStatus(
-                    '\u00d7 Server error - my raspberry pi is probably overloaded'
-                )
-            } else {
-                setStatus(`\u00d7 Connection failed: ${message}`)
-            }
+            setStatus(statusForError(err))
         } finally {
             setIsSending(false)
         }
     }
 
-    return { brightness, setBrightness, status, isSending, sendBrightness }
+    const sendColor = async () => {
+        setStatus(`Setting color to hue=${Math.round(hue)}°...`)
+        setIsSending(true)
+
+        try {
+            const data = await apiFetch<ColorResponse>('/lighting/set_color', {
+                method: 'POST',
+                body: JSON.stringify({ hue, saturation: FIXED_SATURATION }),
+            })
+            if (data.status === 'success') {
+                setStatus(`✓ Color set to hue=${data.hue_set}°`)
+            } else {
+                setStatus(`× ${data.error || 'Unknown error'}`)
+            }
+        } catch (err) {
+            setStatus(statusForError(err))
+        } finally {
+            setIsSending(false)
+        }
+    }
+
+    return {
+        brightness,
+        setBrightness,
+        hue,
+        setHue,
+        saturation: FIXED_SATURATION,
+        status,
+        isSending,
+        sendBrightness,
+        sendColor,
+    }
 }

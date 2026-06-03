@@ -1,12 +1,22 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { apiFetch } from '../lib/api'
 import type { GameState, MoveResponse, PlayResponse } from '../types/connect4'
 
 export function useConnect4() {
     const [gameState, setGameState] = useState<GameState | null>(null)
     const [status, setStatus] = useState('Click "New Game" to start!')
-    const [isOpen, setIsOpen] = useState(false)
     const isProcessing = useRef(false)
+    const aiMoveTimeout = useRef<number | null>(null)
+
+    // Clear any pending AI-move timeout if the component unmounts mid-game.
+    // Without this, setState fires after unmount → React warns and we leak.
+    useEffect(() => {
+        return () => {
+            if (aiMoveTimeout.current !== null) {
+                window.clearTimeout(aiMoveTimeout.current)
+            }
+        }
+    }, [])
 
     const startGame = async () => {
         isProcessing.current = true
@@ -62,7 +72,6 @@ export function useConnect4() {
                 }
                 isProcessing.current = false
             } else {
-                // Show player move immediately
                 setGameState({
                     board: response.board_before_ai,
                     game_over: false,
@@ -70,8 +79,7 @@ export function useConnect4() {
                 })
                 setStatus('Your move made! AI is thinking...')
 
-                // Show AI move after 1s delay
-                setTimeout(() => {
+                aiMoveTimeout.current = window.setTimeout(() => {
                     setGameState({
                         board: response.board_after_ai,
                         game_over: response.game_over,
@@ -89,6 +97,7 @@ export function useConnect4() {
                             'Your turn! Click a column to drop your piece.'
                         )
                     }
+                    aiMoveTimeout.current = null
                     isProcessing.current = false
                 }, 1000)
             }
@@ -100,5 +109,5 @@ export function useConnect4() {
         }
     }
 
-    return { gameState, status, isOpen, setIsOpen, startGame, makeMove }
+    return { gameState, status, startGame, makeMove }
 }
