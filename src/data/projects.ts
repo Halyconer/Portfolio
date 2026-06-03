@@ -1,54 +1,66 @@
 export interface Project {
+    n: string
     title: string
-    description: string
+    kind: string
+    year: string
+    tagline: string
+    blurb: string
+    stack: string[]
     image?: string
     url?: string
 }
 
 export const projects: Project[] = [
     {
-        title: 'Financial Derivatives Pricing Engine',
-        description:
-            'Suite of financial modeling tools including Black-Scholes options pricing, Monte Carlo simulations, CAPM, and stochastic models',
-        image: 'Screenshot 2025-09-04 at 11.46.01.png',
-        url: 'https://github.com/thompgt/black-scholes',
+        n: '01',
+        title: 'Economics Thesis — Calendar Effects',
+        kind: 'Research',
+        year: '2025',
+        tagline: 'Anomalies in long-short calendar trades.',
+        blurb: 'Market-anomalies research on the statistical significance of calendar-effect trading strategies. Cross-sectional stock analysis with long-short strategies in Python and R.',
+        stack: ['Python', 'R', 'Stats'],
     },
     {
+        n: '02',
+        title: 'Virellio — Ecommerce Store',
+        kind: 'Build',
+        year: '2026',
+        tagline: 'Full-stack storefront, built for an interview brief.',
+        blurb: 'Full-stack storefront built with React, Vite, and Supabase. Product listings, routing, live checkout flow.',
+        stack: ['React', 'Vite', 'Supabase'],
+        url: '/e-commerce',
+    },
+    {
+        n: '03',
         title: 'Algorithmic Trading System',
-        description:
-            'Autonomous trading system that calculates risk parity weights and executes trades in real-time to balance personal investment portfolio',
+        kind: 'Quant',
+        year: '2025',
+        tagline: 'Risk-parity weights, live broker.',
+        blurb: 'Autonomous trader that computes risk-parity weights and executes trades in real time to rebalance a live portfolio.',
+        stack: ['Python', 'IBKR', 'Pandas'],
         image: 'ibkr.jpg',
         url: 'https://github.com/Halyconer/trading',
     },
     {
-        title: 'Federal Reserve Policy Analysis',
-        description:
-            'Comprehensive macroeconomic analysis and monetary policy recommendations presented to Federal Reserve Bank officials',
-        image: 'fed.png',
-        url: 'https://www.federalreserve.gov/conferences/fedchallenge.htm',
+        n: '04',
+        title: 'Financial Derivatives Pricing Engine',
+        kind: 'Quant',
+        year: '2025',
+        tagline: 'Black–Scholes, Monte Carlo, CAPM.',
+        blurb: 'Suite of pricing tools: Black–Scholes options, Monte Carlo simulation, CAPM, and stochastic models.',
+        stack: ['Python', 'NumPy', 'SciPy'],
+        image: 'Screenshot 2025-09-04 at 11.46.01.png',
+        url: 'https://github.com/thompgt/black-scholes',
     },
     {
-        title: 'NYU BioKind - Tech Lead',
-        description:
-            'Building full-stack BI solutions for nonprofits using database management, data pipeline construction, and automated machine learning workflows. Leading technical development, saving organizations up to $10,000 in outsourcing costs through custom analytics platforms.',
+        n: '05',
+        title: 'NYU BioKind — Tech Lead',
+        kind: 'Leadership',
+        year: '2024',
+        tagline: 'Saved nonprofits $10k+ in outsourcing.',
+        blurb: 'Full-stack BI for nonprofits. Database, pipelines, AutoML. Saved partners up to $10k in outsourcing.',
+        stack: ['SQL', 'Python', 'AutoML'],
         image: 'biokind.jpeg',
         url: 'https://github.com/Halyconer/biokind-projectteam1',
-    },
-    {
-        title: 'My Economics Thesis',
-        description:
-            'Market anomalies research studying the statistical significance of calendar effect trading strategies. Cross-sectional stock analysis across long-short trading strategies using Python and R to identify alpha generation on specific days.',
-    },
-    {
-        title: 'DuinoCoin Mining',
-        description:
-            'Coming soon... Currently learning about cryptocurrency mining and exploring low-power mining solutions with Arduino-based systems.',
-        image: 'duino.png',
-    },
-    {
-        title: 'Virellio — Ecommerce Store',
-        description:
-            'Full-stack storefront built with React, Vite, and Supabase. Features product listings, routing, and a live checkout flow — built for a real interview brief.',
-        url: '/e-commerce',
     },
 ]
