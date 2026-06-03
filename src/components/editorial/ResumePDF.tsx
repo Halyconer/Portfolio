@@ -12,7 +12,7 @@ export function ResumePDF() {
             <div className="flex justify-between items-baseline gap-6 mb-7 max-md:flex-col max-md:items-start max-md:gap-4">
                 <div>
                     <SectionEyebrow
-                        numeral="04"
+                        numeral="03"
                         label="The Whole Thing"
                         className="mb-1.5"
                     />
