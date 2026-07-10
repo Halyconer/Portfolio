@@ -1,4 +1,6 @@
 {
+    "name": "adrianeddy-portfolio",
+    "private": true,
     "homepage": "https://adrianeddy.com",
     "scripts": {
         "dev": "vite",
