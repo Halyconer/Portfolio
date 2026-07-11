@@ -22,7 +22,7 @@ export default defineConfig({
         // is the bulletproof path.
         proxy: {
             '/api': {
-                target: 'https://valid-goblin-full.ngrok-free.app',
+                target: 'https://api.adrianeddy.com',
                 changeOrigin: true,
                 secure: true,
                 rewrite: (path) => path.replace(/^\/api/, ''),

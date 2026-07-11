@@ -19,8 +19,7 @@ export function CreativeHero() {
                     Vol. I &nbsp;·&nbsp; 2024 — 2026
                 </div>
                 <div className="font-mono text-[10.5px] tracking-[0.18em] uppercase text-muted text-right max-md:text-left">
-                    <b className="text-ink font-medium">Adrian Eddy</b>{' '}
-                    &nbsp;·&nbsp; NYC
+                    <b className="text-ink font-medium">Adrian Eddy</b>
                 </div>
             </div>
 
@@ -43,9 +42,9 @@ export function CreativeHero() {
                 className="mt-6 mx-auto max-w-[680px] text-center font-serif font-light text-[18px] leading-[1.5] text-ink-soft"
                 style={{ textWrap: 'pretty' }}
             >
-                A working archive of the frames worth keeping —{' '}
-                <em className="italic text-accent">graduation,</em> what&rsquo;s
-                on the plate, and a city that never quite holds still.
+                I suck at drawing, so photography has become my creative escape.
+                I've been helping some friends take their graduation photos, so
+                I've had some practice. Feel free to HMU.
             </p>
         </section>
     )

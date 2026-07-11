@@ -1,24 +1,38 @@
 @import 'tailwindcss';
 
 @theme {
-    /* Typography — Fraunces (serif display) + Inter (body) + IBM Plex Mono
-     * (labels, dates, tags). */
-    --font-inter: 'Inter', system-ui, sans-serif;
-    --font-serif: 'Fraunces', Georgia, serif;
-    --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+    /* Typography — Times New Roman for all text. */
+    --font-inter: 'Times New Roman', 'Times', Georgia, serif;
+    --font-serif: 'Times New Roman', 'Times', Georgia, serif;
+    --font-mono: 'Times New Roman', 'Times', Georgia, serif;
 
-    /* Editorial white palette — paper, ink, terracotta accent. */
-    --color-paper: #ffffff;
-    --color-paper-warm: #f8f7f2;
-    --color-ink: #1a1a17;
-    --color-ink-soft: #2a2a26;
-    --color-muted: #6b6657;
-    --color-muted-hi: #9a9483;
-    --color-accent: #b34a1f;
-    --color-accent-deep: #7a1d24;
-    --color-rule: #e5e3dc;
-    --color-rule-strong: #756d5c;
-    --color-placeholder: #eeede8;
+    /* Newsprint palette — warm off-white paper, near-black ink, warm grays.
+     * Fully monochrome: the accent is just the darkest shade of black, so
+     * emphasis comes from weight and darkness, not hue. */
+    --color-paper: #fbfaf6;
+    --color-paper-warm: #f3f1ea;
+    --color-ink: #1a1a18;
+    --color-ink-soft: #33332f;
+    --color-muted: #5f5f58;
+    --color-muted-hi: #8a8a82;
+    --color-accent: #000000;
+    --color-accent-deep: #4a4a44;
+    --color-rule: #d9d6cd;
+    --color-rule-strong: #8a8a82;
+    --color-placeholder: #ecead1;
+
+    /* Type scale — the only display sizes on the site. Everything else uses
+     * Tailwind's built-in text-lg / text-base / text-sm / text-xs. clamp()
+     * replaces per-breakpoint size overrides. */
+    --text-display: clamp(2.75rem, 6vw + 1rem, 5.25rem);
+    --text-display--line-height: 0.95;
+    --text-display--letter-spacing: -0.02em;
+    --text-title: clamp(1.6rem, 2.5vw + 0.5rem, 2.25rem);
+    --text-title--line-height: 1.1;
+    --text-title--letter-spacing: -0.01em;
+    --text-heading: 1.4rem;
+    --text-heading--line-height: 1.25;
+    --text-heading--letter-spacing: -0.01em;
 
     /* Connect4 — only the yellow bulb glow uses this token; the board itself
      * uses inline gradients tuned to the warm-wood palette. */
@@ -57,35 +71,25 @@
  * patterns; defining them once means changing tracking or color in one place. */
 @layer components {
     .text-eyebrow {
-        font-family: 'IBM Plex Mono', ui-monospace, monospace;
+        font-family: var(--font-mono);
         font-size: 11px;
         letter-spacing: 0.18em;
         text-transform: uppercase;
         color: var(--color-muted);
     }
     .text-eyebrow-sm {
-        font-family: 'IBM Plex Mono', ui-monospace, monospace;
+        font-family: var(--font-mono);
         font-size: 10px;
         letter-spacing: 0.18em;
         text-transform: uppercase;
         color: var(--color-muted);
     }
     .text-label {
-        font-family: 'IBM Plex Mono', ui-monospace, monospace;
+        font-family: var(--font-mono);
         font-size: 10px;
         letter-spacing: 0.2em;
         text-transform: uppercase;
         color: var(--color-muted);
-    }
-    /* Trim the half-leading on a display heading so its rendered box equals
-     * cap-top → alphabetic-baseline of the visible glyphs. Without this, a
-     * portrait next to a large headline can never optically align: the H1's
-     * line-box is taller than the ink, so bottom-aligning the boxes still
-     * leaves the descender past the image and the cap below the image top.
-     * Driven by the font's own metrics — no magic numbers per breakpoint. */
-    .optical-trim {
-        text-box-trim: trim-both;
-        text-box-edge: cap alphabetic;
     }
     /* Strip native button chrome so a <button> can be styled like a link or
      * label while keeping its semantics. Safari notably refuses to inherit
@@ -100,24 +104,6 @@
         color: inherit;
         cursor: pointer;
     }
-}
-
-/* Dark-theme scope. Re-binds the @theme color tokens inside this subtree so
- * any descendant using bg-paper / text-ink / border-rule / etc. automatically
- * picks up dark values — no need to swap classes in the JSX.
- * Pair with section-level `bg-paper text-ink` to apply the inverted palette. */
-.section-dark {
-    --color-paper: #1a1a17;
-    --color-paper-warm: #232220;
-    --color-ink: #f5f3ec;
-    --color-ink-soft: #d6d4cb;
-    --color-muted: #9a9483;
-    --color-muted-hi: #c7c1b1;
-    --color-rule: #3a3833;
-    --color-rule-strong: #6b6657;
-    --color-placeholder: #2a2a26;
-    background-color: var(--color-paper);
-    color: var(--color-ink);
 }
 
 /* Hide native scrollbar — purely cosmetic */
@@ -144,19 +130,19 @@ html::-webkit-scrollbar {
 
 /* Set bg + base text at body level so route transitions don't flash. */
 body {
-    background-color: #ffffff;
-    color: #1a1a17;
-    font-family: 'Inter', system-ui, sans-serif;
+    background-color: #fbfaf6;
+    color: #1a1a18;
+    font-family: 'Times New Roman', 'Times', Georgia, serif;
 }
 
-/* Editorial brightness slider — ink track + thumb on white. */
+/* Brightness slider — hairline ink track + ink thumb on the newsprint palette. */
 input[type='range'].brightness-slider {
     -webkit-appearance: none;
     appearance: none;
     width: 100%;
     height: 2px;
     border-radius: 0;
-    background: rgba(26, 26, 23, 0.18);
+    background: rgba(26, 26, 24, 0.25);
     outline: none;
     cursor: pointer;
 }
@@ -167,7 +153,7 @@ input[type='range'].brightness-slider::-webkit-slider-thumb {
     width: 14px;
     height: 14px;
     border-radius: 50%;
-    background: #1a1a17;
+    background: #1a1a18;
     cursor: pointer;
     border: none;
 }
@@ -176,7 +162,7 @@ input[type='range'].brightness-slider::-moz-range-thumb {
     width: 14px;
     height: 14px;
     border-radius: 50%;
-    background: #1a1a17;
+    background: #1a1a18;
     cursor: pointer;
     border: none;
 }
@@ -184,7 +170,7 @@ input[type='range'].brightness-slider::-moz-range-thumb {
 input[type='range'].brightness-slider::-moz-range-track {
     width: 100%;
     height: 2px;
-    background: rgba(26, 26, 23, 0.18);
+    background: rgba(26, 26, 24, 0.25);
     border-radius: 0;
     border: none;
 }
@@ -193,8 +179,8 @@ input[type='range'].brightness-slider::-moz-range-track {
  * so the paragraph wraps cleanly around it without orphaning the last word.
  * font-variation-settings tunes Fraunces' optical-size axis for display use. */
 .drop-cap::first-letter {
-    font-family: 'Fraunces', Georgia, serif;
-    font-variation-settings: 'opsz' 144;
+    font-family: 'Times New Roman', 'Times', Georgia, serif;
+    font-variation-settings: normal;
     font-weight: 400;
     font-size: 4.2em;
     line-height: 0.85;
