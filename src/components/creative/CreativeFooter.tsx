@@ -9,31 +9,15 @@ export function CreativeFooter() {
             <div>
                 &copy; 2026 Adrian Eddy &nbsp;·&nbsp;{' '}
                 <a
-                    href="mailto:ae2422@nyu.edu"
+                    href="mailto:business@adrianeddy.com"
                     className="text-ink no-underline border-b border-transparent pb-px hover:border-accent transition-colors"
                 >
-                    ae2422@nyu.edu
+                    business@adrianeddy.com
                 </a>
             </div>
-            <div className="text-center max-md:text-left">
-                <a
-                    href="https://www.instagram.com/"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-ink no-underline border-b border-transparent pb-px hover:border-accent transition-colors"
-                >
-                    Instagram
-                </a>
-                &nbsp;·&nbsp;
-                <Link
-                    to="/"
-                    className="text-ink no-underline border-b border-transparent pb-px hover:border-accent transition-colors"
-                >
-                    Portfolio
-                </Link>
-            </div>
-            <div className="text-right max-md:text-left">
-                Frames shot on Canon &nbsp;·&nbsp; NYC
+
+            <div className="text-right max-md:text-left col-span-2 justify-self-end max-md:justify-self-start max-md:col-span-1">
+                Frames shot on Nikon and Sony Cameras
             </div>
         </footer>
     )

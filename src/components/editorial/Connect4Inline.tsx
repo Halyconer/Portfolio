@@ -7,9 +7,11 @@ const EMPTY_BOARD: number[][] = Array.from({ length: ROWS }, () =>
     Array(COLS).fill(0)
 )
 
-const COLOR_YOU = 'var(--color-accent)'
-const COLOR_AI = 'var(--color-ink)'
-const COLOR_EMPTY = 'var(--color-paper)'
+// Literal colors, not theme tokens: the pieces must stay black (you) vs
+// white (AI) on the fixed warm-wood board regardless of theme palette.
+const COLOR_YOU = '#1a1a18'
+const COLOR_AI = '#fbfaf6'
+const COLOR_EMPTY = '#cfcaba'
 
 export function Connect4Inline() {
     const { gameState, status, startGame, makeMove } = useConnect4()
@@ -68,20 +70,13 @@ export function Connect4Inline() {
 
     return (
         <>
-            <div className="p-8 relative border border-rule flex flex-col max-sm:p-5">
-                <div className="flex justify-between items-baseline text-eyebrow-sm mb-3 gap-3 flex-wrap">
-                    <span>
-                        Demo 02 &mdash; Connect 4 &middot; Minimax + &alpha;-&beta;
-                    </span>
-                    <span style={{ color: stateColor }}>&#9679; {stateLabel}</span>
+            <div className="p-8 relative border border-rule bg-paper-warm flex flex-col max-sm:p-5">
+                <div className="flex justify-between items-baseline mb-4 gap-3">
+                    <h3 className="font-serif font-light text-heading m-0 text-ink">
+                        Beat a search algorithm.
+                    </h3>
+                    <span className="text-xs whitespace-nowrap" style={{ color: stateColor }}>● {stateLabel}</span>
                 </div>
-                <h3 className="font-serif font-light text-[2.2rem] tracking-[-0.02em] m-0 text-ink max-sm:text-[1.6rem]">
-                    Beat a search algorithm.
-                </h3>
-                <p className="mt-3 text-muted text-[0.95rem] leading-[1.55] measure">
-                    Minimax with alpha-beta pruning at medium depth. Drop pieces
-                    into any column. You're terracotta, I'm ink.
-                </p>
 
                 {/* Decorative preview — non-interactive teaser of the board.
                  * aspect-[7/6] matches the dot grid so dots reach edge to edge
@@ -110,37 +105,23 @@ export function Connect4Inline() {
                         ))}
                     </div>
                     <span className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
-                        <span className="bg-ink text-paper py-2 px-4 font-mono text-[11px] tracking-[0.16em] uppercase">
-                            Open board &rarr;
+                        <span className="bg-ink text-paper py-2 px-4 text-sm">
+                            Open board →
                         </span>
                     </span>
                 </button>
 
-                {/* mt-auto anchors the CTA stack to the card bottom — LightDemo
-                 * does the same so SET BRIGHTNESS / SET COLOR and PLAY GAME
-                 * land on the same baseline. */}
-                <div className="mt-auto">
-                    <div className="mt-5 flex justify-between items-center gap-4 flex-wrap">
-                        <span className="text-eyebrow-sm opacity-70 tabular-nums">
-                            depth=6
-                        </span>
-                        <button
-                            type="button"
-                            onClick={openModal}
-                            className="bg-ink text-paper border-none py-3 px-5 font-mono text-[11px] tracking-[0.16em] uppercase cursor-pointer hover:bg-ink-soft transition-colors whitespace-nowrap"
-                        >
-                            {ctaLabel} &rarr;
-                        </button>
-                    </div>
-                    <p
-                        role="status"
-                        aria-live="polite"
-                        className="mt-3 font-serif italic text-ink-soft text-[0.95rem] m-0 min-h-6 leading-6"
+                {/* mt-auto anchors the footer to the card bottom — LightDemo
+                 * does the same full-bleed hairline footer, so SET BRIGHTNESS /
+                 * SET COLOR and PLAY GAME land flush on the same baseline. */}
+                <div className="mt-auto pt-5 -mx-8 -mb-8 max-sm:-mx-5 max-sm:-mb-5">
+                    <button
+                        type="button"
+                        onClick={openModal}
+                        className="btn-reset w-full py-3.5 px-5 text-sm text-ink border-t border-rule hover:bg-ink hover:text-paper transition-colors whitespace-nowrap"
                     >
-                        {hasNotStarted
-                            ? 'Open the board to spin up a game.'
-                            : status}
-                    </p>
+                        {ctaLabel} →
+                    </button>
                 </div>
             </div>
 
@@ -177,11 +158,11 @@ export function Connect4Inline() {
                 {/* Top header */}
                 <div className="w-full border-b border-rule px-8 py-5 max-sm:px-5 max-sm:py-4 flex justify-between items-center bg-paper/50 backdrop-blur-xs">
                     <div className="flex flex-col gap-0.5">
-                        <h3 className="font-serif font-light text-[1.6rem] leading-none tracking-[-0.01em] m-0 text-ink max-sm:text-[1.25rem]">
+                        <h3 className="font-serif font-light text-heading m-0 text-ink">
                             Connect 4 &middot; <em className="italic text-accent">minimax</em>
                         </h3>
-                        <span className="text-[10px] font-mono tracking-[0.18em] uppercase text-muted opacity-75">
-                            depth=6 &bull; minimax search
+                        <span className="text-xs text-muted opacity-75">
+                            Minimax α-β · depth 6
                         </span>
                     </div>
                     <div className="flex items-center gap-6 pr-16 max-sm:pr-12">
@@ -196,26 +177,26 @@ export function Connect4Inline() {
                 <div className="flex-1 w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16 p-8 max-sm:p-5 min-h-0 overflow-hidden">
                     <div className="flex flex-col justify-center w-full md:w-[320px] shrink-0 order-2 md:order-1 text-left max-md:mt-2">
                         {/* Player legend */}
-                        <div className="flex gap-6 items-center text-eyebrow-sm border-b border-rule pb-4 mb-4">
+                        <div className="flex gap-6 items-center text-sm border-b border-rule pb-4 mb-4">
                             <span className="flex items-center gap-2">
                                 <span
-                                    className="inline-block w-4.5 h-4.5 rounded-full"
+                                    className="inline-block w-4 h-4 rounded-full"
                                     style={{
                                         background: COLOR_YOU,
                                         boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.25)',
                                     }}
                                 />
-                                <span className="font-medium text-ink">You (Terracotta)</span>
+                                <span className="text-ink">You</span>
                             </span>
                             <span className="flex items-center gap-2">
                                 <span
-                                    className="inline-block w-4.5 h-4.5 rounded-full"
+                                    className="inline-block w-4 h-4 rounded-full"
                                     style={{
                                         background: COLOR_AI,
                                         boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.35)',
                                     }}
                                 />
-                                <span className="font-medium text-ink">AI (Ink)</span>
+                                <span className="text-ink">AI</span>
                             </span>
                         </div>
 
@@ -233,7 +214,7 @@ export function Connect4Inline() {
                             <button
                                 type="button"
                                 onClick={startGame}
-                                className="w-full bg-ink text-paper border-none py-4 px-6 font-mono text-[11px] tracking-[0.16em] uppercase cursor-pointer hover:bg-ink-soft active:scale-[0.98] transition-all whitespace-nowrap shadow-sm text-center"
+                                className="w-full bg-ink text-paper border-none py-4 px-6 text-sm cursor-pointer hover:bg-ink-soft active:scale-[0.98] transition-all whitespace-nowrap text-center"
                             >
                                 {hasNotStarted ? 'Start game' : 'New game'} &rarr;
                             </button>
@@ -301,12 +282,6 @@ export function Connect4Inline() {
                     </div>
                 </div>
 
-                {/* Bottom footer */}
-                <div className="w-full border-t border-rule px-8 py-3 max-sm:px-5 text-center bg-paper/30">
-                    <span className="text-[10px] font-mono tracking-[0.18em] uppercase text-muted">
-                        Adrian Eddy &bull; Portfolio AI Experiments
-                    </span>
-                </div>
             </dialog>
         </>
     )

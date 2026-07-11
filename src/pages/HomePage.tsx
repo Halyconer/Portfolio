@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Hero } from '../components/editorial/Hero'
-import { Projects } from '../components/editorial/Projects'
+import { Projects } from '../components/editorial/ProjectsIndex'
 import { Demos } from '../components/editorial/Demos'
 import { ResumePDF } from '../components/editorial/ResumePDF'
 import { scrollTo } from '../lib/scroll'

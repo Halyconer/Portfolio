@@ -33,8 +33,7 @@ export function FeaturedPlate({ photo, onClick }: FeaturedPlateProps) {
                     &nbsp;·&nbsp; Blue-and-gold macaw
                 </span>
                 <span className="text-right max-sm:text-left">
-                    Canon EOS R6 &nbsp;·&nbsp; 70–200mm &nbsp;·&nbsp; ƒ/4 ·
-                    1/500
+                    Nikon D750 &nbsp;·&nbsp; 80-200mm &nbsp;·&nbsp; ƒ/4 · 1/500
                 </span>
             </div>
         </section>

@@ -1,5 +1,4 @@
 import { asset } from '../../lib/assets'
-import { SectionEyebrow } from './SectionEyebrow'
 
 export function ResumePDF() {
     const pdfUrl = asset('AdrianEddy.pdf')
@@ -7,76 +6,73 @@ export function ResumePDF() {
     return (
         <section
             id="resume"
-            className="section-dark px-8 py-20 border-t border-rule-strong max-md:px-5 max-md:py-12 max-sm:px-4 max-sm:py-10"
+            className="px-8 py-10 border-t border-rule-strong max-md:px-5 max-md:py-8 max-sm:px-4 max-sm:py-6"
         >
-            <div className="flex justify-between items-baseline gap-6 mb-7 max-md:flex-col max-md:items-start max-md:gap-4">
-                <div>
-                    <SectionEyebrow
-                        numeral="03"
-                        label="The Whole Thing"
-                        className="mb-1.5"
-                    />
-                    <h2 className="font-serif font-normal text-[3.5rem] tracking-[-0.03em] m-0 text-ink leading-[1] max-md:text-[2.5rem] max-sm:text-[2rem]">
-                        Résumé, embedded.
+            {/* Single centered 920px column: heading, document card, and the
+             * fallback line all share it so the section reads as one block. */}
+            <div className="max-w-[920px] mx-auto">
+                <div className="mb-4">
+                    <h2 className="font-serif font-normal text-title m-0 text-ink">
+                        Résumé
                     </h2>
-                    <p className="mt-3.5 font-sans text-[0.95rem] leading-[1.55] text-muted measure">
-                        One page. The full CV. Open or download from the buttons
-                        on the right.
-                    </p>
                 </div>
-                <div className="flex gap-2.5 items-center flex-wrap justify-end max-md:justify-start">
+
+                {/* Everything the document owns — filename bar, sheet, actions —
+                 * lives inside one bordered card so it all shares the same 920px
+                 * column. The action footer mirrors the demo cards' full-bleed
+                 * hairline footers. */}
+                <div
+                    className="border border-rule bg-paper-warm"
+                    style={{
+                        boxShadow:
+                            '0 1px 0 rgba(0,0,0,0.04), 0 20px 60px -20px rgba(0,0,0,0.25)',
+                    }}
+                >
+                    <div className="flex justify-between text-xs text-muted py-2.5 px-3.5 border-b border-rule whitespace-nowrap gap-4">
+                        <span>AdrianEddy.pdf</span>
+                        <span>Updated May 2026</span>
+                    </div>
+
+                    <div className="aspect-[8.5/11] bg-white relative">
+                        <iframe
+                            src={`${pdfUrl}#toolbar=0&navpanes=0&view=FitH`}
+                            title="Adrian Eddy résumé"
+                            className="w-full h-full border-none block"
+                        />
+                    </div>
+
+                    <div className="flex border-t border-rule">
+                        <a
+                            href={pdfUrl}
+                            target="_blank"
+                            rel="noopener"
+                            className="flex-1 text-center text-sm text-ink py-3.5 px-5 no-underline hover:bg-ink hover:text-paper transition-colors whitespace-nowrap"
+                        >
+                            Open in new tab ↗
+                        </a>
+                        <a
+                            href={pdfUrl}
+                            download="AdrianEddy_Resume.pdf"
+                            className="flex-1 text-center text-sm text-ink py-3.5 px-5 border-l border-rule no-underline hover:bg-ink hover:text-paper transition-colors whitespace-nowrap"
+                        >
+                            Download .pdf ↓
+                        </a>
+                    </div>
+                </div>
+
+                <div className="mt-5 text-sm text-muted">
+                    Can't see the document?{' '}
                     <a
                         href={pdfUrl}
                         target="_blank"
                         rel="noopener"
-                        className="font-mono text-[11px] tracking-[0.14em] uppercase text-ink py-2.5 px-4 border border-rule-strong no-underline bg-paper hover:bg-paper-warm transition-colors whitespace-nowrap"
+                        className="text-accent underline hover:text-accent-deep transition-colors"
+                        style={{ textUnderlineOffset: 4 }}
                     >
-                        Open in new tab &#x2197;
+                        Open the PDF directly
                     </a>
-                    <a
-                        href={pdfUrl}
-                        download="AdrianEddy_Resume.pdf"
-                        className="font-mono text-[11px] tracking-[0.14em] uppercase text-paper py-2.5 px-4 bg-ink no-underline hover:bg-ink-soft transition-colors whitespace-nowrap"
-                    >
-                        Download .pdf &darr;
-                    </a>
+                    .
                 </div>
-            </div>
-
-            {/* Filename strip — gives the embed a "real document" frame. */}
-            <div className="flex justify-between text-eyebrow-sm py-2.5 px-3.5 bg-paper border border-rule border-b-0 max-w-[920px] mx-auto whitespace-nowrap gap-4">
-                <span>
-                    <span className="text-accent">&#8251;</span> AdrianEddy.pdf
-                </span>
-                <span>Updated May 2026 &middot; 1 page</span>
-            </div>
-
-            <div
-                className="border border-rule bg-white aspect-[8.5/11] max-w-[920px] mx-auto relative"
-                style={{
-                    boxShadow:
-                        '0 1px 0 rgba(0,0,0,0.04), 0 20px 60px -20px rgba(0,0,0,0.25)',
-                }}
-            >
-                <iframe
-                    src={pdfUrl}
-                    title="Adrian Eddy résumé"
-                    className="w-full h-full border-none block"
-                />
-            </div>
-
-            <div className="mt-5 text-center font-sans text-[0.85rem] text-muted">
-                Can't see the document?{' '}
-                <a
-                    href={pdfUrl}
-                    target="_blank"
-                    rel="noopener"
-                    className="text-accent underline hover:text-accent-deep transition-colors"
-                    style={{ textUnderlineOffset: 4 }}
-                >
-                    Open the PDF directly
-                </a>
-                .
             </div>
         </section>
     )
