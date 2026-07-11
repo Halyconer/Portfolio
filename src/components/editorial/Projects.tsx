@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import { projects, type Project } from '../../data/projects'
-import { SectionEyebrow } from './SectionEyebrow'
 
 interface FigProps {
     project: Project
@@ -18,24 +17,14 @@ function Fig({ project: p, featured = false }: FigProps) {
         <div
             className={`bg-paper-warm border border-rule relative overflow-hidden flex flex-col justify-between ${
                 featured
-                    ? 'aspect-[16/7] py-7 px-8 max-md:aspect-[16/9] max-md:py-5 max-md:px-5'
-                    : 'h-[280px] py-5 px-5 max-md:h-auto max-md:aspect-[16/9]'
+                    ? 'aspect-[16/5] py-5 px-6 max-md:aspect-[16/7] max-md:py-4 max-md:px-5'
+                    : 'h-[160px] py-4 px-5 max-md:h-auto max-md:aspect-[16/7]'
             }`}
         >
-            {/* subtle midline ruled grid */}
-            <div
-                aria-hidden
-                className="absolute inset-0 pointer-events-none opacity-60"
-                style={{
-                    backgroundImage:
-                        'linear-gradient(var(--color-rule), var(--color-rule))',
-                    backgroundSize: '100% 1px',
-                    backgroundRepeat: 'repeat-y',
-                    backgroundPosition: '0 50%',
-                }}
-            />
-            <div className="flex justify-between items-baseline relative text-eyebrow-sm">
-                <span className="whitespace-nowrap">[&nbsp;{p.kind}&nbsp;]</span>
+            <div className="flex justify-between items-baseline relative text-xs text-muted">
+                <span className="whitespace-nowrap">
+                    [&nbsp;{p.kind}&nbsp;]
+                </span>
                 <span>{p.year}</span>
             </div>
 
@@ -43,8 +32,8 @@ function Fig({ project: p, featured = false }: FigProps) {
                 <div
                     className={`${
                         featured
-                            ? 'text-[11rem] max-md:text-[7rem]'
-                            : 'text-[7rem] max-md:text-[5rem]'
+                            ? 'text-[7rem] max-md:text-[5rem]'
+                            : 'text-[4.5rem] max-md:text-[3.5rem]'
                     } font-light leading-[0.9] tracking-[-0.04em] text-accent`}
                     style={{ fontVariantNumeric: 'lining-nums' }}
                 >
@@ -59,15 +48,13 @@ function Fig({ project: p, featured = false }: FigProps) {
                 </div>
             </div>
 
-            <div className="relative flex justify-between items-baseline font-mono text-[10px] tracking-[0.14em] text-muted">
+            <div className="relative flex justify-between items-baseline text-xs text-muted">
                 <span>{p.stack[0]}</span>
                 <span className="truncate ml-3">
                     {p.url
                         ? p.url.startsWith('/')
                             ? p.url
-                            : p.url
-                                  .replace(/^https?:\/\//, '')
-                                  .split('/')[0]
+                            : p.url.replace(/^https?:\/\//, '').split('/')[0]
                         : '—'}
                 </span>
             </div>
@@ -77,11 +64,9 @@ function Fig({ project: p, featured = false }: FigProps) {
 
 function ProjectMeta({ p }: { p: Project }) {
     return (
-        <div className="flex gap-3 items-baseline text-eyebrow mb-3 flex-wrap">
-            <span className="text-accent whitespace-nowrap">&#8470;&nbsp;{p.n}</span>
-            <span>&middot;</span>
+        <div className="flex gap-2 items-baseline text-xs text-muted mb-3 flex-wrap">
             <span>{p.year}</span>
-            <span>&middot;</span>
+            <span>·</span>
             <span>{p.kind}</span>
         </div>
     )
@@ -100,14 +85,18 @@ function UrlLink({ p }: { p: Project }) {
         return (
             <Link to={p.url} className={cls}>
                 <span>{display}</span>
-                <span aria-hidden className="opacity-70">↗</span>
+                <span aria-hidden className="opacity-70">
+                    ↗
+                </span>
             </Link>
         )
     }
     return (
         <a href={p.url} target="_blank" rel="noopener" className={cls}>
             <span>{display}</span>
-            <span aria-hidden className="opacity-70">↗</span>
+            <span aria-hidden className="opacity-70">
+                ↗
+            </span>
         </a>
     )
 }
@@ -122,7 +111,7 @@ interface ArticleProps {
 function ProjectArticle({ p, span, featured = false, firstRow }: ArticleProps) {
     return (
         <article
-            className={`py-6 ${firstRow ? '' : 'border-t border-rule'}`}
+            className={`py-4 ${firstRow ? '' : 'border-t border-rule'}`}
             style={{ gridColumn: `span ${span} / span ${span}` }}
         >
             <div
@@ -143,15 +132,15 @@ function ProjectArticle({ p, span, featured = false, firstRow }: ArticleProps) {
                     <h3
                         className={`font-serif font-normal m-0 leading-[1.05] tracking-[-0.025em] text-ink ${
                             featured
-                                ? 'text-[3.2rem] max-md:text-[2.2rem] max-sm:text-[1.8rem]'
-                                : 'text-[1.875rem] max-sm:text-[1.5rem]'
+                                ? 'text-[2.2rem] max-md:text-[1.8rem] max-sm:text-[1.5rem]'
+                                : 'text-[1.5rem] max-sm:text-[1.25rem]'
                         }`}
                     >
                         {p.title}
                     </h3>
                     <p
-                        className={`mt-3.5 font-sans text-muted leading-[1.55] measure ${
-                            featured ? 'text-[1.05rem]' : 'text-[0.95rem]'
+                        className={`mt-2 text-muted leading-[1.5] measure ${
+                            featured ? 'text-[0.95rem]' : 'text-[0.9rem]'
                         }`}
                     >
                         {p.blurb}
@@ -164,35 +153,23 @@ function ProjectArticle({ p, span, featured = false, firstRow }: ArticleProps) {
 }
 
 export function Projects() {
-    // Asymmetric span layout: project 1 is featured (full width, side-by-side
-    // figure + text). Subsequent projects pair into 7/5, 6/6, 7/5 rows for
-    // tear-sheet rhythm. Figures use a fixed pixel height (not aspect ratio),
-    // so paired figures share the same Y baseline and the text blocks below
-    // them line up across the row.
+    // Featured project full-width; pairs in 7/5 then 6/6 asymmetric rows.
     const spans = [12, 7, 5, 6, 6]
 
     return (
         <section
             id="work"
-            className="px-8 py-20 max-md:px-5 max-md:py-12 max-sm:px-4 max-sm:py-10"
+            className="px-8 py-10 max-md:px-5 max-md:py-8 max-sm:px-4 max-sm:py-6"
         >
-            <div className="flex justify-between items-baseline gap-6 max-sm:flex-col max-sm:items-start max-sm:gap-3">
+            <div className="flex justify-between items-baseline gap-6 max-sm:flex-col max-sm:items-start max-sm:gap-2">
                 <div>
-                    <SectionEyebrow
-                        numeral="02"
-                        label="Selected Work"
-                        className="mb-2"
-                    />
-                    <h2 className="font-serif font-normal text-[3.5rem] tracking-[-0.03em] m-0 text-ink leading-[1] max-md:text-[2.5rem] max-sm:text-[2rem]">
-                        Five things, built recently.
+                    <h2 className="font-serif font-normal text-[2.5rem] tracking-[-0.02em] m-0 text-ink leading-[1] max-md:text-[2rem] max-sm:text-[1.6rem]">
+                        A few things I've worked on
                     </h2>
-                </div>
-                <div className="text-eyebrow text-right max-sm:text-left">
-                    {projects.length.toString().padStart(2, '0')} entries / 2024&ndash;2026
                 </div>
             </div>
 
-            <div className="h-px bg-rule-strong mt-7 mb-2" />
+            <div className="h-px bg-rule-strong mt-4 mb-1" />
 
             <div className="grid grid-cols-12 gap-x-8 items-start max-md:grid-cols-1 max-md:gap-y-2">
                 {projects.map((p, i) => (
