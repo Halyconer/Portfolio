@@ -245,11 +245,19 @@ def set_color():
         return jsonify({"error": f"For Adrian: {e}"}), 500
 
 
+# The generator scripts write their JSON into the container's working
+# directory (/data, the bind mount) — but Flask resolves relative send_file()
+# paths against app.root_path (/app, where this file lives), not the cwd.
+# Anchor lookups to the cwd explicitly so served files match what the
+# generators wrote.
+DATA_DIR = os.getcwd()
+
+
 # Endpoint to serve the stats.json file
 @app.route('/stats.json', methods=['GET'])
 def serve_stats():
     try:
-        return send_file('stats.json', mimetype='application/json')
+        return send_file(os.path.join(DATA_DIR, 'stats.json'), mimetype='application/json')
     except FileNotFoundError:
         # Return empty stats if file doesn't exist yet
         return jsonify({
@@ -264,12 +272,27 @@ def serve_stats():
 @app.route('/spotify_stats.json', methods=['GET'])
 def serve_spotify_stats():
     try:
-        return send_file('spotify_top_artists.json', mimetype='application/json')
+        return send_file(os.path.join(DATA_DIR, 'spotify_top_artists.json'), mimetype='application/json')
     except FileNotFoundError:
         # Return empty stats if file doesn't exist yet
         return jsonify({
             "last_updated_utc": datetime.utcnow().isoformat(),
             "artists": []
+        })
+
+# Endpoint to serve the Hardcover reading shelf (see generate_reading_stats.py)
+@app.route('/reading.json', methods=['GET'])
+def serve_reading():
+    try:
+        return send_file(os.path.join(DATA_DIR, 'reading.json'), mimetype='application/json')
+    except FileNotFoundError:
+        # Empty shelf if the generator hasn't run yet — the frontend renders
+        # nothing for an empty shelf, so this fails invisibly, not loudly.
+        return jsonify({
+            "generated_at": datetime.utcnow().isoformat(),
+            "username": None,
+            "currently_reading": [],
+            "recent_reads": []
         })
 
 # Development mode endpoint for testing
