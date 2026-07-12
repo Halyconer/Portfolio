@@ -1,0 +1,30 @@
+[Unit]
+# Portfolio reading shelf — refresh reading.json from the Hardcover API.
+# systemd timer (not cron) for the same reason as the other Pi jobs: a failed
+# run leaves this unit in `failed` state, which Netdata's systemdunits
+# collector can see and alert on. A quietly broken sync would otherwise just
+# mean the site's shelf silently goes stale.
+#
+# Source of truth is this file in the Portfolio repo. Install / update with:
+#   sudo cp ~/repos/portfolio/systemd/reading-stats.* /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now reading-stats.timer
+Description=Hardcover reading shelf -> reading.json
+Documentation=https://github.com/Halyconer/Portfolio
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=halyconer
+Group=halyconer
+# WorkingDirectory is data/ (the docker bind mount) so reading.json lands
+# where the portfolio Flask container serves files from (its working_dir is
+# /data, which is this directory mounted into the container).
+WorkingDirectory=/home/halyconer/repos/portfolio/data
+# EnvironmentFile supplies HARDCOVER_API_TOKEN etc. — the host Python doesn't
+# have python-dotenv, and this keeps the token in exactly one file.
+EnvironmentFile=/home/halyconer/repos/portfolio/backend/.env
+ExecStart=/usr/bin/python3 /home/halyconer/repos/portfolio/backend/generate_reading_stats.py
+StandardOutput=append:/home/halyconer/repos/portfolio/data/reading-stats.log
+StandardError=append:/home/halyconer/repos/portfolio/data/reading-stats.log

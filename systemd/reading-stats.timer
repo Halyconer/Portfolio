@@ -1,0 +1,13 @@
+[Unit]
+Description=Refresh Hardcover reading shelf twice daily (07:20 and 19:20, staggered off the other Pi timers)
+
+[Timer]
+# Books change slowly; twice a day keeps "Currently reading" fresh without
+# hammering Hardcover (their limit is 60 req/min — we make 2 req/day).
+OnCalendar=*-*-* 07,19:20:00
+# If the Pi was off at the scheduled time, run on next boot instead of
+# skipping — this also seeds reading.json shortly after any reboot.
+Persistent=true
+
+[Install]
+WantedBy=timers.target

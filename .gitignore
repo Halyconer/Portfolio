@@ -1,5 +1,7 @@
 node_modules/
 dist/
+# Pi runtime data (generated JSON, sqlite, logs) — served, never committed
+/data/
 .env
 .env.local
 .env*.local
