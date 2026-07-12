@@ -50,11 +50,15 @@ export async function apiFetch<T>(
 ): Promise<T> {
     let res: Response
     try {
+        // Only declare a Content-Type when there's a body to describe. Adding
+        // it to GETs makes them "non-simple" in CORS terms, which forces a
+        // preflight round-trip on every fetch for no benefit.
         res = await fetch(`${API_BASE_URL}${endpoint}`, {
             ...options,
             headers: {
-                'Content-Type': 'application/json',
-                'ngrok-skip-browser-warning': 'true',
+                ...(options?.body != null
+                    ? { 'Content-Type': 'application/json' }
+                    : {}),
                 ...options?.headers,
             },
         })
