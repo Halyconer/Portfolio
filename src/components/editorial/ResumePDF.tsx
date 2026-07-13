@@ -12,7 +12,7 @@ export function ResumePDF() {
              * fallback line all share it so the section reads as one block. */}
             <div className="max-w-[920px] mx-auto">
                 <div className="mb-4">
-                    <h2 className="font-serif font-normal text-title m-0 text-ink">
+                    <h2 className="font-serif font-light text-heading m-0 text-ink">
                         Résumé
                     </h2>
                 </div>

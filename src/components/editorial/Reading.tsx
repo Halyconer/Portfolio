@@ -45,7 +45,7 @@ export function Reading() {
             id="reading"
             className="px-8 py-10 max-md:px-5 max-md:py-8 max-sm:px-4 max-sm:py-6"
         >
-            <h2 className="font-serif font-normal text-title m-0 text-ink">
+            <h2 className="font-serif font-light text-heading m-0 text-ink">
                 To keep me accountable:
             </h2>
 
