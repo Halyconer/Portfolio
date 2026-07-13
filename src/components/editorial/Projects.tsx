@@ -41,7 +41,7 @@ function Fig({ project: p, featured = false }: FigProps) {
                 </div>
                 <div
                     className={`mt-1.5 italic font-light text-muted max-w-[90%] mx-auto leading-[1.25] ${
-                        featured ? 'text-[1.35rem]' : 'text-[1rem]'
+                        featured ? 'text-xl' : 'text-base'
                     }`}
                 >
                     {p.tagline}
@@ -130,17 +130,17 @@ function ProjectArticle({ p, span, featured = false, firstRow }: ArticleProps) {
                 <div className="flex-1 min-w-0">
                     <ProjectMeta p={p} />
                     <h3
-                        className={`font-serif font-normal m-0 leading-[1.05] tracking-[-0.025em] text-ink ${
+                        className={`font-serif font-normal m-0 leading-[1.05] tracking-tight text-ink ${
                             featured
-                                ? 'text-[2.2rem] max-md:text-[1.8rem] max-sm:text-[1.5rem]'
-                                : 'text-[1.5rem] max-sm:text-[1.25rem]'
+                                ? 'text-4xl max-md:text-3xl max-sm:text-2xl'
+                                : 'text-2xl max-sm:text-xl'
                         }`}
                     >
                         {p.title}
                     </h3>
                     <p
                         className={`mt-2 text-muted leading-[1.5] measure ${
-                            featured ? 'text-[0.95rem]' : 'text-[0.9rem]'
+                            featured ? 'text-base' : 'text-sm'
                         }`}
                     >
                         {p.blurb}
@@ -163,7 +163,7 @@ export function Projects() {
         >
             <div className="flex justify-between items-baseline gap-6 max-sm:flex-col max-sm:items-start max-sm:gap-2">
                 <div>
-                    <h2 className="font-serif font-normal text-[2.5rem] tracking-[-0.02em] m-0 text-ink leading-[1] max-md:text-[2rem] max-sm:text-[1.6rem]">
+                    <h2 className="font-serif font-light text-heading m-0 text-ink">
                         A few things I've worked on
                     </h2>
                 </div>

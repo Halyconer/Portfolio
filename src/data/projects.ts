@@ -13,17 +13,17 @@ export interface Project {
 export const projects: Project[] = [
     {
         n: '01',
-        title: 'Economics Thesis — Calendar Effects',
+        title: 'Thesis',
         kind: 'Research',
         year: '2025',
         tagline: 'Anomalies in long-short calendar trades.',
-        blurb: 'Market-anomalies research on the statistical significance of calendar-effect trading strategies. Cross-sectional stock analysis with long-short strategies in Python and R.',
-        stack: ['Python', 'R', 'Stats'],
+        blurb: 'Market-anomalies research on the Monday effect in emerging economies using time-series analysis with an array of pricing models in Python.',
+        stack: ['Python'],
     },
     {
         n: '02',
-        title: 'Virellio — Ecommerce Store',
-        kind: 'Build',
+        title: 'Ecommerce',
+        kind: 'Interview Build',
         year: '2026',
         tagline: 'Full-stack storefront, built for an interview brief.',
         blurb: 'Full-stack storefront built with React, Vite, and Supabase. Product listings, routing, live checkout flow.',
@@ -33,13 +33,13 @@ export const projects: Project[] = [
     {
         n: '03',
         title: 'Algorithmic Trading System',
-        kind: 'Quant',
+        kind: 'Trading',
         year: '2025',
         tagline: 'Risk-parity weights, live broker.',
         blurb: 'Autonomous trader that computes risk-parity weights and executes trades in real time to rebalance a live portfolio.',
         stack: ['Python', 'IBKR', 'Pandas'],
         image: 'ibkr.jpg',
-        url: 'https://github.com/Halyconer/trading',
+        url: '',
     },
     {
         n: '04',

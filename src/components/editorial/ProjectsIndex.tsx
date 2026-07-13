@@ -37,7 +37,7 @@ export function Projects() {
             className="px-8 py-10 max-md:px-5 max-md:py-8 max-sm:px-4 max-sm:py-6"
         >
             <div className="flex justify-between items-baseline gap-6 max-sm:flex-col max-sm:items-start max-sm:gap-2">
-                <h2 className="font-serif font-normal text-title m-0 text-ink">
+                <h2 className="font-serif font-light text-heading m-0 text-ink">
                     A few things I've worked on
                 </h2>
             </div>
@@ -53,19 +53,19 @@ export function Projects() {
 
                     <div className="min-w-0">
                         <div className="flex justify-between items-baseline gap-4">
-                            <h3 className="font-serif font-normal text-heading m-0 text-ink">
+                            <h3 className="font-serif font-normal text-base m-0 text-ink">
                                 {p.title}
                             </h3>
-                            <span className="font-mono text-xs text-muted shrink-0">
+                            <span className="text-label shrink-0">
                                 {p.year}
                             </span>
                         </div>
 
-                        <div className="mt-1.5 font-mono text-xs text-muted tracking-wide uppercase">
+                        <div className="mt-1.5 text-label">
                             {p.kind}&ensp;·&ensp;{p.stack.join(' · ')}
                         </div>
 
-                        <p className="mt-2 text-sm text-muted leading-[1.6] max-w-[72ch]">
+                        <p className="mt-2 text-base text-muted leading-[1.6]">
                             <em className="not-italic text-ink-soft">
                                 {p.tagline}
                             </em>{' '}
