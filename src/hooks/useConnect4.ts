@@ -19,6 +19,12 @@ export function useConnect4() {
     }, [])
 
     const startGame = async () => {
+        if (aiMoveTimeout.current !== null) {
+            window.clearTimeout(aiMoveTimeout.current)
+            aiMoveTimeout.current = null
+            isProcessing.current = false
+        }
+        if (isProcessing.current) return
         isProcessing.current = true
         setStatus('Starting new game...')
 
