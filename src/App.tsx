@@ -25,9 +25,7 @@ export function App() {
         <div className="bg-paper text-ink min-h-screen relative">
             <div className="relative z-10 max-w-[1400px] mx-auto">
                 <Masthead
-                    variant={
-                        isHome ? 'full' : isCreative ? 'bare' : 'minimal'
-                    }
+                    variant={isHome ? 'full' : isCreative ? 'bare' : 'minimal'}
                 />
                 <ErrorBoundary>
                     <Outlet />

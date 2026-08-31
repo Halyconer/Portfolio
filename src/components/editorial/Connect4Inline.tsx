@@ -75,7 +75,12 @@ export function Connect4Inline() {
                     <h3 className="font-serif font-light text-heading m-0 text-ink">
                         Beat a search algorithm.
                     </h3>
-                    <span className="text-xs whitespace-nowrap" style={{ color: stateColor }}>● {stateLabel}</span>
+                    <span
+                        className="text-xs whitespace-nowrap"
+                        style={{ color: stateColor }}
+                    >
+                        ● {stateLabel}
+                    </span>
                 </div>
 
                 {/* Decorative preview — non-interactive teaser of the board.
@@ -159,15 +164,22 @@ export function Connect4Inline() {
                 <div className="w-full border-b border-rule px-8 py-5 max-sm:px-5 max-sm:py-4 flex justify-between items-center bg-paper/50 backdrop-blur-xs">
                     <div className="flex flex-col gap-0.5">
                         <h3 className="font-serif font-light text-heading m-0 text-ink">
-                            Connect 4 &middot; <em className="italic text-accent">minimax</em>
+                            Connect 4 &middot;{' '}
+                            <em className="italic text-accent">minimax</em>
                         </h3>
                         <span className="text-xs text-muted opacity-75">
                             Minimax α-β · depth 6
                         </span>
                     </div>
                     <div className="flex items-center gap-6 pr-16 max-sm:pr-12">
-                        <span className="flex items-center gap-2 text-eyebrow-sm font-medium" style={{ color: stateColor }}>
-                            <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: stateColor }} />
+                        <span
+                            className="flex items-center gap-2 text-eyebrow-sm font-medium"
+                            style={{ color: stateColor }}
+                        >
+                            <span
+                                className="w-2 h-2 rounded-full animate-pulse"
+                                style={{ backgroundColor: stateColor }}
+                            />
                             {stateLabel}
                         </span>
                     </div>
@@ -183,7 +195,8 @@ export function Connect4Inline() {
                                     className="inline-block w-4 h-4 rounded-full"
                                     style={{
                                         background: COLOR_YOU,
-                                        boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.25)',
+                                        boxShadow:
+                                            'inset 0 2px 4px rgba(0,0,0,0.25)',
                                     }}
                                 />
                                 <span className="text-ink">You</span>
@@ -193,7 +206,8 @@ export function Connect4Inline() {
                                     className="inline-block w-4 h-4 rounded-full"
                                     style={{
                                         background: COLOR_AI,
-                                        boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.35)',
+                                        boxShadow:
+                                            'inset 0 2px 4px rgba(0,0,0,0.35)',
                                     }}
                                 />
                                 <span className="text-ink">AI</span>
@@ -206,7 +220,9 @@ export function Connect4Inline() {
                             aria-live="polite"
                             className="font-serif italic text-ink-soft text-[1.1rem] leading-[1.5] m-0 min-h-[3rem]"
                         >
-                            {hasNotStarted ? 'Click Start to spin up a game.' : status}
+                            {hasNotStarted
+                                ? 'Click Start to spin up a game.'
+                                : status}
                         </p>
 
                         {/* Action button */}
@@ -216,7 +232,8 @@ export function Connect4Inline() {
                                 onClick={startGame}
                                 className="w-full bg-ink text-paper border-none py-4 px-6 text-sm cursor-pointer hover:bg-ink-soft active:scale-[0.98] transition-all whitespace-nowrap text-center"
                             >
-                                {hasNotStarted ? 'Start game' : 'New game'} &rarr;
+                                {hasNotStarted ? 'Start game' : 'New game'}{' '}
+                                &rarr;
                             </button>
                         </div>
                     </div>
@@ -234,54 +251,66 @@ export function Connect4Inline() {
                                 borderRadius: '8px',
                             }}
                         >
-                            {Array.from({ length: ROWS }).map((_, displayRow) => {
-                                const dataRow = ROWS - 1 - displayRow
-                                return Array.from({ length: COLS }).map((_, col) => {
-                                    const v = board[dataRow]?.[col] ?? 0
-                                    const canClick = isPlaying && v === 0
-                                    const isLandingCell =
-                                        canClick &&
-                                        hoverCol === col &&
-                                        landingRow === dataRow
+                            {Array.from({ length: ROWS }).map(
+                                (_, displayRow) => {
+                                    const dataRow = ROWS - 1 - displayRow
+                                    return Array.from({ length: COLS }).map(
+                                        (_, col) => {
+                                            const v = board[dataRow]?.[col] ?? 0
+                                            const canClick =
+                                                isPlaying && v === 0
+                                            const isLandingCell =
+                                                canClick &&
+                                                hoverCol === col &&
+                                                landingRow === dataRow
 
-                                    let bg = COLOR_EMPTY
-                                    if (v === 1) bg = COLOR_YOU
-                                    else if (v === 2) bg = COLOR_AI
-                                    else if (isLandingCell) bg = COLOR_YOU
+                                            let bg = COLOR_EMPTY
+                                            if (v === 1) bg = COLOR_YOU
+                                            else if (v === 2) bg = COLOR_AI
+                                            else if (isLandingCell)
+                                                bg = COLOR_YOU
 
-                                    const opacity = isLandingCell ? 0.35 : 1
+                                            const opacity = isLandingCell
+                                                ? 0.35
+                                                : 1
 
-                                    return (
-                                        <button
-                                            key={`${displayRow}-${col}`}
-                                            type="button"
-                                            onClick={() =>
-                                                canClick && makeMove(col)
-                                            }
-                                            onMouseEnter={() => setHoverCol(col)}
-                                            onMouseLeave={() => setHoverCol(null)}
-                                            disabled={!canClick}
-                                            aria-label={`Drop into column ${col + 1}`}
-                                            className={`aspect-square rounded-full border-0 transition-all duration-200 ${
-                                                canClick
-                                                    ? 'cursor-pointer hover:scale-105 active:scale-95'
-                                                    : 'cursor-default'
-                                            }`}
-                                            style={{
-                                                background: bg,
-                                                opacity,
-                                                boxShadow: v
-                                                    ? 'inset 0 4px 10px rgba(0,0,0,0.25), 0 1.5px 0 rgba(255,255,255,0.4)'
-                                                    : 'inset 0 3px 6px rgba(0,0,0,0.12)',
-                                            }}
-                                        />
+                                            return (
+                                                <button
+                                                    key={`${displayRow}-${col}`}
+                                                    type="button"
+                                                    onClick={() =>
+                                                        canClick &&
+                                                        makeMove(col)
+                                                    }
+                                                    onMouseEnter={() =>
+                                                        setHoverCol(col)
+                                                    }
+                                                    onMouseLeave={() =>
+                                                        setHoverCol(null)
+                                                    }
+                                                    disabled={!canClick}
+                                                    aria-label={`Drop into column ${col + 1}`}
+                                                    className={`aspect-square rounded-full border-0 transition-all duration-200 ${
+                                                        canClick
+                                                            ? 'cursor-pointer hover:scale-105 active:scale-95'
+                                                            : 'cursor-default'
+                                                    }`}
+                                                    style={{
+                                                        background: bg,
+                                                        opacity,
+                                                        boxShadow: v
+                                                            ? 'inset 0 4px 10px rgba(0,0,0,0.25), 0 1.5px 0 rgba(255,255,255,0.4)'
+                                                            : 'inset 0 3px 6px rgba(0,0,0,0.12)',
+                                                    }}
+                                                />
+                                            )
+                                        }
                                     )
-                                })
-                            })}
+                                }
+                            )}
                         </div>
                     </div>
                 </div>
-
             </dialog>
         </>
     )

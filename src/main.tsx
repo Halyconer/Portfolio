@@ -10,7 +10,9 @@ import './index.css'
 // Lazy-load non-home routes so a first visit only ships the home bundle.
 // React resolves these on demand the first time the route is matched.
 const DevRoadtripPage = lazy(() =>
-    import('./pages/DevRoadtripPage').then((m) => ({ default: m.DevRoadtripPage }))
+    import('./pages/DevRoadtripPage').then((m) => ({
+        default: m.DevRoadtripPage,
+    }))
 )
 const CreativePage = lazy(() =>
     import('./pages/CreativePage').then((m) => ({ default: m.CreativePage }))
@@ -44,9 +46,7 @@ const router = createHashRouter([
     },
     {
         path: '/e-commerce',
-        element: (
-            <CartProvider>{lazyRoute(<EcommerceSite />)}</CartProvider>
-        ),
+        element: <CartProvider>{lazyRoute(<EcommerceSite />)}</CartProvider>,
     },
 ])
 
