@@ -36,8 +36,8 @@ export class ErrorBoundary extends Component<Props, State> {
                             § Error — something broke
                         </div>
                         <p className="font-serif text-[1.5rem] text-ink mb-6">
-                            This section failed to render. Refresh the page
-                            to try again.
+                            This section failed to render. Refresh the page to
+                            try again.
                         </p>
                         <button
                             type="button"

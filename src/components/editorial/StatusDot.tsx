@@ -7,8 +7,7 @@ interface StatusDotProps {
 }
 
 const DOT_STYLE: Record<StatusTone, string> = {
-    online:
-        'bg-status-online shadow-[0_0_8px_var(--color-status-online)]',
+    online: 'bg-status-online shadow-[0_0_8px_var(--color-status-online)]',
     offline:
         'bg-[var(--color-accent-deep)] shadow-[0_0_8px_var(--color-accent-deep)]',
     probing:

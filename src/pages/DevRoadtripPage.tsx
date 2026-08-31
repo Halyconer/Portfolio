@@ -13,13 +13,7 @@ interface SpotifyData {
     last_updated_utc: string
 }
 
-function StatCard({
-    value,
-    label,
-}: {
-    value: React.ReactNode
-    label: string
-}) {
+function StatCard({ value, label }: { value: React.ReactNode; label: string }) {
     return (
         <div className="bg-paper border border-rule p-6 text-center">
             <div className="font-serif font-light text-[2.6rem] leading-none text-ink tabular-nums">
@@ -64,8 +58,8 @@ export function DevRoadtripPage() {
                 </h1>
                 <p className="mt-6 measure font-serif font-light text-[1.35rem] leading-[1.4] text-ink-soft max-sm:text-[1.1rem]">
                     Getting my toes wet with web development &mdash; one
-                    Raspberry Pi, one ngrok tunnel, one nginx reverse proxy,
-                    and a Flask app held together with optimism.
+                    Raspberry Pi, one ngrok tunnel, one nginx reverse proxy, and
+                    a Flask app held together with optimism.
                 </p>
             </section>
 
@@ -115,7 +109,7 @@ export function DevRoadtripPage() {
                         value={
                             statsError
                                 ? '—'
-                                : stats?.total_calls_all_time ?? '·'
+                                : (stats?.total_calls_all_time ?? '·')
                         }
                     />
                     <StatCard
@@ -123,8 +117,8 @@ export function DevRoadtripPage() {
                         value={
                             statsError
                                 ? '—'
-                                : stats?.avg_brightness_all_time?.toFixed(1) ??
-                                  '·'
+                                : (stats?.avg_brightness_all_time?.toFixed(1) ??
+                                  '·')
                         }
                     />
                 </div>
