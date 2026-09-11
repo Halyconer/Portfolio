@@ -21,14 +21,15 @@ export function LightDemo({ apiStatus }: LightDemoProps) {
     } = useLighting()
 
     // Saturation is pinned to 100% — for LIFX, that's "vivid color"; lower
-    // saturation just washes everything out toward white. The Hue slider is
-    // the only color control we need.
-
+    // saturation just washes everything out toward white.
     // CSS preview of the chosen color — hsl() approximates HSV well enough
     // for a glow visualisation; LIFX's HSBK is converted server-side.
     const lightness = 35 + (brightness / 100) * 25
     const bulbColor = `hsl(${hue}deg, ${saturation}%, ${lightness}%)`
     const glowAlpha = 0.3 + (brightness / 100) * 0.5
+    // Full-bleed hairline action footer, matching Connect4's baseline.
+    const ACTION_BTN =
+        'btn-reset flex-1 py-3.5 px-5 text-sm text-ink enabled:hover:bg-ink enabled:hover:text-paper transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
 
     return (
         <div className="p-8 relative border border-rule bg-paper-warm flex flex-col max-sm:p-5">
@@ -43,8 +44,8 @@ export function LightDemo({ apiStatus }: LightDemoProps) {
                 </StatusDot>
             </div>
 
-            {/* Visualised bulb — pure CSS glow keyed to the picker state.
-             * Provides instant visual feedback even before the server responds. */}
+            {/* Pure-CSS glow preview keyed to the picker state — instant
+             * feedback before the server responds. */}
             <div
                 className="mt-6 flex-1 min-h-[200px] flex items-center justify-center relative border border-rule bg-paper transition-[background] duration-[400ms] max-sm:min-h-[150px]"
                 style={{
@@ -65,7 +66,7 @@ export function LightDemo({ apiStatus }: LightDemoProps) {
                 </div>
             </div>
 
-            {/* Sliders in normal flow — sit right below the visualization */}
+            {/* Sliders sit right below the visualization */}
             <div className="mt-5 flex flex-col gap-4">
                 <div className="w-full">
                     <label
@@ -102,9 +103,7 @@ export function LightDemo({ apiStatus }: LightDemoProps) {
             </div>
 
             {/* mt-auto pins the footer to the card bottom, matching Connect4's
-             * baseline. Negative margins cancel the card padding so the actions
-             * sit flush with the card frame — a hairline footer, not floating
-             * blocks. */}
+             * baseline; negative margins cancel the card padding. */}
             <div className="mt-auto pt-4">
                 <p
                     role="status"
@@ -118,7 +117,7 @@ export function LightDemo({ apiStatus }: LightDemoProps) {
                         type="button"
                         onClick={sendBrightness}
                         disabled={isSending}
-                        className="btn-reset flex-1 py-3.5 px-5 text-sm text-ink enabled:hover:bg-ink enabled:hover:text-paper transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className={ACTION_BTN}
                     >
                         {isSending ? 'Sending…' : 'Set brightness'}
                     </button>
@@ -126,7 +125,7 @@ export function LightDemo({ apiStatus }: LightDemoProps) {
                         type="button"
                         onClick={sendColor}
                         disabled={isSending}
-                        className="btn-reset flex-1 py-3.5 px-5 text-sm text-ink border-l border-rule enabled:hover:bg-ink enabled:hover:text-paper transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className={`${ACTION_BTN} border-l border-rule`}
                     >
                         Set color
                     </button>

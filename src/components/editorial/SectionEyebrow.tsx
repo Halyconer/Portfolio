@@ -1,19 +1,12 @@
-interface SectionEyebrowProps {
-    numeral: string
-    label: string
-    /** Optional override for spacing/etc (e.g. "mb-5"). */
-    className?: string
-}
-
 export function SectionEyebrow({
     numeral,
     label,
-    className = '',
-}: SectionEyebrowProps) {
+}: {
+    numeral: string
+    label: string
+}) {
     return (
-        <div
-            className={`font-mono text-[11px] tracking-[0.22em] uppercase text-muted ${className}`}
-        >
+        <div className="font-mono text-[11px] tracking-[0.22em] uppercase text-muted mb-3">
             &sect; {numeral} &mdash; {label}
         </div>
     )

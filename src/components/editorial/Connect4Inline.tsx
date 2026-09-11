@@ -6,12 +6,34 @@ const COLS = 7
 const EMPTY_BOARD: number[][] = Array.from({ length: ROWS }, () =>
     Array(COLS).fill(0)
 )
+const BOARD_BG = 'linear-gradient(135deg, #f0ece0 0%, #d8d4c5 100%)'
 
-// Literal colors, not theme tokens: the pieces must stay black (you) vs
-// white (AI) on the fixed warm-wood board regardless of theme palette.
+// Literal colors, not theme tokens: pieces stay black (you) vs white (AI)
+// on the fixed warm-wood board regardless of theme palette.
 const COLOR_YOU = '#1a1a18'
 const COLOR_AI = '#fbfaf6'
 const COLOR_EMPTY = '#cfcaba'
+
+// Legend chip — a round piece swatch plus its label.
+function Chip({
+    color,
+    label,
+    glow,
+}: {
+    color: string
+    label: string
+    glow: string
+}) {
+    return (
+        <span className="flex items-center gap-2">
+            <span
+                className="inline-block w-4 h-4 rounded-full"
+                style={{ background: color, boxShadow: glow }}
+            />
+            <span className="text-ink">{label}</span>
+        </span>
+    )
+}
 
 export function Connect4Inline() {
     const { gameState, status, startGame, makeMove } = useConnect4()
@@ -23,19 +45,14 @@ export function Connect4Inline() {
     const isGameOver = gameState?.game_over === true
     const hasNotStarted = gameState === null
 
-    // Find the lowest empty row in the hovered column — that's where a piece
-    // would actually land. We highlight only that cell, not the full column,
-    // so the hover state matches Connect 4 gravity instead of just lighting up
-    // a stripe.
+    // Highlight the lowest empty cell in the hovered column — where the piece
+    // would actually land — matching Connect 4 gravity.
+    const firstEmpty = (col: number) => {
+        for (let r = 0; r < ROWS; r++) if (board[r]?.[col] === 0) return r
+        return null
+    }
     const landingRow =
-        hoverCol !== null && isPlaying
-            ? (() => {
-                  for (let r = 0; r < ROWS; r++) {
-                      if ((board[r]?.[hoverCol] ?? 0) === 0) return r
-                  }
-                  return null
-              })()
-            : null
+        hoverCol !== null && isPlaying ? firstEmpty(hoverCol) : null
 
     const stateLabel = isPlaying
         ? 'YOUR TURN'
@@ -47,7 +64,6 @@ export function Connect4Inline() {
         : isGameOver
           ? 'var(--color-accent-deep)'
           : 'var(--color-status-online)'
-
     const ctaLabel = hasNotStarted
         ? 'Play game'
         : isGameOver
@@ -58,12 +74,9 @@ export function Connect4Inline() {
         if (hasNotStarted) startGame()
         dialogRef.current?.showModal()
     }
-
     const closeModal = () => dialogRef.current?.close()
-
-    // Backdrop click closes — the click only registers on the <dialog> element
-    // itself when it lands on the backdrop, since the inner content stops
-    // propagation by being its own subtree.
+    // Backdrop click closes: the click only registers on the <dialog> itself
+    // when it lands on the backdrop.
     const onDialogClick = (e: React.MouseEvent<HTMLDialogElement>) => {
         if (e.target === dialogRef.current) closeModal()
     }
@@ -83,21 +96,17 @@ export function Connect4Inline() {
                     </span>
                 </div>
 
-                {/* Decorative preview — non-interactive teaser of the board.
-                 * aspect-[7/6] matches the dot grid so dots reach edge to edge
-                 * with no side gaps. */}
+                {/* Decorative teaser board — aspect-[7/6] matches the dot grid
+                 * so dots reach edge to edge. */}
                 <button
                     type="button"
                     onClick={openModal}
                     aria-label="Open Connect 4"
                     className="group btn-reset mt-6 w-full aspect-[7/6] flex items-center justify-center relative border border-rule p-3 cursor-pointer"
-                    style={{
-                        background:
-                            'linear-gradient(135deg, #f0ece0 0%, #d8d4c5 100%)',
-                    }}
+                    style={{ background: BOARD_BG }}
                 >
                     <div className="grid grid-cols-7 gap-2 w-full group-hover:opacity-60 transition-opacity">
-                        {Array.from({ length: ROWS * COLS }).map((_, i) => (
+                        {Array.from({ length: ROWS * COLS }, (_, i) => (
                             <div
                                 key={i}
                                 className="aspect-square rounded-full"
@@ -116,9 +125,8 @@ export function Connect4Inline() {
                     </span>
                 </button>
 
-                {/* mt-auto anchors the footer to the card bottom — LightDemo
-                 * does the same full-bleed hairline footer, so SET BRIGHTNESS /
-                 * SET COLOR and PLAY GAME land flush on the same baseline. */}
+                {/* Full-bleed hairline footer, flush with the card frame so
+                 * PLAY GAME lines up with LightDemo's action bar. */}
                 <div className="mt-auto pt-5 -mx-8 -mb-8 max-sm:-mx-5 max-sm:-mb-5">
                     <button
                         type="button"
@@ -130,14 +138,13 @@ export function Connect4Inline() {
                 </div>
             </div>
 
-            {/* Native <dialog> handles focus trap, Esc-to-close, focus return,
+            {/* Native <dialog> gives focus trap, Esc-to-close, focus return,
              * and body scroll lock for free via showModal(). */}
             <dialog
                 ref={dialogRef}
                 onClick={onDialogClick}
                 className="fixed inset-0 z-50 w-screen h-screen max-w-none max-h-none m-0 bg-paper-warm border-none p-0 overflow-hidden flex flex-col items-center justify-between open:flex hidden [&[open]]:flex select-none"
             >
-                {/* Floating close button at top-right of screen */}
                 <button
                     type="button"
                     onClick={closeModal}
@@ -160,7 +167,6 @@ export function Connect4Inline() {
                     </svg>
                 </button>
 
-                {/* Top header */}
                 <div className="w-full border-b border-rule px-8 py-5 max-sm:px-5 max-sm:py-4 flex justify-between items-center bg-paper/50 backdrop-blur-xs">
                     <div className="flex flex-col gap-0.5">
                         <h3 className="font-serif font-light text-heading m-0 text-ink">
@@ -185,36 +191,21 @@ export function Connect4Inline() {
                     </div>
                 </div>
 
-                {/* Main body */}
                 <div className="flex-1 w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16 p-8 max-sm:p-5 min-h-0 overflow-hidden">
                     <div className="flex flex-col justify-center w-full md:w-[320px] shrink-0 order-2 md:order-1 text-left max-md:mt-2">
-                        {/* Player legend */}
                         <div className="flex gap-6 items-center text-sm border-b border-rule pb-4 mb-4">
-                            <span className="flex items-center gap-2">
-                                <span
-                                    className="inline-block w-4 h-4 rounded-full"
-                                    style={{
-                                        background: COLOR_YOU,
-                                        boxShadow:
-                                            'inset 0 2px 4px rgba(0,0,0,0.25)',
-                                    }}
-                                />
-                                <span className="text-ink">You</span>
-                            </span>
-                            <span className="flex items-center gap-2">
-                                <span
-                                    className="inline-block w-4 h-4 rounded-full"
-                                    style={{
-                                        background: COLOR_AI,
-                                        boxShadow:
-                                            'inset 0 2px 4px rgba(0,0,0,0.35)',
-                                    }}
-                                />
-                                <span className="text-ink">AI</span>
-                            </span>
+                            <Chip
+                                color={COLOR_YOU}
+                                label="You"
+                                glow="inset 0 2px 4px rgba(0,0,0,0.25)"
+                            />
+                            <Chip
+                                color={COLOR_AI}
+                                label="AI"
+                                glow="inset 0 2px 4px rgba(0,0,0,0.35)"
+                            />
                         </div>
 
-                        {/* Status message */}
                         <p
                             role="status"
                             aria-live="polite"
@@ -225,7 +216,6 @@ export function Connect4Inline() {
                                 : status}
                         </p>
 
-                        {/* Action button */}
                         <div className="mt-6">
                             <button
                                 type="button"
@@ -239,75 +229,63 @@ export function Connect4Inline() {
                     </div>
 
                     <div className="flex-1 flex items-center justify-center w-full min-h-0 order-1 md:order-2">
-                        {/* Live board container */}
                         <div
                             className="p-4 grid grid-cols-7 gap-2.5 w-full aspect-[7/6] max-w-[min(90vw,72vh*1.166)] max-sm:gap-1.5 max-sm:p-3"
                             style={{
-                                background:
-                                    'linear-gradient(135deg, #f0ece0 0%, #d8d4c5 100%)',
+                                background: BOARD_BG,
                                 border: '1px solid rgba(0,0,0,0.08)',
                                 boxShadow:
                                     'inset 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(255,255,255,0.6)',
                                 borderRadius: '8px',
                             }}
                         >
-                            {Array.from({ length: ROWS }).map(
-                                (_, displayRow) => {
-                                    const dataRow = ROWS - 1 - displayRow
-                                    return Array.from({ length: COLS }).map(
-                                        (_, col) => {
-                                            const v = board[dataRow]?.[col] ?? 0
-                                            const canClick =
-                                                isPlaying && v === 0
-                                            const isLandingCell =
-                                                canClick &&
-                                                hoverCol === col &&
-                                                landingRow === dataRow
+                            {Array.from({ length: ROWS * COLS }, (_, i) => {
+                                const displayRow = Math.floor(i / COLS)
+                                const col = i % COLS
+                                // Board rows come bottom-up from the API;
+                                // render top-down.
+                                const dataRow = ROWS - 1 - displayRow
+                                const v = board[dataRow]?.[col] ?? 0
+                                const canClick = isPlaying && v === 0
+                                const isLandingCell =
+                                    canClick &&
+                                    hoverCol === col &&
+                                    landingRow === dataRow
+                                const bg =
+                                    v === 1
+                                        ? COLOR_YOU
+                                        : v === 2
+                                          ? COLOR_AI
+                                          : isLandingCell
+                                            ? COLOR_YOU
+                                            : COLOR_EMPTY
 
-                                            let bg = COLOR_EMPTY
-                                            if (v === 1) bg = COLOR_YOU
-                                            else if (v === 2) bg = COLOR_AI
-                                            else if (isLandingCell)
-                                                bg = COLOR_YOU
-
-                                            const opacity = isLandingCell
-                                                ? 0.35
-                                                : 1
-
-                                            return (
-                                                <button
-                                                    key={`${displayRow}-${col}`}
-                                                    type="button"
-                                                    onClick={() =>
-                                                        canClick &&
-                                                        makeMove(col)
-                                                    }
-                                                    onMouseEnter={() =>
-                                                        setHoverCol(col)
-                                                    }
-                                                    onMouseLeave={() =>
-                                                        setHoverCol(null)
-                                                    }
-                                                    disabled={!canClick}
-                                                    aria-label={`Drop into column ${col + 1}`}
-                                                    className={`aspect-square rounded-full border-0 transition-all duration-200 ${
-                                                        canClick
-                                                            ? 'cursor-pointer hover:scale-105 active:scale-95'
-                                                            : 'cursor-default'
-                                                    }`}
-                                                    style={{
-                                                        background: bg,
-                                                        opacity,
-                                                        boxShadow: v
-                                                            ? 'inset 0 4px 10px rgba(0,0,0,0.25), 0 1.5px 0 rgba(255,255,255,0.4)'
-                                                            : 'inset 0 3px 6px rgba(0,0,0,0.12)',
-                                                    }}
-                                                />
-                                            )
+                                return (
+                                    <button
+                                        key={`${displayRow}-${col}`}
+                                        type="button"
+                                        onClick={() =>
+                                            canClick && makeMove(col)
                                         }
-                                    )
-                                }
-                            )}
+                                        onMouseEnter={() => setHoverCol(col)}
+                                        onMouseLeave={() => setHoverCol(null)}
+                                        disabled={!canClick}
+                                        aria-label={`Drop into column ${col + 1}`}
+                                        className={`aspect-square rounded-full border-0 transition-all duration-200 ${
+                                            canClick
+                                                ? 'cursor-pointer hover:scale-105 active:scale-95'
+                                                : 'cursor-default'
+                                        }`}
+                                        style={{
+                                            background: bg,
+                                            opacity: isLandingCell ? 0.35 : 1,
+                                            boxShadow: v
+                                                ? 'inset 0 4px 10px rgba(0,0,0,0.25), 0 1.5px 0 rgba(255,255,255,0.4)'
+                                                : 'inset 0 3px 6px rgba(0,0,0,0.12)',
+                                        }}
+                                    />
+                                )
+                            })}
                         </div>
                     </div>
                 </div>

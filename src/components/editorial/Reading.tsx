@@ -2,16 +2,13 @@ import { useApiResource } from '../../hooks/useApiResource'
 import type { ReadingStats } from '../../types/reading'
 
 /**
- * Reading shelf, fed live from Hardcover via the Pi backend (/reading.json —
- * see backend/generate_reading_stats.py). Currently-reading books show a
- * status label; recently-finished ones show their star rating. If the Pi is
- * unreachable or the shelf is empty, the section renders nothing at all —
- * same spirit as the other Pi-backed sections.
+ * Reading shelf, fed live from Hardcover via the Pi backend (/reading.json).
+ * Currently-reading books show a status label; finished ones show stars.
+ * Renders nothing if the Pi is unreachable or the shelf is empty.
  */
 
 function Stars({ rating }: { rating: number }) {
-    // Hardcover ratings come in half-star steps; round to whole stars for
-    // display — ★★★★☆ reads cleaner in Times than a half-star glyph.
+    // Half-star steps from Hardcover — round to whole stars for display.
     const filled = Math.min(5, Math.max(0, Math.round(rating)))
     return (
         <span
@@ -72,9 +69,7 @@ export function Reading() {
                             </span>
                             {right && (
                                 <>
-                                    {/* Empty flex item: its synthesized
-                                     * baseline is its bottom edge, so the
-                                     * dotted rule sits on the text baseline —
+                                    {/* Dotted rule on the text baseline —
                                      * classic TOC leader. */}
                                     <span
                                         aria-hidden

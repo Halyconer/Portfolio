@@ -8,8 +8,9 @@ export function ResumePDF() {
             id="resume"
             className="px-8 py-10 border-t border-rule-strong max-md:px-5 max-md:py-8 max-sm:px-4 max-sm:py-6"
         >
-            {/* Single centered 920px column: heading, document card, and the
-             * fallback line all share it so the section reads as one block. */}
+            {/* Single centered 920px column shared by heading, document card,
+             * and fallback line. The action footer mirrors the demo cards'
+             * full-bleed hairline footers. */}
             <div className="max-w-[920px] mx-auto">
                 <div className="mb-4">
                     <h2 className="font-serif font-light text-heading m-0 text-ink">
@@ -17,10 +18,6 @@ export function ResumePDF() {
                     </h2>
                 </div>
 
-                {/* Everything the document owns — filename bar, sheet, actions —
-                 * lives inside one bordered card so it all shares the same 920px
-                 * column. The action footer mirrors the demo cards' full-bleed
-                 * hairline footers. */}
                 <div
                     className="border border-rule bg-paper-warm"
                     style={{

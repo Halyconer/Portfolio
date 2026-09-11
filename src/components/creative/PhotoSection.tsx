@@ -40,10 +40,8 @@ export function PhotoSection({
             </div>
 
             {/* CSS multi-column layout — photos flow vertically through 1/2/3
-             * columns and pack tight (no dead rows like a CSS grid would
-             * create when tiles have mismatched aspect ratios). gap-3 sets the
-             * column-gap; per-tile mb-3 supplies the vertical gap inside a
-             * column. break-inside-avoid on each tile prevents column splits. */}
+             * columns and pack tight (unlike a grid, which leaves dead rows on
+             * mismatched aspect ratios). break-inside-avoid prevents splits. */}
             <div className="columns-1 sm:columns-2 md:columns-3 gap-3">
                 {section.photos.map((photo, i) => (
                     <PhotoTile

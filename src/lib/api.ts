@@ -1,9 +1,7 @@
 import { API_BASE_URL } from './constants'
 
-/**
- * Typed API error. Callers can branch on `kind` instead of grepping
- * substrings from messages — message text varies per browser/locale.
- */
+// Typed API error — callers branch on `kind` instead of grepping message
+// text, which varies per browser/locale.
 export type ApiError =
     | { kind: 'network'; cause: unknown }
     | { kind: 'http'; status: number; statusText: string; body: unknown }
@@ -13,7 +11,7 @@ export type ApiError =
 export class ApiFetchError extends Error {
     detail: ApiError
     constructor(detail: ApiError) {
-        super(
+        const msg =
             detail.kind === 'http'
                 ? `HTTP ${detail.status} ${detail.statusText}`
                 : detail.kind === 'network'
@@ -21,7 +19,7 @@ export class ApiFetchError extends Error {
                   : detail.kind === 'aborted'
                     ? 'Request aborted'
                     : 'Response parse error'
-        )
+        super(msg)
         this.name = 'ApiFetchError'
         this.detail = detail
     }
@@ -50,9 +48,8 @@ export async function apiFetch<T>(
 ): Promise<T> {
     let res: Response
     try {
-        // Only declare a Content-Type when there's a body to describe. Adding
-        // it to GETs makes them "non-simple" in CORS terms, which forces a
-        // preflight round-trip on every fetch for no benefit.
+        // Only declare Content-Type when there's a body — adding it to GETs
+        // makes them "non-simple" and forces a CORS preflight per fetch.
         res = await fetch(`${API_BASE_URL}${endpoint}`, {
             ...options,
             headers: {
@@ -63,10 +60,8 @@ export async function apiFetch<T>(
             },
         })
     } catch (cause) {
-        // AbortError is the standard DOMException name for fetch cancellation.
-        if (cause instanceof DOMException && cause.name === 'AbortError') {
+        if (cause instanceof DOMException && cause.name === 'AbortError')
             throw new ApiFetchError({ kind: 'aborted' })
-        }
         throw new ApiFetchError({ kind: 'network', cause })
     }
 

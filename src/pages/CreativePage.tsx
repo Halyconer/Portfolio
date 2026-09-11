@@ -26,15 +26,6 @@ export function CreativePage() {
         [photos.length]
     )
 
-    // Featured plate is index 0; section photos start at index 1 and run in
-    // section order. Pre-compute each section's start index.
-    let runningIndex = 1
-    const sectionStartIndices = photoSections.map((s) => {
-        const start = runningIndex
-        runningIndex += s.photos.length
-        return start
-    })
-
     return (
         <>
             <CreativeHero />
@@ -42,11 +33,18 @@ export function CreativePage() {
                 photo={featuredPhoto}
                 onClick={() => setActiveIndex(0)}
             />
+            {/* Featured plate is flat index 0; each section's photos follow in
+             * section order. */}
             {photoSections.map((section, i) => (
                 <PhotoSection
                     key={section.id}
                     section={section}
-                    startIndex={sectionStartIndices[i]}
+                    startIndex={
+                        1 +
+                        photoSections
+                            .slice(0, i)
+                            .reduce((n, s) => n + s.photos.length, 0)
+                    }
                     onPhotoClick={setActiveIndex}
                 />
             ))}
