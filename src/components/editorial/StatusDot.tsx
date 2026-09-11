@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+
 import type { StatusTone } from '../../types/status'
 
 interface StatusDotProps {

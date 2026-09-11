@@ -1,4 +1,5 @@
-import { useState, useRef } from 'react'
+import { useRef, useState } from 'react'
+
 import { useConnect4 } from '../../hooks/useConnect4'
 
 const ROWS = 6

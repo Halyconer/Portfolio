@@ -42,10 +42,15 @@ pnpm install        # install deps
 pnpm dev            # start Vite dev server (proxies /api to the live backend)
 pnpm build          # tsc && vite build (type-check + production build)
 pnpm preview        # preview production build locally
-pnpm format         # prettier --write src/
+pnpm format         # prettier --write src/ (also sorts TS/TSX imports)
 pnpm lint           # prettier --check src/   <-- run after edits
+pnpm format:py      # ruff check --select I --fix backend connectX
+pnpm lint:py        # ruff check --select I backend connectX
 git push            # deploy frontend: Vercel auto-builds on push to main
 ```
+
+Repo-wide import organization: `pnpm format && pnpm format:py` (check with
+`pnpm lint && pnpm lint:py`).
 
 Backend local dev (no Docker): see `backend/README_DEV.md`.
 
@@ -55,8 +60,12 @@ Backend local dev (no Docker): see `backend/README_DEV.md`.
   semicolons, single quotes, es5 trailing commas. Run `pnpm lint` after changes;
   `pnpm format` will auto-fix. The repo is checked for formatting on CI-style
   lint, so keep it clean.
+- **Imports**: sorted automatically — TS/TSX by
+  `@ianvs/prettier-plugin-sort-imports` (builtins → third-party → relative) via
+  `pnpm format`; Python by Ruff's `isort` rules (`ruff.toml`) via
+  `pnpm format:py`. Don't hand-order them; run the formatters instead. Use
+  relative imports (`./`, `../`) within `src/`.
 - **TypeScript**: strict-ish; always type-check with `pnpm build` (runs `tsc`).
-  Prefer `@/` alias imports (maps to `/src`) over relative paths.
 - **Component layout**: components live in `src/components/` split into
   `editorial/` (text-heavy site sections) and `creative/` (photo/visual work).
   Reusable UI logic goes in `src/lib/`, custom hooks in `src/hooks/`,

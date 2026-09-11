@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+
 import type { Photo } from '../../data/creativePhotos'
 
 interface LightboxProps {

@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+
+import { Demos } from '../components/editorial/Demos'
 import { Hero } from '../components/editorial/Hero'
 import { Projects } from '../components/editorial/ProjectsIndex'
-import { Demos } from '../components/editorial/Demos'
 import { Reading } from '../components/editorial/Reading'
 import { ResumePDF } from '../components/editorial/ResumePDF'
 import { scrollTo } from '../lib/scroll'

@@ -1,4 +1,5 @@
-import { useNavigate, useLocation, Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+
 import { scrollTo } from '../../lib/scroll'
 
 interface MastheadProps {

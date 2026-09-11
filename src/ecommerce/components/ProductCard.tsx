@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
+
+import { useCart } from '../context/CartProvider'
 import type { Product } from '../lib/products'
 import { convertToUSD, formatUSD } from '../utils/currency'
-import { useCart } from '../context/CartProvider'
 
 const STEP_BTN =
     'w-6 h-6 flex items-center justify-center text-[#D23F57] hover:bg-white rounded transition-colors text-xs font-bold cursor-pointer'

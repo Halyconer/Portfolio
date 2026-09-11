@@ -1,5 +1,5 @@
-import { products } from './lib/products'
 import { ProductCard } from './components/ProductCard'
+import { products } from './lib/products'
 
 export function EcommerceSite() {
     return (

@@ -5,11 +5,6 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
     plugins: [react(), tailwindcss()],
     base: '/',
-    resolve: {
-        alias: {
-            '@': '/src',
-        },
-    },
     server: {
         // Dev proxy for the Pi backend. Flask's `check_auth` (backend/app.py)
         // hard-checks Origin/Referer against ALLOWED_ORIGIN. The browser's

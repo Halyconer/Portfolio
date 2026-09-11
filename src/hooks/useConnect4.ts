@@ -1,4 +1,5 @@
-import { useState, useRef, useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
+
 import { apiFetch } from '../lib/api'
 import type { GameState, MoveResponse, PlayResponse } from '../types/connect4'
 

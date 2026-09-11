@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, type ReactNode } from 'react'
+
 import type { Product } from '../lib/products'
 
 type CartItem = Product & { quantity: number }

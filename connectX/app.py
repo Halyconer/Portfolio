@@ -1,8 +1,9 @@
 import os
 from copy import copy
 
-from Connect4 import Connect4
 from flask import Flask, jsonify, request, send_from_directory
+
+from Connect4 import Connect4
 
 app = Flask(__name__)
 
