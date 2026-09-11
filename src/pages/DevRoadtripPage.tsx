@@ -13,6 +13,11 @@ interface SpotifyData {
     last_updated_utc: string
 }
 
+const SECTION =
+    'px-8 py-20 max-md:px-5 max-md:py-12 max-sm:px-4 max-sm:py-10 border-t border-rule-strong'
+const H2 =
+    'font-serif font-normal text-[3rem] tracking-[-0.03em] m-0 leading-[1.05] text-ink max-md:text-[2.2rem] max-sm:text-[1.8rem]'
+
 function StatCard({ value, label }: { value: React.ReactNode; label: string }) {
     return (
         <div className="bg-paper border border-rule p-6 text-center">
@@ -46,11 +51,7 @@ export function DevRoadtripPage() {
                 id="top"
                 className="px-8 pt-12 pb-12 max-md:px-5 max-md:pt-8 max-sm:px-4 max-sm:pt-6"
             >
-                <SectionEyebrow
-                    numeral="01"
-                    label="The trip so far"
-                    className="mb-3"
-                />
+                <SectionEyebrow numeral="01" label="The trip so far" />
                 <h1 className="font-serif font-normal text-ink m-0 leading-[0.95] tracking-[-0.035em] text-[6rem] max-md:text-[4rem] max-sm:text-[3rem]">
                     My trip
                     <br />
@@ -64,15 +65,9 @@ export function DevRoadtripPage() {
             </section>
 
             {/* Architecture diagram */}
-            <section className="px-8 py-20 bg-paper-warm border-t border-rule-strong max-md:px-5 max-md:py-12 max-sm:px-4 max-sm:py-10">
-                <SectionEyebrow
-                    numeral="02"
-                    label="How it works"
-                    className="mb-3"
-                />
-                <h2 className="font-serif font-normal text-[3rem] tracking-[-0.03em] m-0 leading-[1.05] text-ink max-md:text-[2.2rem] max-sm:text-[1.8rem]">
-                    From your browser to the bulb.
-                </h2>
+            <section className={`${SECTION} bg-paper-warm`}>
+                <SectionEyebrow numeral="02" label="How it works" />
+                <h2 className={H2}>From your browser to the bulb.</h2>
                 <div className="mt-8 border border-rule bg-paper p-4 max-w-[1200px] mx-auto">
                     <img
                         src={asset('lightbulb_diagram.jpg')}
@@ -85,17 +80,11 @@ export function DevRoadtripPage() {
             </section>
 
             {/* Database stats */}
-            <section className="px-8 py-20 border-t border-rule-strong max-md:px-5 max-md:py-12 max-sm:px-4 max-sm:py-10">
+            <section className={SECTION}>
                 <div className="flex justify-between items-baseline gap-6 mb-8 max-md:flex-col max-md:items-start max-md:gap-3">
                     <div>
-                        <SectionEyebrow
-                            numeral="03"
-                            label="Live database"
-                            className="mb-3"
-                        />
-                        <h2 className="font-serif font-normal text-[3rem] tracking-[-0.03em] m-0 leading-[1.05] text-ink max-md:text-[2.2rem] max-sm:text-[1.8rem]">
-                            Numbers from the bulb.
-                        </h2>
+                        <SectionEyebrow numeral="03" label="Live database" />
+                        <h2 className={H2}>Numbers from the bulb.</h2>
                     </div>
                     <div className="text-eyebrow whitespace-nowrap">
                         <StatusDot tone={statsTone}>
@@ -125,15 +114,14 @@ export function DevRoadtripPage() {
             </section>
 
             {/* Spotify */}
-            <section className="px-8 py-20 bg-paper-warm border-t border-rule-strong max-md:px-5 max-md:py-12 max-sm:px-4 max-sm:py-10">
+            <section className={`${SECTION} bg-paper-warm`}>
                 <div className="flex justify-between items-baseline gap-6 mb-8 max-md:flex-col max-md:items-start max-md:gap-3">
                     <div>
                         <SectionEyebrow
                             numeral="04"
                             label="Currently in rotation"
-                            className="mb-3"
                         />
-                        <h2 className="font-serif font-normal text-[3rem] tracking-[-0.03em] m-0 leading-[1.05] text-ink max-md:text-[2.2rem] max-sm:text-[1.8rem]">
+                        <h2 className={H2}>
                             Listening habits, refreshed daily.
                         </h2>
                         <p className="mt-3.5 measure font-sans text-[0.95rem] leading-[1.55] text-muted">
@@ -157,20 +145,16 @@ export function DevRoadtripPage() {
                 </div>
 
                 <div className="border border-rule bg-paper p-8 max-sm:p-5">
-                    {spotifyError ? (
+                    {spotifyError || spotifyData?.artists.length === 0 ? (
                         <div className="font-serif italic text-ink-soft text-center py-6">
-                            Musical data temporarily unavailable &mdash; the Pi
-                            might be taking a break.
+                            {spotifyError
+                                ? 'Musical data temporarily unavailable — the Pi might be taking a break.'
+                                : 'No recent listening data — probably too much coding, not enough music.'}
                         </div>
                     ) : !spotifyData ? (
                         <div className="flex items-center justify-center py-8 text-eyebrow-sm">
                             <span className="w-4 h-4 border-2 border-rule border-t-ink rounded-full animate-spin-slow mr-3" />
                             Fetching latest listening data…
-                        </div>
-                    ) : spotifyData.artists.length === 0 ? (
-                        <div className="font-serif italic text-ink-soft text-center py-6">
-                            No recent listening data &mdash; probably too much
-                            coding, not enough music.
                         </div>
                     ) : (
                         <div className="grid grid-cols-[repeat(auto-fit,minmax(110px,1fr))] gap-6">

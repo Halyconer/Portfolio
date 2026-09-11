@@ -17,10 +17,8 @@ export function Masthead({ variant = 'full' }: MastheadProps) {
     const location = useLocation()
     const isHome = location.pathname === '/'
 
-    // When already on home, scroll directly. When elsewhere, navigate home and
-    // pass the target via location state — `HomePage` reads it on mount and
-    // scrolls once the DOM exists. This replaces a brittle setTimeout(100)
-    // race that assumed render completed within 100ms.
+    // On home, scroll directly; elsewhere, navigate home and pass the target
+    // via location state — HomePage reads it on mount (no setTimeout race).
     const handleSection = (target: string) => {
         if (isHome) {
             scrollTo(target)

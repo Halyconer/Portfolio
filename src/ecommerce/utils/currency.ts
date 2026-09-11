@@ -32,15 +32,6 @@ export async function convertToUSD(
     return Math.round(amount * rate)
 }
 
-export function formatPrice(amount: number, currency: string) {
-    return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: currency,
-        minimumFractionDigits: currency === 'JPY' ? 0 : 2,
-        maximumFractionDigits: currency === 'JPY' ? 0 : 2,
-    }).format(currency === 'JPY' ? amount : amount / 100)
-}
-
 export function formatUSD(cents: number) {
     return new Intl.NumberFormat('en-US', {
         style: 'currency',

@@ -34,7 +34,6 @@ export function EcommerceSite() {
                 </div>
             </section>
 
-            {/* Main Content Area */}
             <div id="shop" className="mx-auto max-w-7xl px-4 sm:px-6 pb-20">
                 <div className="flex items-center gap-3 mb-8">
                     <div className="h-6 w-1.5 bg-[#D23F57] rounded-full"></div>

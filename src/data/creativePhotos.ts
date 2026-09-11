@@ -1,14 +1,6 @@
-export type AspectRatio =
-    | '5/4'
-    | '4/5'
-    | '1/1'
-    | '3/2'
-    | '2/3'
-    | '16/9'
-    | '21/9'
-    | '3/4'
+export type AspectRatio = '5/4' | '1/1' | '3/2' | '2/3' | '16/9'
 
-export type ColSpan = 1 | 2 | 3 | 4 | 5 | 6
+type ColSpan = 1 | 2 | 3 | 4 | 5 | 6
 
 export interface Photo {
     id: string
@@ -38,6 +30,59 @@ export const featuredPhoto: Photo = {
     span: 6,
 }
 
+// Working-sheet plates: [label, path, alt, aspect]. All span 2 columns.
+const c = (p: string) => `/assets/creative/${p}`
+const SHEET: Array<[string, string, string, AspectRatio]> = [
+    ['01 · Fishing', c('landscape/fishing-1.JPG'), 'Fishing scene', '3/2'],
+    ['02 · Tacos', c('food/tacos-10.JPG'), 'Tacos', '2/3'],
+    [
+        '03 · Birds',
+        c('animals/2 birds together-2-2.JPG'),
+        'Two birds together',
+        '1/1',
+    ],
+    [
+        '04 · Nasi goreng',
+        c('food/10-07 Nasi goreng-2.JPG'),
+        'Nasi goreng',
+        '3/2',
+    ],
+    ['05 · Fishing', c('landscape/fishing-3.JPG'), 'Fishing scene', '2/3'],
+    [
+        '06 · Arowana',
+        c('animals/Arowana-Minnow-01-06-20-4.JPG'),
+        'Arowana fish',
+        '5/4',
+    ],
+    ['07 · Coffee', c('food/Coffee August 6-4.JPG'), 'Coffee', '3/2'],
+    ['08 · Portrait', c('landscape/DSC_1066-portrait.jpg'), 'Portrait', '2/3'],
+    [
+        '09 · Arowana',
+        c('animals/Arowana-Minnow-01-06-20-7.JPG'),
+        'Arowana fish',
+        '5/4',
+    ],
+    ['10 · Spread', c('food/10-07-2.JPG'), 'Food spread', '3/2'],
+    ['11 · Fishing', c('landscape/fishing-16.JPG'), 'Fishing scene', '3/2'],
+    [
+        '12 · Arowana',
+        c('animals/Arowana-Minnow-01-06-20-2.JPG'),
+        'Arowana fish',
+        '3/2',
+    ],
+    ['13 · Portrait', c('People/DSC_0698-portrait.jpg'), 'Portrait', '3/2'],
+    [
+        '14 · Nasi goreng',
+        c('food/10-07 Nasi goreng-21.JPG'),
+        'Nasi goreng',
+        '3/2',
+    ],
+    ['15 · Portrait', c('People/DSC_1021-portrait.jpg'), 'Portrait', '3/2'],
+    ['16 · Spread', c('food/10-07-3.JPG'), 'Food spread', '3/2'],
+    ['17 · Fishing', c('landscape/fishing-11.JPG'), 'Fishing scene', '3/2'],
+    ['18 · Fishing', c('People/fishing-22.JPG'), 'Fishing scene', '3/2'],
+]
+
 export const photoSections: PhotoSectionData[] = [
     {
         id: 'working-sheet',
@@ -46,166 +91,25 @@ export const photoSections: PhotoSectionData[] = [
         titleItalic: 'working sheet',
         meta: '18 frames',
         submeta: 'uncategorized · in progress',
-        photos: [
-            {
-                id: 'ws-01',
-                label: '01 · Fishing',
-                src: '/assets/creative/landscape/fishing-1.JPG',
-                alt: 'Fishing scene',
-                aspect: '3/2',
-                span: 2,
-            },
-            {
-                id: 'ws-02',
-                label: '02 · Tacos',
-                src: '/assets/creative/food/tacos-10.JPG',
-                alt: 'Tacos',
-                aspect: '2/3',
-                span: 2,
-            },
-            {
-                id: 'ws-03',
-                label: '03 · Birds',
-                src: '/assets/creative/animals/2 birds together-2-2.JPG',
-                alt: 'Two birds together',
-                aspect: '1/1',
-                span: 2,
-            },
-            {
-                id: 'ws-04',
-                label: '04 · Nasi goreng',
-                src: '/assets/creative/food/10-07 Nasi goreng-2.JPG',
-                alt: 'Nasi goreng',
-                aspect: '3/2',
-                span: 2,
-            },
-            {
-                id: 'ws-05',
-                label: '05 · Fishing',
-                src: '/assets/creative/landscape/fishing-3.JPG',
-                alt: 'Fishing scene',
-                aspect: '2/3',
-                span: 2,
-            },
-            {
-                id: 'ws-06',
-                label: '06 · Arowana',
-                src: '/assets/creative/animals/Arowana-Minnow-01-06-20-4.JPG',
-                alt: 'Arowana fish',
-                aspect: '5/4',
-                span: 2,
-            },
-            {
-                id: 'ws-07',
-                label: '07 · Coffee',
-                src: '/assets/creative/food/Coffee August 6-4.JPG',
-                alt: 'Coffee',
-                aspect: '3/2',
-                span: 2,
-            },
-            {
-                id: 'ws-08',
-                label: '08 · Portrait',
-                src: '/assets/creative/landscape/DSC_1066-portrait.jpg',
-                alt: 'Portrait',
-                aspect: '2/3',
-                span: 2,
-            },
-            {
-                id: 'ws-09',
-                label: '09 · Arowana',
-                src: '/assets/creative/animals/Arowana-Minnow-01-06-20-7.JPG',
-                alt: 'Arowana fish',
-                aspect: '5/4',
-                span: 2,
-            },
-            {
-                id: 'ws-10',
-                label: '10 · Spread',
-                src: '/assets/creative/food/10-07-2.JPG',
-                alt: 'Food spread',
-                aspect: '3/2',
-                span: 2,
-            },
-            {
-                id: 'ws-11',
-                label: '11 · Fishing',
-                src: '/assets/creative/landscape/fishing-16.JPG',
-                alt: 'Fishing scene',
-                aspect: '3/2',
-                span: 2,
-            },
-            {
-                id: 'ws-12',
-                label: '12 · Arowana',
-                src: '/assets/creative/animals/Arowana-Minnow-01-06-20-2.JPG',
-                alt: 'Arowana fish',
-                aspect: '3/2',
-                span: 2,
-            },
-            {
-                id: 'ws-13',
-                label: '13 · Portrait',
-                src: '/assets/creative/People/DSC_0698-portrait.jpg',
-                alt: 'Portrait',
-                aspect: '3/2',
-                span: 2,
-            },
-            {
-                id: 'ws-14',
-                label: '14 · Nasi goreng',
-                src: '/assets/creative/food/10-07 Nasi goreng-21.JPG',
-                alt: 'Nasi goreng',
-                aspect: '3/2',
-                span: 2,
-            },
-            {
-                id: 'ws-15',
-                label: '15 · Portrait',
-                src: '/assets/creative/People/DSC_1021-portrait.jpg',
-                alt: 'Portrait',
-                aspect: '3/2',
-                span: 2,
-            },
-            {
-                id: 'ws-16',
-                label: '16 · Spread',
-                src: '/assets/creative/food/10-07-3.JPG',
-                alt: 'Food spread',
-                aspect: '3/2',
-                span: 2,
-            },
-            {
-                id: 'ws-17',
-                label: '17 · Fishing',
-                src: '/assets/creative/landscape/fishing-11.JPG',
-                alt: 'Fishing scene',
-                aspect: '3/2',
-                span: 2,
-            },
-            {
-                id: 'ws-18',
-                label: '18 · Fishing',
-                src: '/assets/creative/People/fishing-22.JPG',
-                alt: 'Fishing scene',
-                aspect: '3/2',
-                span: 2,
-            },
-        ],
+        photos: SHEET.map(([label, src, alt, aspect], i) => ({
+            id: `ws-${String(i + 1).padStart(2, '0')}`,
+            label,
+            src,
+            alt,
+            aspect,
+            span: 2,
+        })),
     },
 ]
 
 export function flattenAllPhotos(): Array<Photo & { sectionLabel: string }> {
-    const flat: Array<Photo & { sectionLabel: string }> = [
+    return [
         { ...featuredPhoto, sectionLabel: 'Featured' },
+        ...photoSections.flatMap((s) =>
+            s.photos.map((p) => ({
+                ...p,
+                sectionLabel: `${s.title}${s.titleItalic}`,
+            }))
+        ),
     ]
-    for (const section of photoSections) {
-        for (const photo of section.photos) {
-            flat.push({
-                ...photo,
-                sectionLabel: `${section.title}${section.titleItalic}`,
-            })
-        }
-    }
-    return flat
 }

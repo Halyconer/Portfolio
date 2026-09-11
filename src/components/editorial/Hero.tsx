@@ -51,11 +51,9 @@ export function Hero() {
                     </div>
                 </div>
 
-                {/* Right Column: portrait. On md+ the image is absolutely
-                 * positioned inside the frame so it can't add height of its
-                 * own — the text column alone sets the row height, and the
-                 * frame stretches to match, keeping top and bottom edges of
-                 * both columns flush. */}
+                {/* Right column portrait: on md+ the image is absolutely
+                 * positioned so the text column alone sets the row height and
+                 * both columns' edges stay flush. */}
                 <div className="relative bg-paper-warm border border-rule p-3 max-w-[300px] w-full mx-auto md:mr-0">
                     <img
                         src="/assets/headshot.jpg"

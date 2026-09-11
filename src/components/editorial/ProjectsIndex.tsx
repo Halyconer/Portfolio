@@ -9,23 +9,21 @@ function UrlLink({ p }: { p: Project }) {
         : p.url.replace(/^https?:\/\//, '').replace(/\/$/, '')
     const cls =
         'mt-3 inline-flex items-baseline gap-1.5 font-mono text-xs text-ink underline underline-offset-4 decoration-1 decoration-rule-strong hover:text-muted transition-colors break-all'
-
-    if (isInternal) {
-        return (
-            <Link to={p.url} className={cls}>
-                <span>{display}</span>
-                <span aria-hidden className="opacity-70">
-                    ↗
-                </span>
-            </Link>
-        )
-    }
-    return (
-        <a href={p.url} target="_blank" rel="noopener" className={cls}>
+    const inner = (
+        <>
             <span>{display}</span>
             <span aria-hidden className="opacity-70">
                 ↗
             </span>
+        </>
+    )
+    return isInternal ? (
+        <Link to={p.url} className={cls}>
+            {inner}
+        </Link>
+    ) : (
+        <a href={p.url} target="_blank" rel="noopener" className={cls}>
+            {inner}
         </a>
     )
 }

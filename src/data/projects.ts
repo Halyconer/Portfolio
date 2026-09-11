@@ -6,7 +6,6 @@ export interface Project {
     tagline: string
     blurb: string
     stack: string[]
-    image?: string
     url?: string
 }
 
@@ -38,8 +37,6 @@ export const projects: Project[] = [
         tagline: 'Risk-parity weights, live broker.',
         blurb: 'Autonomous trader that computes risk-parity weights and executes trades in real time to rebalance a live portfolio.',
         stack: ['Python', 'IBKR', 'Pandas'],
-        image: 'ibkr.jpg',
-        url: '',
     },
     {
         n: '04',
@@ -49,7 +46,6 @@ export const projects: Project[] = [
         tagline: 'Black–Scholes, Monte Carlo, CAPM.',
         blurb: 'Suite of pricing tools: Black–Scholes options, Monte Carlo simulation, CAPM, and stochastic models.',
         stack: ['Python', 'NumPy', 'SciPy'],
-        image: 'Screenshot 2025-09-04 at 11.46.01.png',
         url: 'https://github.com/thompgt/black-scholes',
     },
     {
@@ -60,7 +56,6 @@ export const projects: Project[] = [
         tagline: 'Saved nonprofits $10k+ in outsourcing.',
         blurb: 'Full-stack BI for nonprofits. Database, pipelines, AutoML. Saved partners up to $10k in outsourcing.',
         stack: ['SQL', 'Python', 'AutoML'],
-        image: 'biokind.jpeg',
         url: 'https://github.com/Halyconer/biokind-projectteam1',
     },
 ]

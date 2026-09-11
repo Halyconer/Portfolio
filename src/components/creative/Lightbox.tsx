@@ -8,6 +8,10 @@ interface LightboxProps {
     onNavigate: (delta: number) => void
 }
 
+// Ghost arrow button floating at either edge of the lightbox.
+const NAV_CLASS =
+    'absolute top-1/2 -translate-y-1/2 bg-transparent border-0 cursor-pointer font-serif font-light text-ink py-4 px-6 opacity-40 hover:opacity-100 transition-opacity text-5xl max-md:text-3xl max-md:px-3 max-md:py-2'
+
 export function Lightbox({
     photos,
     activeIndex,
@@ -16,9 +20,7 @@ export function Lightbox({
 }: LightboxProps) {
     const isOpen = activeIndex !== null
 
-    // Keyboard nav + body scroll lock are tied to the open state. The cleanup
-    // returned from useEffect runs when the dep changes or the component
-    // unmounts — that's what restores scroll and removes the listener.
+    // Keyboard nav + body scroll lock while open; cleanup restores both.
     useEffect(() => {
         if (!isOpen) return
 
@@ -83,7 +85,7 @@ export function Lightbox({
                         onNavigate(-1)
                     }}
                     aria-label="Previous photo"
-                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-transparent border-0 cursor-pointer font-serif font-light text-ink py-4 px-6 opacity-40 hover:opacity-100 transition-opacity text-5xl max-md:text-3xl max-md:px-3 max-md:py-2"
+                    className={`left-4 ${NAV_CLASS}`}
                 >
                     ‹
                 </button>
@@ -108,7 +110,7 @@ export function Lightbox({
                         onNavigate(1)
                     }}
                     aria-label="Next photo"
-                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-transparent border-0 cursor-pointer font-serif font-light text-ink py-4 px-6 opacity-40 hover:opacity-100 transition-opacity text-5xl max-md:text-3xl max-md:px-3 max-md:py-2"
+                    className={`right-4 ${NAV_CLASS}`}
                 >
                     ›
                 </button>

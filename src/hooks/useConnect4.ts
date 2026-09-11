@@ -2,19 +2,24 @@ import { useState, useRef, useEffect } from 'react'
 import { apiFetch } from '../lib/api'
 import type { GameState, MoveResponse, PlayResponse } from '../types/connect4'
 
+const WIN_MSG: Record<'player' | 'ai' | 'tie', string> = {
+    player: 'You won! Great job!',
+    ai: 'AI wins! Try again?',
+    tie: "It's a tie! Well played!",
+}
+
 export function useConnect4() {
     const [gameState, setGameState] = useState<GameState | null>(null)
     const [status, setStatus] = useState('Click "New Game" to start!')
     const isProcessing = useRef(false)
     const aiMoveTimeout = useRef<number | null>(null)
 
-    // Clear any pending AI-move timeout if the component unmounts mid-game.
-    // Without this, setState fires after unmount → React warns and we leak.
+    // Clear any pending AI-move timeout on unmount so setState can't fire
+    // after the component is gone.
     useEffect(() => {
         return () => {
-            if (aiMoveTimeout.current !== null) {
+            if (aiMoveTimeout.current !== null)
                 window.clearTimeout(aiMoveTimeout.current)
-            }
         }
     }, [])
 
@@ -27,7 +32,6 @@ export function useConnect4() {
         if (isProcessing.current) return
         isProcessing.current = true
         setStatus('Starting new game...')
-
         try {
             const response = await apiFetch<PlayResponse>('/connect4/play', {
                 method: 'POST',
@@ -41,7 +45,6 @@ export function useConnect4() {
         } catch {
             setStatus('Failed to start new game. Check server connection.')
         }
-
         isProcessing.current = false
     }
 
@@ -67,15 +70,10 @@ export function useConnect4() {
                     game_over: true,
                     valid_cols: response.valid_cols,
                 })
-                if (response.winner === 'player') {
-                    setStatus('You won! Great job!')
-                } else if (response.winner === 'ai') {
-                    setStatus('AI wins! Try again?')
-                } else if (response.winner === 'tie') {
-                    setStatus("It's a tie! Well played!")
-                } else {
-                    setStatus('Game over!')
-                }
+                setStatus(
+                    (response.winner && WIN_MSG[response.winner]) ||
+                        'Game over!'
+                )
                 isProcessing.current = false
             } else {
                 setGameState({
@@ -85,24 +83,19 @@ export function useConnect4() {
                 })
                 setStatus('Your move made! AI is thinking...')
 
+                // Reveal the AI's reply after a beat so the player sees their
+                // own piece land first.
                 aiMoveTimeout.current = window.setTimeout(() => {
                     setGameState({
                         board: response.board_after_ai,
                         game_over: response.game_over,
                         valid_cols: response.valid_cols,
                     })
-                    if (
-                        response.ai_move !== null &&
-                        response.ai_move !== undefined
-                    ) {
-                        setStatus(
-                            `AI dropped in column ${response.ai_move + 1}. Your turn!`
-                        )
-                    } else {
-                        setStatus(
-                            'Your turn! Click a column to drop your piece.'
-                        )
-                    }
+                    setStatus(
+                        response.ai_move != null
+                            ? `AI dropped in column ${response.ai_move + 1}. Your turn!`
+                            : 'Your turn! Click a column to drop your piece.'
+                    )
                     aiMoveTimeout.current = null
                     isProcessing.current = false
                 }, 1000)

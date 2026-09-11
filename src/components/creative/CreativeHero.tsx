@@ -3,9 +3,7 @@ import { Link } from 'react-router-dom'
 export function CreativeHero() {
     return (
         <section className="px-8 pt-3.5 pb-6 max-md:px-5 max-sm:px-4">
-            {/* Meta line above the headline — back link, volume, byline.
-             * The back link replaces the previous "№ 04 · Photographs" tag so
-             * the standalone back-link row in the masthead can be dropped. */}
+            {/* Meta line above the headline — back link, volume, byline. */}
             <div className="grid grid-cols-[1fr_auto_1fr] gap-6 items-end mb-5 max-md:grid-cols-1 max-md:gap-1.5">
                 <div className="font-mono text-[10.5px] tracking-[0.18em] uppercase text-muted">
                     <Link
