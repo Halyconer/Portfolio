@@ -1,10 +1,12 @@
-import { StrictMode, lazy, Suspense } from 'react'
+import { lazy, StrictMode, Suspense } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createHashRouter, RouterProvider } from 'react-router-dom'
+
 import { App } from './App'
+import { CartProvider } from './ecommerce/context/CartProvider'
 import { HomePage } from './pages/HomePage'
 import { NotFoundPage } from './pages/NotFoundPage'
-import { CartProvider } from './ecommerce/context/CartProvider'
+
 import './index.css'
 
 // Lazy-load non-home routes so a first visit only ships the home bundle.

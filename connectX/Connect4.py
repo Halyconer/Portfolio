@@ -1,7 +1,9 @@
 import random
+import time
+
 import numpy as np
 from scipy.signal import convolve2d
-import time
+
 from scoring import minimax
 
 """

@@ -1,9 +1,10 @@
 import { useCallback, useMemo, useState } from 'react'
+
+import { CreativeFooter } from '../components/creative/CreativeFooter'
 import { CreativeHero } from '../components/creative/CreativeHero'
 import { FeaturedPlate } from '../components/creative/FeaturedPlate'
-import { PhotoSection } from '../components/creative/PhotoSection'
 import { Lightbox } from '../components/creative/Lightbox'
-import { CreativeFooter } from '../components/creative/CreativeFooter'
+import { PhotoSection } from '../components/creative/PhotoSection'
 import {
     featuredPhoto,
     flattenAllPhotos,

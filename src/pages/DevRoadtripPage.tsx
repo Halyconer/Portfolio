@@ -1,7 +1,7 @@
-import { useApiResource } from '../hooks/useApiResource'
-import { asset } from '../lib/assets'
 import { SectionEyebrow } from '../components/editorial/SectionEyebrow'
 import { StatusDot } from '../components/editorial/StatusDot'
+import { useApiResource } from '../hooks/useApiResource'
+import { asset } from '../lib/assets'
 
 interface Stats {
     total_calls_all_time: number

@@ -1,6 +1,7 @@
-import requests
 import base64
-from urllib.parse import urlencode, parse_qs, urlparse
+from urllib.parse import parse_qs, urlencode, urlparse
+
+import requests
 
 REDIRECT_URI = 'http://127.0.0.1:5001/callback'
 SPOTIFY_AUTH_URL = 'https://accounts.spotify.com/authorize'

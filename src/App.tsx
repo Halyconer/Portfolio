@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
-import { Masthead } from './components/editorial/Masthead'
+
 import { Colophon } from './components/editorial/Colophon'
+import { Masthead } from './components/editorial/Masthead'
 import { ErrorBoundary } from './components/ErrorBoundary'
 
 export function App() {

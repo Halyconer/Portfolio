@@ -1,7 +1,8 @@
 import Hue from '@uiw/react-color-hue'
+
 import { useLighting } from '../../hooks/useLighting'
-import { StatusDot } from './StatusDot'
 import type { StatusTone } from '../../types/status'
+import { StatusDot } from './StatusDot'
 
 interface LightDemoProps {
     apiStatus: { tone: StatusTone; label: string }

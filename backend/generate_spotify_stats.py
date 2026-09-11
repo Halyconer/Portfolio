@@ -1,11 +1,13 @@
 # backend/generate_spotify_stats.py
 
-import os
-import requests
 import base64
 import json
+import os
 from datetime import datetime
+
+import requests
 from dotenv import load_dotenv
+
 load_dotenv()
 
 # --- Configuration ---

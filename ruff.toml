@@ -1,0 +1,15 @@
+# Ruff configuration (repo-wide).
+#
+# Used for import sorting only via:
+#     ruff check --select I --fix .
+#     ruff check --select I .
+#
+# `known-first-party` keeps local application modules (Connect4, scoring, app)
+# in their own block below third-party imports rather than mixed into it.
+target-version = "py313"
+
+[lint]
+select = ["I"]
+
+[lint.isort]
+known-first-party = ["backend", "connectX", "Connect4", "scoring", "app"]

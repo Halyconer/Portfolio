@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+
 import { projects, type Project } from '../../data/projects'
 
 function UrlLink({ p }: { p: Project }) {
