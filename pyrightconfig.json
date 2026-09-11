@@ -1,0 +1,5 @@
+{
+    "venvPath": "/home/kingfisher/Documents/repos/portfolio",
+    "venv": ".venv",
+    "extraPaths": ["connectX", "backend"]
+}
