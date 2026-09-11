@@ -1,8 +1,16 @@
 # Portfolio Deployment
 
-Operational runbook for the self-hosted backend stack running on the Raspberry Pi.
+Operational runbook: frontend hosting on Vercel plus the self-hosted backend stack running on the Raspberry Pi.
 
 Architecture-level "why" lives in the inline comments of `docker-compose.yml` and `nginx/nginx.conf` — this doc is just *how to run it*.
+
+## Frontend Hosting (Vercel)
+
+The frontend is hosted on Vercel via the GitHub integration: every push to
+`main` is built automatically (Vite, zero-config — no `vercel.json` in the
+repo) and served at adrianeddy.com. There is no `pnpm deploy` script; the old
+GitHub Pages / gh-pages flow was removed. Build logs and rollbacks live in
+the Vercel dashboard's deployment history.
 
 ## Architecture
 
