@@ -5,42 +5,26 @@
         ".opencode/personal.md"
     ],
     "mcp": {
-        "vercel": {
-            "type": "local",
-            "command": [
-                "npx",
-                "-y",
-                "mcp-remote",
-                "https://mcp.vercel.com"
-            ],
-            "enabled": true
-        },
-        "figma": {
-            "type": "local",
-            "command": [
-                "npx",
-                "-y",
-                "mcp-remote",
-                "https://mcp.figma.com/mcp"
-            ],
-            "enabled": true
-        },
-        "cloudflare-docs": {
-            "type": "remote",
-            "url": "https://docs.mcp.cloudflare.com/mcp",
-            "enabled": true
-        },
-        "playwright": {
-            "type": "local",
-            "command": [
-                "npx",
-                "-y",
-                "@playwright/mcp",
-                "--executable-path",
-                "/usr/bin/chromium-browser",
-                "--headless"
-            ],
-            "enabled": true
+        "servers": {
+            "vercel": {
+                "type": "remote",
+                "url": "https://mcp.vercel.com"
+            },
+            "cloudflare-docs": {
+                "type": "remote",
+                "url": "https://docs.mcp.cloudflare.com/mcp"
+            },
+            "playwright": {
+                "type": "local",
+                "command": [
+                    "npx",
+                    "-y",
+                    "@playwright/mcp",
+                    "--executable-path",
+                    "/usr/bin/chromium-browser",
+                    "--headless"
+                ]
+            }
         }
     },
     "permission": {
