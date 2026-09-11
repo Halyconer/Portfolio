@@ -14,8 +14,9 @@ cp .env.example .env
 
 - `FLASK_ENV`: Set to `development` or `production` (default: `production`)
 - `DEVELOPMENT_MODE`: Set to `true` to enable development features (default: `false`)
-- `BULB_IP`: IP address of your smart bulb (default: `192.168.1.210`)
-- `ALLOWED_ORIGIN`: Allowed origin for production mode (default: GitHub Pages URL)
+- `BULB_IP` / `BULB_MAC`: the LIFX bulb's address — required on this network
+  (broadcast discovery is blocked; these rot when the bulb or subnet changes, see DEPLOYMENT.md)
+- `ALLOWED_ORIGIN`: Allowed origin for production mode (default: `https://www.adrianeddy.com`)
 
 ## Development Mode Features
 
@@ -46,13 +47,6 @@ curl -X POST http://localhost:5001/set_brightness \
 # Check development status
 curl http://localhost:5001/dev/status
 ```
-
-### Test with Postman
-
-1. Set method to POST
-2. URL: `http://localhost:5001/set_brightness`
-3. Headers: `Content-Type: application/json`
-4. Body: `{"brightness": 50}`
 
 ## Production Mode
 

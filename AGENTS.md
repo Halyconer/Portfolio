@@ -6,7 +6,7 @@ Instructions for AI coding agents working in this repository.
 
 Personal portfolio website (Adrian Eddy — adrianeddy.com) with interactive
 demos. Read `README.md` for the top-level overview and `DEPLOYMENT.md` for the
-self-hosted backend runbook.
+deployment runbook (frontend + backend).
 
 ## Personal context (machine-local)
 
@@ -24,8 +24,9 @@ repo.
 Two halves, deployed separately:
 
 - **Frontend** (`src/`): React 19 + TypeScript + Vite, Tailwind CSS v4 (via
-  `@tailwindcss/vite`), Framer Motion, react-router-dom. Deployed to GitHub
-  Pages (`pnpm deploy` → gh-pages → `dist/`). Talks to the backend through
+  `@tailwindcss/vite`), Framer Motion, react-router-dom. Deployed on Vercel
+  (GitHub integration: pushing to `main` auto-builds and deploys — there is
+  no deploy script). Talks to the backend through
   `/api` (dev proxy in `vite.config.ts`) → `https://api.adrianeddy.com`.
 - **Backend** (Python Flask, deployed on a Raspberry Pi via docker-compose):
   - `backend/` — lighting control (LIFX bulb) + generated JSON stats
@@ -43,7 +44,7 @@ pnpm build          # tsc && vite build (type-check + production build)
 pnpm preview        # preview production build locally
 pnpm format         # prettier --write src/
 pnpm lint           # prettier --check src/   <-- run after edits
-pnpm deploy         # build then push dist/ to GitHub Pages
+git push            # deploy frontend: Vercel auto-builds on push to main
 ```
 
 Backend local dev (no Docker): see `backend/README_DEV.md`.
@@ -72,17 +73,13 @@ Backend local dev (no Docker): see `backend/README_DEV.md`.
 ## Gotchas
 
 - `/data/` is runtime state (sqlite, generated JSON) served by the backend and
-  is never committed. Generated JSON like `reading.json` / `spotify_stats.json`
-  is produced by scripts in `backend/` — edit those scripts, not the output.
-- CORS is handled entirely in `nginx/nginx.conf` (origin allowlist + preflight
-  handling). After editing it on the Pi, restart the nginx container — a full
-  `docker restart`, not `nginx -s reload` (single-file bind mount).
+  is never committed. Generated JSON like `reading.json` is produced by scripts
+  in `backend/` — edit those scripts, not the output.
 - The backend hard-checks `Origin`/`Referer` against `ALLOWED_ORIGIN`. The Vite
   dev proxy overrides these headers (`vite.config.ts`) — keep that intact.
-- On the Pi, always run `docker compose` from `~/portfolio` — the `./data`
-  bind mount is relative to the cwd you ran it from.
-- LIFX bulb env vars (`BULB_IP`, `BULB_MAC`) go stale when the bulb/router
-  changes; they're required (broadcast discovery doesn't work on this network).
+- Backend failure modes (CORS, nginx restarts, stale bulb env vars, bind-mount
+  cwd) have detailed fixes in DEPLOYMENT.md's Troubleshooting — check there
+  before debugging from scratch.
 
 ## AI session setup (opencode)
 

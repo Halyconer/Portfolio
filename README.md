@@ -4,9 +4,9 @@ Personal portfolio website featuring interactive demos and my resume.
 
 ## Tech Stack
 
-**Frontend:** React, TypeScript, Tailwind CSS, Framer Motion, Vite
+**Frontend:** React, TypeScript, Tailwind CSS, Framer Motion, Vite (hosted on Vercel)
 **Backend:** Python Flask, Raspberry Pi deployment
-**Smart Home:** Yeelight bulbs, nginx reverse proxy
+**Smart Home:** LIFX bulbs, nginx reverse proxy
 
 ## Quick Start
 
@@ -15,14 +15,12 @@ pnpm install
 pnpm dev
 ```
 
-For backend setup, see [DEPLOYMENT.md](DEPLOYMENT.md)
+All commands (build, preview, format, lint) are listed in [AGENTS.md](AGENTS.md).
 
-## Scripts
+## Deployment
 
-- `pnpm dev` — Start dev server
-- `pnpm build` — Type-check and build for production
-- `pnpm preview` — Preview production build locally
-- `pnpm deploy` — Deploy to GitHub Pages
+Both halves deploy automatically — details in [DEPLOYMENT.md](DEPLOYMENT.md):
+frontend via Vercel on push to `main`, backend via docker compose on the Pi.
 
 ## Live Demo
 
