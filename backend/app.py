@@ -1,15 +1,16 @@
-from flask import Flask, request, jsonify, send_file
-import sqlite3
 import os
-from dotenv import load_dotenv
+import sqlite3
 from datetime import datetime
+
+from dotenv import load_dotenv
+from flask import Flask, jsonify, request, send_file
 
 load_dotenv()
 
 # Configuration from environment variables
 FLASK_ENV = os.getenv('FLASK_ENV', 'production')
 DEVELOPMENT_MODE = os.getenv('DEVELOPMENT_MODE', 'false').lower() == 'true'
-ALLOWED_ORIGIN = os.getenv('ALLOWED_ORIGIN', 'https://halyconer.github.io')
+ALLOWED_ORIGIN = os.getenv('ALLOWED_ORIGIN', 'https://www.adrianeddy.com')
 
 # LIFX A19 — discovered via LAN broadcast; cached after first discovery
 _lifx_light = None
@@ -45,7 +46,7 @@ def get_bulb():
     if _lifx_light is not None:
         return _lifx_light
     try:
-        from lifxlan import Light, LifxLAN
+        from lifxlan import LifxLAN, Light
         mac = os.getenv("BULB_MAC")
         ip = os.getenv("BULB_IP")
         if mac and ip:
