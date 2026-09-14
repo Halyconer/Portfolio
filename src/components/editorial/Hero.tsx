@@ -19,8 +19,8 @@ export function Hero() {
                             web. Beyond telling you a little about myself
                             through my work, I hope that this minor detour of
                             yours turns out to be a little fun! That's basically
-                            the entire premise of this website. If you prefer a
-                            traditional résumé, you can find mine{' '}
+                            the entire premise of this website, but if you
+                            prefer a traditional résumé, you can find mine{' '}
                             <a
                                 href="#resume"
                                 onClick={(e) => {
@@ -32,10 +32,10 @@ export function Hero() {
                             >
                                 here
                             </a>
-                            . Regardless, if you have any questions regarding
-                            what I do, why I do it, how I do it, or anything
-                            else for that matter, please contact me at your
-                            earliest convenience:{' '}
+                            . If you have any questions regarding what I do, why
+                            I do it, how I do it, or anything else for that
+                            matter, please contact me at your earliest
+                            convenience:{' '}
                             <a
                                 href="mailto:business@adrianeddy.com"
                                 className="text-muted underline hover:text-accent transition-colors duration-200"
