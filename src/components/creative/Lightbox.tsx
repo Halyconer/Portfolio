@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 
 import type { Photo } from '../../data/creativePhotos'
+import { formatBytes } from '../../lib/formatBytes'
 
 interface LightboxProps {
     photos: Array<Photo & { sectionLabel: string }>
@@ -74,7 +75,7 @@ export function Lightbox({
             </div>
 
             <div
-                className="flex-1 flex items-center justify-center relative px-20 max-md:px-3"
+                className="flex-1 min-h-0 flex items-center justify-center relative px-20 max-md:px-3"
                 onClick={(e) => {
                     if (e.target === e.currentTarget) onClose()
                 }}
@@ -93,7 +94,7 @@ export function Lightbox({
 
                 {photo.src ? (
                     <img
-                        src={photo.src}
+                        src={photo.fullSrc ?? photo.src}
                         alt={photo.alt ?? photo.label}
                         decoding="async"
                         className="max-w-full max-h-full object-contain block bg-placeholder"
@@ -120,6 +121,25 @@ export function Lightbox({
             <div className="text-center px-7 pt-5 pb-7 text-eyebrow">
                 <b className="text-ink font-medium">{photo.sectionLabel}</b>{' '}
                 &nbsp;·&nbsp; <span>{photo.label}</span>
+                {photo.originalSrc && (
+                    <>
+                        {' '}
+                        &nbsp;·&nbsp;{' '}
+                        <a
+                            href={photo.originalSrc}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            download
+                            className="text-ink no-underline border-b border-ink pb-0.5 hover:text-accent hover:border-accent transition-colors duration-200"
+                        >
+                            Full res
+                            {photo.originalBytes
+                                ? ` (${formatBytes(photo.originalBytes)})`
+                                : ''}{' '}
+                            <span aria-hidden="true">↓</span>
+                        </a>
+                    </>
+                )}
             </div>
         </div>
     )

@@ -7,10 +7,42 @@ Architecture-level "why" lives in the inline comments of `docker-compose.yml` an
 ## Frontend Hosting (Vercel)
 
 The frontend is hosted on Vercel via the GitHub integration: every push to
-`main` is built automatically (Vite, zero-config — no `vercel.json` in the
-repo) and served at adrianeddy.com. There is no `pnpm deploy` script; the old
-GitHub Pages / gh-pages flow was removed. Build logs and rollbacks live in
-the Vercel dashboard's deployment history.
+`main` is built automatically (Vite, zero-config build — `vercel.json` only
+sets cache headers for `/assets/creative/*`) and served at
+adrianeddy.com. There is no `pnpm deploy` script; the old GitHub Pages /
+gh-pages flow was removed. Build logs and rollbacks live in the Vercel
+dashboard's deployment history.
+
+## Creative Photo Originals (Cloudflare R2)
+
+The `/creative` gallery ships only optimized WebP derivatives in git
+(`public/assets/creative/`, regenerated with `pnpm optimize:creative`). The
+untouched full-res masters (~255MB) live in the `adrianeddy-creative` R2
+bucket under `creative/`, served through the `photos.adrianeddy.com` custom
+domain; the lightbox links them on demand. Repo-side details in AGENTS.md.
+
+One-time setup:
+
+1. Cloudflare dashboard → R2 → create bucket `adrianeddy-creative`.
+2. Bucket → Settings → Public access → connect custom domain
+   `photos.adrianeddy.com` (`adrianeddy.com` is already a Cloudflare zone,
+   so the DNS record is created for you). Keep the managed `r2.dev` domain
+   disabled — it is rate-limited and not for production.
+3. Create an R2 API token (R2 → Manage R2 API Tokens → Object Read & Write)
+   and configure an rclone S3 remote pointed at
+   `https://<account-id>.r2.cloudflarestorage.com`.
+4. Upload the masters:
+
+```bash
+rclone copy masters/creative r2:adrianeddy-creative/creative \
+  --exclude "manifest.json" \
+  --header-upload "Cache-Control: public, max-age=31536000, immutable" \
+  --header-upload "Content-Disposition: attachment"
+```
+
+Restore the masters on a fresh machine with
+`rclone copy r2:adrianeddy-creative/creative masters/creative`.
+
 
 ## Architecture
 

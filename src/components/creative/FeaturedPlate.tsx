@@ -16,8 +16,17 @@ export function FeaturedPlate({ photo, onClick }: FeaturedPlateProps) {
             >
                 {photo.src ? (
                     <img
-                        src={photo.src}
+                        // Featured plate is the LCP: eager + high priority.
+                        // srcSet lets small viewports take the 960 file.
+                        src={photo.fullSrc ?? photo.src}
+                        srcSet={
+                            photo.fullSrc && photo.src
+                                ? `${photo.src} 960w, ${photo.fullSrc} 2560w`
+                                : undefined
+                        }
+                        sizes="100vw"
                         alt={photo.alt ?? photo.label}
+                        fetchPriority="high"
                         decoding="async"
                         className="w-full h-full object-cover block"
                     />
