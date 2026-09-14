@@ -22,7 +22,8 @@
                     "@playwright/mcp",
                     "--executable-path",
                     "/usr/bin/chromium-browser",
-                    "--headless"
+                    "--headless",
+                    "--isolated"
                 ]
             }
         }
