@@ -15,6 +15,9 @@ refresh_token
 
 # Machine-local personal context for AI sessions — never commit
 .opencode/personal.md
+
+# Full-res creative photo masters (256MB+) — live on Cloudflare R2, never commit
+/masters/
 # opencode machine-local state (regenerated on any machine)
 .opencode/node_modules/
 .opencode/package.json

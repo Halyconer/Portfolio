@@ -74,6 +74,15 @@ Backend local dev (no Docker): see `backend/README_DEV.md`.
   `src/data/creativePhotos.ts`, `src/data/projects.ts`). Runtime data fetched
   from the backend is typed in `src/types/` and fetched via
   `src/lib/api.ts` (`apiFetch`), which normalizes errors into `ApiError` kinds.
+- **Creative photos**: full-res masters live in `masters/creative/`
+  (gitignored; their source of truth and backup is the `adrianeddy-creative`
+  R2 bucket — see DEPLOYMENT.md). After adding/changing a master, run
+  `pnpm optimize:creative` (sharp) to regenerate the committed WebP
+  derivatives: `-960.webp` for grid tiles, `-2560.webp` for the featured
+  plate and lightbox. The lightbox links the untouched original from R2 via
+  `ORIGINALS_BASE` in `src/data/creativePhotos.ts`. Derivatives are cached for
+  a day (`vercel.json`); rename the file when its pixels change if the update
+  must be visible immediately.
 - **API calls**: route through `src/lib/api.ts` and `useApiResource.ts` — don't
   hand-roll `fetch` in components. Handle aborted requests with `isAbortError`.
 - **State**: React context for cross-cutting state (e.g.
