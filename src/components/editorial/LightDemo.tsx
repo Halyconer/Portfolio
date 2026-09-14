@@ -36,7 +36,7 @@ export function LightDemo({ apiStatus }: LightDemoProps) {
         <div className="p-8 relative border border-rule bg-paper-warm flex flex-col max-sm:p-5">
             <div className="flex justify-between items-baseline mb-4 gap-3">
                 <h3 className="font-serif font-light text-heading m-0 text-ink">
-                    Turn on the light under my desk.
+                    Turn on my lights!
                 </h3>
                 <StatusDot tone={apiStatus.tone}>
                     <span className="text-xs text-muted whitespace-nowrap">
