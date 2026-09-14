@@ -87,7 +87,7 @@ export function Connect4Inline() {
             <div className="p-8 relative border border-rule bg-paper-warm flex flex-col max-sm:p-5">
                 <div className="flex justify-between items-baseline mb-4 gap-3">
                     <h3 className="font-serif font-light text-heading m-0 text-ink">
-                        Beat a search algorithm.
+                        Play Connect 4!
                     </h3>
                     <span
                         className="text-xs whitespace-nowrap"

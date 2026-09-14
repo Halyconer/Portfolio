@@ -15,39 +15,35 @@ export function Hero() {
                         </h1>
 
                         <p className="mt-5 measure font-serif font-light text-ink text-lg leading-relaxed m-0">
-                            Hi and thank you for visiting my nook on the web.
-                            From a very young age my favourite thing to do in
-                            the world was tinker, and my parents getting me a
-                            Raspberry Pi was one of the greatest things to
-                            happen to me in that respect, leading me to this
-                            website and my job. This website tells my story
-                            exploring the world of computers, networking, and
-                            hardware.
+                            Hi and thank you for visiting my little nook on the
+                            web. Beyond telling you a little about myself
+                            through my work, I hope that this minor detour of
+                            yours turns out to be a little fun! That's basically
+                            the entire premise of this website. If you prefer a
+                            traditional résumé, you can find mine{' '}
+                            <a
+                                href="#resume"
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    scrollTo('resume')
+                                }}
+                                className="text-accent underline hover:text-accent-deep transition-colors"
+                                style={{ textUnderlineOffset: 4 }}
+                            >
+                                here
+                            </a>
+                            . Regardless, if you have any questions regarding
+                            what I do, why I do it, how I do it, or anything
+                            else for that matter, please contact me at your
+                            earliest convenience:{' '}
+                            <a
+                                href="mailto:business@adrianeddy.com"
+                                className="text-muted underline hover:text-accent transition-colors duration-200"
+                                style={{ textUnderlineOffset: 4 }}
+                            >
+                                business@adrianeddy.com
+                            </a>
                         </p>
-                    </div>
-
-                    <div className="flex gap-3 mt-5 flex-wrap items-center max-sm:mt-4">
-                        <button
-                            type="button"
-                            onClick={() => scrollTo('resume')}
-                            className="btn-reset bg-ink text-paper py-3 px-5 text-sm inline-flex items-center gap-2 hover:bg-ink-soft transition-colors duration-200"
-                        >
-                            Read Résumé ↓
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => scrollTo('demos')}
-                            className="btn-reset text-ink py-3 px-5 text-sm border border-rule-strong inline-flex items-center gap-2 hover:bg-ink hover:text-paper transition-colors duration-200"
-                        >
-                            Live Demos ↓
-                        </button>
-                        <a
-                            href="mailto:business@adrianeddy.com"
-                            className="text-muted text-sm underline self-center hover:text-accent transition-colors duration-200"
-                            style={{ textUnderlineOffset: 4 }}
-                        >
-                            business@adrianeddy.com
-                        </a>
                     </div>
                 </div>
 
