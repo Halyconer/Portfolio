@@ -5,6 +5,8 @@
 export interface ReadingBook {
     title: string
     author: string
+    /** Written review, or null if the book wasn't reviewed. */
+    review: string | null
 }
 
 export interface RecentRead extends ReadingBook {

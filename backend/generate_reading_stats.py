@@ -33,9 +33,11 @@ STATUS_CURRENTLY_READING = 2
 STATUS_READ = 3
 
 # One request fetches everything: username (for the profile link), the
-# currently-reading shelf, and the N most recently finished books with their
-# ratings. GraphQL aliases (currently_reading:, recent_reads:) let us query
-# user_books twice with different filters in a single round trip.
+# currently-reading shelf, and recently finished books with their ratings and
+# reviews. GraphQL aliases (currently_reading:, recent_reads:) let us query
+# user_books twice with different filters in a single round trip. We ask for
+# up to TOTAL_BOOKS recently finished books and trim in Python once we know how
+# many currently-reading books there are.
 QUERY = """
 query PortfolioShelf($recentLimit: Int!) {
   me {
@@ -44,6 +46,7 @@ query PortfolioShelf($recentLimit: Int!) {
       where: {status_id: {_eq: 2}}
       order_by: {updated_at: desc}
     ) {
+      review
       book { title contributions { author { name } } }
     }
     recent_reads: user_books(
@@ -52,6 +55,7 @@ query PortfolioShelf($recentLimit: Int!) {
       limit: $recentLimit
     ) {
       rating
+      review
       book { title contributions { author { name } } }
     }
   }
@@ -100,6 +104,14 @@ def book_entry(user_book):
     }
 
 
+def clean_review(review):
+    """Normalize Hardcover's review text to a trimmed string, or None."""
+    if not isinstance(review, str):
+        return None
+    text = review.strip()
+    return text or None
+
+
 def main():
     load_env_file()
 
@@ -108,13 +120,15 @@ def main():
         print('Error: HARDCOVER_API_TOKEN is not set (backend/.env).')
         sys.exit(1)
 
-    recent_count = int(os.environ.get('HARDCOVER_RECENT_COUNT', '3'))
+    # Total number of rows the shelf should show. Currently-reading books are
+    # never trimmed, so this caps *finished* books after they're accounted for.
+    total_books = int(os.environ.get('HARDCOVER_TOTAL_BOOKS', '8'))
 
     print('Fetching reading shelf from Hardcover...')
     try:
         response = requests.post(
             HARDCOVER_GRAPHQL_URL,
-            json={'query': QUERY, 'variables': {'recentLimit': recent_count}},
+            json={'query': QUERY, 'variables': {'recentLimit': total_books}},
             headers={
                 'Authorization': f'Bearer {token}',
                 'Content-Type': 'application/json',
@@ -146,22 +160,36 @@ def main():
         print('❌ Unexpected response shape: no `me` in data.')
         sys.exit(1)
 
+    currently_reading = [
+        {**book_entry(ub), 'review': clean_review(ub.get('review'))}
+        for ub in me.get('currently_reading', [])
+    ]
+    # Finished books fill whatever slots are left after the current reads, so
+    # the shelf tops out at `total_books` rows (unless you're reading more than
+    # that at once, in which case the current reads win and this list is empty).
+    recent_slots = max(0, total_books - len(currently_reading))
+    recent_reads = [
+        {
+            **book_entry(ub),
+            'rating': ub.get('rating'),
+            'review': clean_review(ub.get('review')),
+        }
+        for ub in (me.get('recent_reads') or [])[:recent_slots]
+    ]
+
     output = {
         'generated_at': datetime.now(timezone.utc).isoformat(),
         'username': me.get('username'),
-        'currently_reading': [book_entry(ub) for ub in me.get('currently_reading', [])],
-        'recent_reads': [
-            {**book_entry(ub), 'rating': ub.get('rating')}
-            for ub in me.get('recent_reads', [])
-        ],
+        'currently_reading': currently_reading,
+        'recent_reads': recent_reads,
     }
 
     with open(OUTPUT_FILENAME, 'w') as f:
         json.dump(output, f, indent=4)
 
     print(
-        f"✅ Saved {len(output['currently_reading'])} currently-reading and "
-        f"{len(output['recent_reads'])} recent reads to {OUTPUT_FILENAME}"
+        f"✅ Saved {len(currently_reading)} currently-reading and "
+        f"{len(recent_reads)} recent reads to {OUTPUT_FILENAME}"
     )
 
 

@@ -3,7 +3,8 @@ import type { ReadingStats } from '../../types/reading'
 
 /**
  * Reading shelf, fed live from Hardcover via the Pi backend (/reading.json).
- * Currently-reading books show a status label; finished ones show stars.
+ * Currently-reading books show a status label; finished ones show stars. A
+ * written review, when present, hangs below its row as an indented pull-quote.
  * Renders nothing if the Pi is unreachable or the shelf is empty.
  */
 
@@ -61,22 +62,31 @@ export function Reading() {
                     return (
                         <div
                             key={`${b.title}-${i}`}
-                            className="flex items-baseline gap-3 py-3 border-b border-rule"
+                            className="py-3 border-b border-rule"
                         >
-                            <span className="font-serif text-ink">
-                                {b.title}{' '}
-                                <span className="text-muted">— {b.author}</span>
-                            </span>
-                            {right && (
-                                <>
-                                    {/* Dotted rule on the text baseline —
-                                     * classic TOC leader. */}
-                                    <span
-                                        aria-hidden
-                                        className="flex-1 border-b border-dotted border-rule-strong"
-                                    />
-                                    {right}
-                                </>
+                            <div className="flex items-baseline gap-3">
+                                <span className="font-serif text-ink">
+                                    {b.title}{' '}
+                                    <span className="text-muted">
+                                        — {b.author}
+                                    </span>
+                                </span>
+                                {right && (
+                                    <>
+                                        {/* Dotted rule on the text baseline —
+                                         * classic TOC leader. */}
+                                        <span
+                                            aria-hidden
+                                            className="flex-1 border-b border-dotted border-rule-strong"
+                                        />
+                                        {right}
+                                    </>
+                                )}
+                            </div>
+                            {b.review && (
+                                <p className="mt-2 mb-0 max-w-[54ch] border-l border-rule-strong pl-3 font-serif italic text-[0.92rem] leading-[1.55] text-ink-soft whitespace-pre-line">
+                                    {b.review}
+                                </p>
                             )}
                         </div>
                     )
