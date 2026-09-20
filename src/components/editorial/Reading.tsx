@@ -1,12 +1,46 @@
+import { useState } from 'react'
+
 import { useApiResource } from '../../hooks/useApiResource'
 import type { ReadingStats } from '../../types/reading'
 
 /**
  * Reading shelf, fed live from Hardcover via the Pi backend (/reading.json).
  * Currently-reading books show a status label; finished ones show stars. A
- * written review, when present, hangs below its row as an indented pull-quote.
+ * written review, when present, hangs below its row as a full-width indented
+ * pull-quote, clamped to REVIEW_LIMIT characters with a "Read more" toggle.
  * Renders nothing if the Pi is unreachable or the shelf is empty.
  */
+
+/** Character budget before a review is truncated behind "Read more". */
+const REVIEW_LIMIT = 240
+
+function truncateReview(text: string): string {
+    const cut = text.slice(0, REVIEW_LIMIT)
+    const lastSpace = cut.lastIndexOf(' ')
+    return `${cut.slice(0, lastSpace > 0 ? lastSpace : REVIEW_LIMIT).trimEnd()}…`
+}
+
+function Review({ text }: { text: string }) {
+    const [expanded, setExpanded] = useState(false)
+    const isLong = text.length > REVIEW_LIMIT
+
+    return (
+        <div className="mt-2 border-l border-rule-strong pl-3">
+            <p className="m-0 font-serif italic text-[0.92rem] leading-[1.55] text-ink-soft whitespace-pre-line">
+                {isLong && !expanded ? truncateReview(text) : text}
+            </p>
+            {isLong && (
+                <button
+                    type="button"
+                    onClick={() => setExpanded((v) => !v)}
+                    className="btn-reset text-label mt-1.5 hover:text-ink transition-colors"
+                >
+                    {expanded ? 'Show less' : 'Read more'}
+                </button>
+            )}
+        </div>
+    )
+}
 
 function Stars({ rating }: { rating: number }) {
     // Half-star steps from Hardcover — round to whole stars for display.
@@ -83,11 +117,7 @@ export function Reading() {
                                     </>
                                 )}
                             </div>
-                            {b.review && (
-                                <p className="mt-2 mb-0 max-w-[54ch] border-l border-rule-strong pl-3 font-serif italic text-[0.92rem] leading-[1.55] text-ink-soft whitespace-pre-line">
-                                    {b.review}
-                                </p>
-                            )}
+                            {b.review && <Review text={b.review} />}
                         </div>
                     )
                 })}
