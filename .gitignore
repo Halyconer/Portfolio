@@ -23,3 +23,6 @@ refresh_token
 .opencode/package.json
 .opencode/package-lock.json
 .opencode/bun.lock
+
+# Playwright MCP artifacts (page snapshots, traces) from local browser sessions
+.playwright-mcp/
