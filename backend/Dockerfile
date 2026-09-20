@@ -39,7 +39,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Now we copy the rest of the backend code. This layer will invalidate on any
 # code change, but that's fine — it's just a file copy, not a slow pip install.
 #
-# Assumption: your docker build context will be ~/Welcome-to-my-Portfolio/backend/
+# Assumption: your docker build context will be ~/repos/portfolio/backend/
 # If you run `docker build` from the repo root, adjust these paths accordingly.
 COPY . .
 

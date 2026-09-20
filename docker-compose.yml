@@ -54,7 +54,7 @@ services:
     #   ./data — a local directory next to this compose file, used as a
     #   temporary stand-in for /mnt/hdd/portfolio (which is on an HDD not yet
     #   connected). When the HDD is ready, change this to /mnt/hdd/portfolio.
-    #   Create this directory on the Pi before running: mkdir -p ~/Welcome-to-my-Portfolio/data
+    #   Create this directory on the Pi before running: mkdir -p ~/repos/portfolio/data
     #
     # CONTAINER PATH (right side):
     #   /data — the directory we created in the Dockerfile. At runtime, the

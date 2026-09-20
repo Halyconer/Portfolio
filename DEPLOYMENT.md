@@ -71,8 +71,9 @@ All three containers run on host networking, so they share the Pi's network name
 Assumes Docker + Docker Compose are installed and the Cloudflare Tunnel is set up (see the `adrian-glass` repo — `cloudflared` runs as a systemd service and survives reboots on its own).
 
 ```bash
-git clone https://github.com/Halyconer/Welcome-to-my-Portfolio.git ~/portfolio
-cd ~/portfolio
+mkdir -p ~/repos
+git clone https://github.com/Halyconer/Portfolio.git ~/repos/portfolio
+cd ~/repos/portfolio
 
 # The portfolio service bind-mounts ./data for calls.db and stats.json.
 # Without this directory, the container will fail to start.
@@ -94,7 +95,7 @@ docker compose up -d --build
 ## Everyday Operations
 
 ```bash
-cd ~/portfolio
+cd ~/repos/portfolio
 
 # Pull latest code and rebuild any changed images
 git pull
@@ -152,7 +153,7 @@ All routed through the Cloudflare Tunnel → nginx → the appropriate Flask app
 **Bulb not responding** — check `BULB_IP` / `BULB_MAC` in `backend/.env` against what Home Assistant reports for the bulb; these go stale if the bulb is replaced or the router/subnet changes (this exact failure happened 2026-07-12: the env pointed at a long-gone bulb on a 192.168.1.x subnet). After editing `.env`, recreate the container (`docker compose up -d --no-build portfolio`) — env vars are injected at container creation, not on restart. Reproduce the failure from the Pi with:
 `curl -X POST http://localhost:5001/set_brightness -H "Content-Type: application/json" -H "Origin: https://www.adrianeddy.com" -d '{"brightness": 50}'`
 
-**Data wiped after recreate** — the bind mount is `./data:/data` relative to the directory you ran `docker compose` from. If you accidentally ran it from a different cwd, a new empty `data/` directory was created elsewhere. Always run compose commands from `~/portfolio`.
+**Data wiped after recreate** — the bind mount is `./data:/data` relative to the directory you ran `docker compose` from. If you accidentally ran it from a different cwd, a new empty `data/` directory was created elsewhere. Always run compose commands from `~/repos/portfolio`.
 
 ## Development
 

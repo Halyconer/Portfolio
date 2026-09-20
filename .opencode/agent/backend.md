@@ -21,4 +21,4 @@ You are a backend specialist for the portfolio's self-hosted stack.
   changes. Env vars are injected at container creation, not restart.
 - Run book is in `DEPLOYMENT.md`; local dev without Docker in
   `backend/README_DEV.md`. On the Pi, always run `docker compose` from
-  `~/portfolio` (the `./data` bind mount is relative to the cwd).
+  `~/repos/portfolio` (the `./data` bind mount is relative to the cwd).
