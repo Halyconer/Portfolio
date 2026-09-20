@@ -6,13 +6,13 @@ import type { ReadingStats } from '../../types/reading'
 /**
  * Reading shelf, fed live from Hardcover via the Pi backend (/reading.json).
  * Currently-reading books show a status label; finished ones show stars. A
- * written review, when present, hangs below its row as a full-width indented
- * pull-quote, clamped to REVIEW_LIMIT characters with a "Read more" toggle.
+ * written review, when present, hangs below its row as a smaller muted note,
+ * clamped to REVIEW_LIMIT characters with a "Read more" toggle.
  * Renders nothing if the Pi is unreachable or the shelf is empty.
  */
 
 /** Character budget before a review is truncated behind "Read more". */
-const REVIEW_LIMIT = 240
+const REVIEW_LIMIT = 160
 
 function truncateReview(text: string): string {
     const cut = text.slice(0, REVIEW_LIMIT)
@@ -25,20 +25,21 @@ function Review({ text }: { text: string }) {
     const isLong = text.length > REVIEW_LIMIT
 
     return (
-        <div className="mt-2 border-l border-rule-strong pl-3">
-            <p className="m-0 font-serif italic text-[0.92rem] leading-[1.55] text-ink-soft whitespace-pre-line">
-                {isLong && !expanded ? truncateReview(text) : text}
-            </p>
+        <p className="m-0 mt-1.5 font-serif text-[0.8rem] leading-[1.6] text-muted whitespace-pre-line">
+            {isLong && !expanded ? truncateReview(text) : text}
             {isLong && (
-                <button
-                    type="button"
-                    onClick={() => setExpanded((v) => !v)}
-                    className="btn-reset text-label mt-1.5 hover:text-ink transition-colors"
-                >
-                    {expanded ? 'Show less' : 'Read more'}
-                </button>
+                <>
+                    {' '}
+                    <button
+                        type="button"
+                        onClick={() => setExpanded((v) => !v)}
+                        className="btn-reset text-eyebrow-sm align-baseline hover:text-ink transition-colors"
+                    >
+                        {expanded ? 'Show less' : 'Read more'}
+                    </button>
+                </>
             )}
-        </div>
+        </p>
     )
 }
 
