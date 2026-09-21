@@ -24,11 +24,7 @@ const EcommerceSite = lazy(() =>
 )
 
 function RouteFallback() {
-    return (
-        <div className="px-8 py-20 text-center font-mono text-[11px] tracking-[0.18em] uppercase text-muted">
-            Loading…
-        </div>
-    )
+    return <div className="px-8 py-20 text-center text-eyebrow">Loading…</div>
 }
 
 function lazyRoute(node: React.ReactNode) {

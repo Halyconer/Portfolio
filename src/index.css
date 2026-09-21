@@ -1,5 +1,9 @@
 @import 'tailwindcss';
 
+/* ---------------------------------------------------------------------------
+ * Design tokens — the source of truth for the visual language.
+ * Rules, classes and primitive components: see DESIGN.md.
+ * ------------------------------------------------------------------------- */
 @theme {
     /* Typography — Times New Roman for all text. */
     --font-serif: 'Times New Roman', 'Times', Georgia, serif;
@@ -19,18 +23,30 @@
     --color-rule-strong: #8a8a82;
     --color-placeholder: #ecead1;
 
-    /* Type scale — the only display sizes on the site. Everything else uses
-     * Tailwind's built-in text-lg / text-base / text-sm / text-xs. */
-    --text-display: clamp(2.75rem, 6vw + 1rem, 5.25rem);
-    --text-display--line-height: 0.95;
-    --text-display--letter-spacing: -0.02em;
-    --text-heading: 1.4rem;
-    --text-heading--line-height: 1.25;
-    --text-heading--letter-spacing: -0.01em;
-
     /* Status indicators — live green pulse + "your-turn" orange. */
     --color-status-online: #3a8c4f;
     --color-status-active: #c8801f;
+
+    /* Type scale — display sizes used across the site. Body copy uses
+     * Tailwind's built-in text-lg / text-base / text-sm / text-xs. */
+    --text-display: clamp(2.75rem, 6vw + 1rem, 5.25rem); /* home hero */
+    --text-display--line-height: 0.95;
+    --text-display--letter-spacing: -0.02em;
+    --text-cover: clamp(3.5rem, 8vw, 7.5rem); /* page covers (/creative) */
+    --text-cover--line-height: 0.92;
+    --text-cover--letter-spacing: -0.03em;
+    --text-hero: clamp(3rem, 8vw, 6rem); /* case-study heroes, 404 */
+    --text-hero--line-height: 0.95;
+    --text-hero--letter-spacing: -0.035em;
+    --text-title: clamp(1.8rem, 4vw, 3rem); /* case-study section titles */
+    --text-title--line-height: 1.05;
+    --text-title--letter-spacing: -0.03em;
+    --text-heading: 1.4rem; /* section headings, card titles */
+    --text-heading--line-height: 1.25;
+    --text-heading--letter-spacing: -0.01em;
+
+    /* Layout — width of the centered page column. */
+    --container-page: 1400px;
 
     --breakpoint-sm: 600px;
     --breakpoint-md: 900px;
@@ -54,19 +70,16 @@
     scroll-margin-top: 20px;
 }
 
-/* Reusable typography tokens. The site repeats a few mono-uppercase label
- * patterns; defining them once means changing tracking or color in one place. */
+/* ---------------------------------------------------------------------------
+ * Semantic classes — patterns that would otherwise be repeated as long
+ * Tailwind utility strings in every component.
+ * ------------------------------------------------------------------------- */
 @layer components {
+    /* Small-caps labels. .text-eyebrow for standalone meta lines above or
+     * below a block; .text-label for inline metadata beside other text. */
     .text-eyebrow {
         font-family: var(--font-mono);
         font-size: 11px;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: var(--color-muted);
-    }
-    .text-eyebrow-sm {
-        font-family: var(--font-mono);
-        font-size: 10px;
         letter-spacing: 0.18em;
         text-transform: uppercase;
         color: var(--color-muted);
@@ -78,6 +91,7 @@
         text-transform: uppercase;
         color: var(--color-muted);
     }
+
     /* Strip native button chrome so a <button> can be styled like a link or
      * label while keeping its semantics. Safari notably refuses to inherit
      * font on buttons without an explicit reset. */
@@ -90,6 +104,82 @@
         letter-spacing: inherit;
         color: inherit;
         cursor: pointer;
+    }
+
+    /* Links. Quiet: muted text that darkens on hover. Underline: ink-colored
+     * prose link with a hairline underline. Rule: small-caps label link with
+     * a bottom rule, for "see more" / "close" / "back" actions. */
+    .link-quiet {
+        color: var(--color-muted);
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+    .link-quiet:hover {
+        color: var(--color-accent);
+    }
+    .link-underline {
+        color: var(--color-accent);
+        text-decoration: underline;
+        text-underline-offset: 4px;
+        transition: color 0.2s;
+    }
+    .link-underline:hover {
+        color: var(--color-accent-deep);
+    }
+    .link-rule {
+        display: inline-block;
+        color: var(--color-ink);
+        text-decoration: none;
+        padding-bottom: 0.25rem;
+        border-bottom: 1px solid var(--color-rule-strong);
+        transition:
+            color 0.2s,
+            border-color 0.2s;
+    }
+    .link-rule:hover {
+        color: var(--color-accent);
+        border-bottom-color: var(--color-accent);
+    }
+
+    /* Primary button — solid ink fill, paper text. */
+    .btn-ink {
+        background: var(--color-ink);
+        color: var(--color-paper);
+        border: 0;
+        font: inherit;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+    .btn-ink:hover {
+        background: var(--color-ink-soft);
+    }
+
+    /* Full-bleed action button inside a Card — ink fill on hover, hairline
+     * separators between adjacent actions. */
+    .card-action {
+        flex: 1;
+        padding: 0.875rem 1.25rem;
+        border: 0;
+        background: transparent;
+        color: var(--color-ink);
+        font-family: inherit;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+        white-space: nowrap;
+        transition:
+            background-color 0.2s,
+            color 0.2s;
+    }
+    .card-action:hover:not(:disabled) {
+        background: var(--color-ink);
+        color: var(--color-paper);
+    }
+    .card-action:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
     }
 }
 
@@ -117,9 +207,9 @@ html::-webkit-scrollbar {
 
 /* Set bg + base text at body level so route transitions don't flash. */
 body {
-    background-color: #fbfaf6;
-    color: #1a1a18;
-    font-family: 'Times New Roman', 'Times', Georgia, serif;
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-serif);
 }
 
 /* Brightness slider — hairline ink track + ink thumb on the newsprint palette. */

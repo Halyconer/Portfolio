@@ -1,37 +1,32 @@
 import { useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 
-import { Colophon } from './components/editorial/Colophon'
-import { Masthead } from './components/editorial/Masthead'
 import { ErrorBoundary } from './components/ErrorBoundary'
+import { Colophon } from './components/ui/Colophon'
+import { Masthead } from './components/ui/Masthead'
 
 export function App() {
     const location = useLocation()
-    const isHome = location.pathname === '/'
-    // /creative renders its own page-specific footer to match the gallery
-    // design language; suppress the site-wide colophon there.
-    const isCreative = location.pathname === '/creative'
 
     // Reset scroll on route change. Hash router doesn't do this automatically,
     // and arriving at /creative scrolled halfway down the page feels broken.
-    // We skip the reset when a scrollTo target is queued — HomePage will
-    // handle that itself in its own effect.
+    // Keyed to pathname only: when a scrollTo target is queued, HomePage
+    // clears that state on the same route, and reacting to the state change
+    // would yank the page back to the top mid-scroll.
     useEffect(() => {
         const state = location.state as { scrollTo?: string } | null
         if (state?.scrollTo) return
         window.scrollTo(0, 0)
-    }, [location.pathname, location.state])
+    }, [location.pathname])
 
     return (
         <div className="bg-paper text-ink min-h-screen relative">
-            <div className="relative z-10 max-w-[1400px] mx-auto">
-                <Masthead
-                    variant={isHome ? 'full' : isCreative ? 'bare' : 'minimal'}
-                />
+            <div className="relative z-10 max-w-page mx-auto">
+                <Masthead />
                 <ErrorBoundary>
                     <Outlet />
                 </ErrorBoundary>
-                {!isCreative && <Colophon />}
+                <Colophon />
             </div>
         </div>
     )

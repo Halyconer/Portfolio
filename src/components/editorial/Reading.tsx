@@ -2,6 +2,8 @@ import { useState } from 'react'
 
 import { useApiResource } from '../../hooks/useApiResource'
 import type { ReadingStats } from '../../types/reading'
+import { Section } from '../ui/Section'
+import { SectionHeading } from '../ui/SectionHeading'
 
 /**
  * Reading shelf, fed live from Hardcover via the Pi backend (/reading.json).
@@ -33,7 +35,7 @@ function Review({ text }: { text: string }) {
                     <button
                         type="button"
                         onClick={() => setExpanded((v) => !v)}
-                        className="btn-reset text-eyebrow-sm align-baseline hover:text-ink transition-colors"
+                        className="btn-reset text-label align-baseline hover:text-ink transition-colors"
                     >
                         {expanded ? 'Show less' : 'Read more'}
                     </button>
@@ -74,15 +76,8 @@ export function Reading() {
     ]
 
     return (
-        <section
-            id="reading"
-            className="px-8 py-10 max-md:px-5 max-md:py-8 max-sm:px-4 max-sm:py-6"
-        >
-            <h2 className="font-serif font-light text-heading m-0 text-ink">
-                To keep me accountable:
-            </h2>
-
-            <div className="h-px bg-rule-strong mt-4" />
+        <Section id="reading">
+            <SectionHeading>To keep me accountable:</SectionHeading>
 
             <div>
                 {rows.map((b, i) => {
@@ -129,11 +124,11 @@ export function Reading() {
                     href={`https://hardcover.app/@${data.username}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-label inline-block no-underline border-b border-rule-strong pb-0.5 mt-5 hover:text-ink transition-colors"
+                    className="link-rule text-label mt-5"
                 >
                     See the rest →
                 </a>
             )}
-        </section>
+        </Section>
     )
 }

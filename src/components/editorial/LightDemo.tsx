@@ -2,7 +2,8 @@ import Hue from '@uiw/react-color-hue'
 
 import { useLighting } from '../../hooks/useLighting'
 import type { StatusTone } from '../../types/status'
-import { StatusDot } from './StatusDot'
+import { Card } from '../ui/Card'
+import { StatusDot } from '../ui/StatusDot'
 
 interface LightDemoProps {
     apiStatus: { tone: StatusTone; label: string }
@@ -28,23 +29,39 @@ export function LightDemo({ apiStatus }: LightDemoProps) {
     const lightness = 35 + (brightness / 100) * 25
     const bulbColor = `hsl(${hue}deg, ${saturation}%, ${lightness}%)`
     const glowAlpha = 0.3 + (brightness / 100) * 0.5
-    // Full-bleed hairline action footer, matching Connect4's baseline.
-    const ACTION_BTN =
-        'btn-reset flex-1 py-3.5 px-5 text-sm text-ink enabled:hover:bg-ink enabled:hover:text-paper transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
 
     return (
-        <div className="p-8 relative border border-rule bg-paper-warm flex flex-col max-sm:p-5">
-            <div className="flex justify-between items-baseline mb-4 gap-3">
-                <h3 className="font-serif font-light text-heading m-0 text-ink">
-                    Turn on my lights!
-                </h3>
+        <Card
+            title="Turn on my lights!"
+            aside={
                 <StatusDot tone={apiStatus.tone}>
                     <span className="text-xs text-muted whitespace-nowrap">
                         {apiStatus.label}
                     </span>
                 </StatusDot>
-            </div>
-
+            }
+            status={status}
+            actions={
+                <>
+                    <button
+                        type="button"
+                        onClick={sendBrightness}
+                        disabled={isSending}
+                        className="card-action"
+                    >
+                        {isSending ? 'Sending…' : 'Set brightness'}
+                    </button>
+                    <button
+                        type="button"
+                        onClick={sendColor}
+                        disabled={isSending}
+                        className="card-action border-l border-rule"
+                    >
+                        Set color
+                    </button>
+                </>
+            }
+        >
             {/* Pure-CSS glow preview keyed to the picker state — instant
              * feedback before the server responds. */}
             <div
@@ -102,36 +119,6 @@ export function LightDemo({ apiStatus }: LightDemoProps) {
                     />
                 </div>
             </div>
-
-            {/* mt-auto pins the footer to the card bottom, matching Connect4's
-             * baseline; negative margins cancel the card padding. */}
-            <div className="mt-auto pt-4">
-                <p
-                    role="status"
-                    aria-live="polite"
-                    className="mb-3 text-xs text-muted min-h-5 leading-5 text-right"
-                >
-                    {status}
-                </p>
-                <div className="-mx-8 -mb-8 max-sm:-mx-5 max-sm:-mb-5 border-t border-rule flex">
-                    <button
-                        type="button"
-                        onClick={sendBrightness}
-                        disabled={isSending}
-                        className={ACTION_BTN}
-                    >
-                        {isSending ? 'Sending…' : 'Set brightness'}
-                    </button>
-                    <button
-                        type="button"
-                        onClick={sendColor}
-                        disabled={isSending}
-                        className={`${ACTION_BTN} border-l border-rule`}
-                    >
-                        Set color
-                    </button>
-                </div>
-            </div>
-        </div>
+        </Card>
     )
 }

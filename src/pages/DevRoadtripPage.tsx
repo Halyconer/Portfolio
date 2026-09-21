@@ -1,5 +1,6 @@
-import { SectionEyebrow } from '../components/editorial/SectionEyebrow'
-import { StatusDot } from '../components/editorial/StatusDot'
+import { Section } from '../components/ui/Section'
+import { SectionEyebrow } from '../components/ui/SectionEyebrow'
+import { StatusDot } from '../components/ui/StatusDot'
 import { useApiResource } from '../hooks/useApiResource'
 import { asset } from '../lib/assets'
 
@@ -13,18 +14,13 @@ interface SpotifyData {
     last_updated_utc: string
 }
 
-const SECTION =
-    'px-8 py-20 max-md:px-5 max-md:py-12 max-sm:px-4 max-sm:py-10 border-t border-rule-strong'
-const H2 =
-    'font-serif font-normal text-[3rem] tracking-[-0.03em] m-0 leading-[1.05] text-ink max-md:text-[2.2rem] max-sm:text-[1.8rem]'
-
 function StatCard({ value, label }: { value: React.ReactNode; label: string }) {
     return (
         <div className="bg-paper border border-rule p-6 text-center">
             <div className="font-serif font-light text-[2.6rem] leading-none text-ink tabular-nums">
                 {value}
             </div>
-            <div className="text-eyebrow-sm mt-3">{label}</div>
+            <div className="text-label mt-3">{label}</div>
         </div>
     )
 }
@@ -47,12 +43,14 @@ export function DevRoadtripPage() {
     return (
         <>
             {/* Hero */}
-            <section
+            <Section
                 id="top"
-                className="px-8 pt-12 pb-12 max-md:px-5 max-md:pt-8 max-sm:px-4 max-sm:pt-6"
+                divided={false}
+                spacing="none"
+                className="pt-12 pb-12 max-md:pt-8 max-sm:pt-6"
             >
                 <SectionEyebrow numeral="01" label="The trip so far" />
-                <h1 className="font-serif font-normal text-ink m-0 leading-[0.95] tracking-[-0.035em] text-[6rem] max-md:text-[4rem] max-sm:text-[3rem]">
+                <h1 className="font-serif font-normal text-ink m-0 text-hero">
                     My trip
                     <br />
                     so far<span className="text-accent">.</span>
@@ -62,12 +60,14 @@ export function DevRoadtripPage() {
                     Raspberry Pi, one ngrok tunnel, one nginx reverse proxy, and
                     a Flask app held together with optimism.
                 </p>
-            </section>
+            </Section>
 
             {/* Architecture diagram */}
-            <section className={`${SECTION} bg-paper-warm`}>
+            <Section spacing="roomy" warm>
                 <SectionEyebrow numeral="02" label="How it works" />
-                <h2 className={H2}>From your browser to the bulb.</h2>
+                <h2 className="font-serif font-normal m-0 text-title text-ink">
+                    From your browser to the bulb.
+                </h2>
                 <div className="mt-8 border border-rule bg-paper p-4 max-w-[1200px] mx-auto">
                     <img
                         src={asset('lightbulb_diagram.jpg')}
@@ -77,14 +77,16 @@ export function DevRoadtripPage() {
                         className="max-w-full h-auto block mx-auto"
                     />
                 </div>
-            </section>
+            </Section>
 
             {/* Database stats */}
-            <section className={SECTION}>
+            <Section spacing="roomy">
                 <div className="flex justify-between items-baseline gap-6 mb-8 max-md:flex-col max-md:items-start max-md:gap-3">
                     <div>
                         <SectionEyebrow numeral="03" label="Live database" />
-                        <h2 className={H2}>Numbers from the bulb.</h2>
+                        <h2 className="font-serif font-normal m-0 text-title text-ink">
+                            Numbers from the bulb.
+                        </h2>
                     </div>
                     <div className="text-eyebrow whitespace-nowrap">
                         <StatusDot tone={statsTone}>
@@ -111,17 +113,17 @@ export function DevRoadtripPage() {
                         }
                     />
                 </div>
-            </section>
+            </Section>
 
             {/* Spotify */}
-            <section className={`${SECTION} bg-paper-warm`}>
+            <Section spacing="roomy" warm>
                 <div className="flex justify-between items-baseline gap-6 mb-8 max-md:flex-col max-md:items-start max-md:gap-3">
                     <div>
                         <SectionEyebrow
                             numeral="04"
                             label="Currently in rotation"
                         />
-                        <h2 className={H2}>
+                        <h2 className="font-serif font-normal m-0 text-title text-ink">
                             Listening habits, refreshed daily.
                         </h2>
                         <p className="mt-3.5 measure font-sans text-[0.95rem] leading-[1.55] text-muted">
@@ -130,7 +132,7 @@ export function DevRoadtripPage() {
                         </p>
                     </div>
                     {spotifyData && (
-                        <div className="text-eyebrow-sm whitespace-nowrap">
+                        <div className="text-label whitespace-nowrap">
                             Updated{' '}
                             {new Date(
                                 spotifyData.last_updated_utc
@@ -152,7 +154,7 @@ export function DevRoadtripPage() {
                                 : 'No recent listening data — probably too much coding, not enough music.'}
                         </div>
                     ) : !spotifyData ? (
-                        <div className="flex items-center justify-center py-8 text-eyebrow-sm">
+                        <div className="flex items-center justify-center py-8 text-label">
                             <span className="w-4 h-4 border-2 border-rule border-t-ink rounded-full animate-spin-slow mr-3" />
                             Fetching latest listening data…
                         </div>
@@ -184,7 +186,7 @@ export function DevRoadtripPage() {
                         </div>
                     )}
                 </div>
-            </section>
+            </Section>
         </>
     )
 }

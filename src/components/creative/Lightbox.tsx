@@ -68,7 +68,7 @@ export function Lightbox({
                 <button
                     type="button"
                     onClick={onClose}
-                    className="btn-reset text-eyebrow text-ink pb-1.5 border-b border-ink hover:text-accent hover:border-accent transition-colors duration-200"
+                    className="btn-reset link-rule text-eyebrow"
                 >
                     Close ⎋
                 </button>
@@ -130,7 +130,7 @@ export function Lightbox({
                             target="_blank"
                             rel="noopener noreferrer"
                             download
-                            className="text-ink no-underline border-b border-ink pb-0.5 hover:text-accent hover:border-accent transition-colors duration-200"
+                            className="link-rule"
                         >
                             Full res
                             {photo.originalBytes

@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
 
 import { projects, type Project } from '../../data/projects'
+import { Section } from '../ui/Section'
+import { SectionHeading } from '../ui/SectionHeading'
 
 function UrlLink({ p }: { p: Project }) {
     if (!p.url) return null
@@ -9,7 +11,7 @@ function UrlLink({ p }: { p: Project }) {
         ? p.url
         : p.url.replace(/^https?:\/\//, '').replace(/\/$/, '')
     const cls =
-        'mt-3 inline-flex items-baseline gap-1.5 font-mono text-xs text-ink underline underline-offset-4 decoration-1 decoration-rule-strong hover:text-muted transition-colors break-all'
+        'link-underline mt-3 inline-flex items-baseline gap-1.5 font-mono text-xs break-all'
     const inner = (
         <>
             <span>{display}</span>
@@ -31,17 +33,8 @@ function UrlLink({ p }: { p: Project }) {
 
 export function Projects() {
     return (
-        <section
-            id="work"
-            className="px-8 py-10 max-md:px-5 max-md:py-8 max-sm:px-4 max-sm:py-6"
-        >
-            <div className="flex justify-between items-baseline gap-6 max-sm:flex-col max-sm:items-start max-sm:gap-2">
-                <h2 className="font-serif font-light text-heading m-0 text-ink">
-                    A few things I've worked on
-                </h2>
-            </div>
-
-            <div className="h-px bg-rule-strong mt-4" />
+        <Section id="work">
+            <SectionHeading>A few things I've worked on</SectionHeading>
 
             {projects.map((p) => (
                 <article
@@ -75,6 +68,6 @@ export function Projects() {
                     </div>
                 </article>
             ))}
-        </section>
+        </Section>
     )
 }

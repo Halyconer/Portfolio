@@ -27,8 +27,7 @@ export function Hero() {
                                     e.preventDefault()
                                     scrollTo('resume')
                                 }}
-                                className="text-accent underline hover:text-accent-deep transition-colors"
-                                style={{ textUnderlineOffset: 4 }}
+                                className="link-underline"
                             >
                                 here
                             </a>
@@ -38,8 +37,7 @@ export function Hero() {
                             convenience:{' '}
                             <a
                                 href="mailto:business@adrianeddy.com"
-                                className="text-muted underline hover:text-accent transition-colors duration-200"
-                                style={{ textUnderlineOffset: 4 }}
+                                className="link-quiet underline"
                             >
                                 business@adrianeddy.com
                             </a>

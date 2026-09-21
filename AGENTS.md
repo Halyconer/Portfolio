@@ -5,8 +5,9 @@ Instructions for AI coding agents working in this repository.
 ## What this is
 
 Personal portfolio website (Adrian Eddy — adrianeddy.com) with interactive
-demos. Read `README.md` for the top-level overview and `DEPLOYMENT.md` for the
-deployment runbook (frontend + backend).
+demos. Read `README.md` for the top-level overview, `DESIGN.md` for the
+design system, and `DEPLOYMENT.md` for the deployment runbook
+(frontend + backend).
 
 ## Personal context (machine-local)
 
@@ -24,7 +25,8 @@ repo.
 Two halves, deployed separately:
 
 - **Frontend** (`src/`): React 19 + TypeScript + Vite, Tailwind CSS v4 (via
-  `@tailwindcss/vite`), Framer Motion, react-router-dom. Deployed on Vercel
+  `@tailwindcss/vite`), Framer Motion, react-router-dom (design system:
+  `DESIGN.md`). Deployed on Vercel
   (GitHub integration: pushing to `main` auto-builds and deploys — there is
   no deploy script). Talks to the backend through
   `/api` (dev proxy in `vite.config.ts`) → `https://api.adrianeddy.com`.
@@ -66,10 +68,15 @@ Backend local dev (no Docker): see `backend/README_DEV.md`.
   `pnpm format:py`. Don't hand-order them; run the formatters instead. Use
   relative imports (`./`, `../`) within `src/`.
 - **TypeScript**: strict-ish; always type-check with `pnpm build` (runs `tsc`).
-- **Component layout**: components live in `src/components/` split into
-  `editorial/` (text-heavy site sections) and `creative/` (photo/visual work).
-  Reusable UI logic goes in `src/lib/`, custom hooks in `src/hooks/`,
-  page-level compositions in `src/pages/`.
+- **Component layout**: components live in `src/components/` — `ui/`
+  (design-system primitives: `Section`, `SectionHeading`, `Card`, `Masthead`,
+  `Colophon`, `StatusDot`, `SectionEyebrow`), `editorial/` (text-heavy site
+  sections), `creative/` (photo/visual work). Reusable UI logic goes in
+  `src/lib/`, custom hooks in `src/hooks/`, page-level compositions in
+  `src/pages/`.
+- **Visual language**: follow `DESIGN.md`. Tokens and semantic classes live in
+  `src/index.css`, shared primitives in `src/components/ui/`. Don't hand-roll
+  colors, heading sizes, link styles, or page-local headers/footers.
 - **Data**: static site content lives in `src/data/` as typed TS (see
   `src/data/creativePhotos.ts`, `src/data/projects.ts`). Runtime data fetched
   from the backend is typed in `src/types/` and fetched via
