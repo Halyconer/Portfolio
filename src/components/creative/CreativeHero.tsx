@@ -15,17 +15,17 @@ export function CreativeHero() {
             </div>
 
             <h1 className="font-serif font-light text-ink m-0 text-center text-balance text-cover">
-                Creative
-                <span className="text-accent italic font-light">.</span>
+                Gallery
             </h1>
 
             <p
                 className="mt-6 mx-auto max-w-[680px] text-center font-serif font-light text-[18px] leading-[1.5] text-ink-soft"
                 style={{ textWrap: 'pretty' }}
             >
-                I suck at drawing, so photography has become my creative escape.
-                I've been helping some friends take their graduation photos, so
-                I've had some practice. Feel free to HMU.
+                When I get the chance, I thoroughly enjoy working on more
+                creative things. Most recently, I've been helping students get
+                Graduation Photos for cheap. If that sounds like something that
+                interests you, hit me up!
             </p>
         </section>
     )

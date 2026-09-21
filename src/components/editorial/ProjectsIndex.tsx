@@ -34,7 +34,7 @@ function UrlLink({ p }: { p: Project }) {
 export function Projects() {
     return (
         <Section id="work">
-            <SectionHeading>A few things I've worked on</SectionHeading>
+            <SectionHeading>What I like to do in my free time</SectionHeading>
 
             {projects.map((p) => (
                 <article

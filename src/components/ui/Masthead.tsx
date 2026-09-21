@@ -57,7 +57,7 @@ export function Masthead() {
                             : 'text-muted'
                     }`}
                 >
-                    Creative
+                    Gallery
                 </Link>
             </nav>
         </header>

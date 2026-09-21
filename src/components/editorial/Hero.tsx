@@ -1,6 +1,9 @@
+import { getGreeting } from '../../lib/greeting'
 import { scrollTo } from '../../lib/scroll'
 
 export function Hero() {
+    const greeting = getGreeting()
+
     return (
         <section
             id="top"
@@ -11,16 +14,17 @@ export function Hero() {
                 <div className="flex flex-col justify-between">
                     <div>
                         <h1 className="font-serif font-normal text-ink m-0 text-display">
-                            Adrian Eddy<span className="text-accent">.</span>
+                            {greeting},
                         </h1>
 
                         <p className="mt-5 measure font-serif font-light text-ink text-lg leading-relaxed m-0">
-                            Hi and thank you for visiting my little nook on the
-                            web. Beyond telling you a little about myself
-                            through my work, I hope that this minor detour of
-                            yours turns out to be a little fun! That's basically
-                            the entire premise of this website, but if you
-                            prefer a traditional résumé, you can find mine{' '}
+                            My name is Adrian, and thank you so much for taking
+                            the time to visit my little nook on the web. Beyond
+                            telling you a little about myself through my work, I
+                            hope that this minor detour of yours turns out to be
+                            a little fun! That's basically the entire premise of
+                            this website, but if you prefer a traditional
+                            résumé, you can find mine{' '}
                             <a
                                 href="#resume"
                                 onClick={(e) => {
