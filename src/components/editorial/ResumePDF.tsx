@@ -24,7 +24,7 @@ export function ResumePDF() {
                 >
                     <div className="flex justify-between text-xs text-muted py-2.5 px-3.5 border-b border-rule whitespace-nowrap gap-4">
                         <span>AdrianEddy.pdf</span>
-                        <span>Updated May 2026</span>
+                        <span>Updated September 2026</span>
                     </div>
 
                     <div className="aspect-[8.5/11] bg-white relative">
