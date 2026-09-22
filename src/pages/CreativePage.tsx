@@ -1,6 +1,5 @@
 import { useCallback, useMemo, useState } from 'react'
 
-import { CreativeFooter } from '../components/creative/CreativeFooter'
 import { CreativeHero } from '../components/creative/CreativeHero'
 import { FeaturedPlate } from '../components/creative/FeaturedPlate'
 import { Lightbox } from '../components/creative/Lightbox'
@@ -49,7 +48,6 @@ export function CreativePage() {
                     onPhotoClick={setActiveIndex}
                 />
             ))}
-            <CreativeFooter />
             <Lightbox
                 photos={photos}
                 activeIndex={activeIndex}

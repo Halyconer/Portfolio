@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 
 import { useConnect4 } from '../../hooks/useConnect4'
+import { Card } from '../ui/Card'
 
 const ROWS = 6
 const COLS = 7
@@ -84,19 +85,26 @@ export function Connect4Inline() {
 
     return (
         <>
-            <div className="p-8 relative border border-rule bg-paper-warm flex flex-col max-sm:p-5">
-                <div className="flex justify-between items-baseline mb-4 gap-3">
-                    <h3 className="font-serif font-light text-heading m-0 text-ink">
-                        Play Connect 4!
-                    </h3>
+            <Card
+                title="Play Connect 4!"
+                aside={
                     <span
                         className="text-xs whitespace-nowrap"
                         style={{ color: stateColor }}
                     >
                         ● {stateLabel}
                     </span>
-                </div>
-
+                }
+                actions={
+                    <button
+                        type="button"
+                        onClick={openModal}
+                        className="card-action"
+                    >
+                        {ctaLabel} →
+                    </button>
+                }
+            >
                 {/* Decorative teaser board — aspect-[7/6] matches the dot grid
                  * so dots reach edge to edge. */}
                 <button
@@ -125,19 +133,7 @@ export function Connect4Inline() {
                         </span>
                     </span>
                 </button>
-
-                {/* Full-bleed hairline footer, flush with the card frame so
-                 * PLAY GAME lines up with LightDemo's action bar. */}
-                <div className="mt-auto pt-5 -mx-8 -mb-8 max-sm:-mx-5 max-sm:-mb-5">
-                    <button
-                        type="button"
-                        onClick={openModal}
-                        className="btn-reset w-full py-3.5 px-5 text-sm text-ink border-t border-rule hover:bg-ink hover:text-paper transition-colors whitespace-nowrap"
-                    >
-                        {ctaLabel} →
-                    </button>
-                </div>
-            </div>
+            </Card>
 
             {/* Native <dialog> gives focus trap, Esc-to-close, focus return,
              * and body scroll lock for free via showModal(). */}
@@ -180,7 +176,7 @@ export function Connect4Inline() {
                     </div>
                     <div className="flex items-center gap-6 pr-16 max-sm:pr-12">
                         <span
-                            className="flex items-center gap-2 text-eyebrow-sm font-medium"
+                            className="flex items-center gap-2 text-label font-medium"
                             style={{ color: stateColor }}
                         >
                             <span
@@ -221,7 +217,7 @@ export function Connect4Inline() {
                             <button
                                 type="button"
                                 onClick={startGame}
-                                className="w-full bg-ink text-paper border-none py-4 px-6 text-sm cursor-pointer hover:bg-ink-soft active:scale-[0.98] transition-all whitespace-nowrap text-center"
+                                className="btn-ink w-full py-4 px-6 text-sm active:scale-[0.98] transition-all whitespace-nowrap text-center"
                             >
                                 {hasNotStarted ? 'Start game' : 'New game'}{' '}
                                 &rarr;

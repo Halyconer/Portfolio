@@ -8,6 +8,9 @@ Personal portfolio website featuring interactive demos and my resume.
 **Backend:** Python Flask, Raspberry Pi deployment
 **Smart Home:** LIFX bulbs, nginx reverse proxy
 
+The visual language and shared UI primitives are documented in
+[DESIGN.md](DESIGN.md).
+
 ## Quick Start
 
 ```bash

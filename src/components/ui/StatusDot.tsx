@@ -15,8 +15,10 @@ const DOT_STYLE: Record<StatusTone, string> = {
         'bg-[var(--color-muted-hi)] shadow-[0_0_6px_var(--color-muted-hi)] animate-pulse',
 }
 
-// Status pip — used wherever something is "live", "offline", or being probed.
-// Inline-flex so it sits naturally next to text without extra wrappers.
+/**
+ * Status pip — used wherever something is "live", "offline", or being
+ * probed. Inline-flex so it sits naturally next to text. See DESIGN.md.
+ */
 export function StatusDot({ children, tone = 'online' }: StatusDotProps) {
     return (
         <span className="inline-flex items-center gap-2.5">

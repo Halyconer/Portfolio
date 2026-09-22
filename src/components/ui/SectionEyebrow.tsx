@@ -1,3 +1,7 @@
+/**
+ * Numbered section marker for long-form pages: "§ 01 — The trip so far".
+ * See DESIGN.md.
+ */
 export function SectionEyebrow({
     numeral,
     label,
@@ -6,7 +10,7 @@ export function SectionEyebrow({
     label: string
 }) {
     return (
-        <div className="font-mono text-[11px] tracking-[0.22em] uppercase text-muted mb-3">
+        <div className="text-eyebrow tracking-[0.22em] mb-3">
             &sect; {numeral} &mdash; {label}
         </div>
     )

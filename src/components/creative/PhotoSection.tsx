@@ -1,4 +1,5 @@
 import type { PhotoSectionData } from '../../data/creativePhotos'
+import { Section } from '../ui/Section'
 import { PhotoTile } from './PhotoTile'
 
 interface PhotoSectionProps {
@@ -14,26 +15,23 @@ export function PhotoSection({
     onPhotoClick,
 }: PhotoSectionProps) {
     return (
-        <section
+        <Section
             id={section.id}
-            className="px-8 pt-10 max-md:px-5 max-sm:px-4 [&+&]:pt-7"
+            divided={false}
+            spacing="none"
+            className="pt-10 [&+&]:pt-7"
         >
             <div className="grid grid-cols-[auto_1fr_auto] gap-6 items-baseline pb-2.5 mb-3.5 border-b border-rule-strong max-md:grid-cols-1 max-md:gap-1.5">
-                <div className="font-mono text-[11px] tracking-[0.24em] text-muted">
+                <div className="text-eyebrow tracking-[0.24em]">
                     {section.numeral}
                 </div>
                 <h2 className="font-serif font-normal text-[clamp(20px,2vw,26px)] leading-tight tracking-[-0.005em] m-0">
                     {section.title}
-                    <span
-                        className="italic text-accent"
-                        style={{
-                            fontVariationSettings: '"opsz" 36, "ital" 1',
-                        }}
-                    >
+                    <span className="italic text-accent">
                         {section.titleItalic}
                     </span>
                 </h2>
-                <div className="font-mono text-[10.5px] tracking-[0.18em] uppercase text-muted text-right leading-relaxed max-md:text-left">
+                <div className="text-label text-right leading-relaxed max-md:text-left">
                     <b className="block text-ink font-medium">{section.meta}</b>
                     {section.submeta}
                 </div>
@@ -51,6 +49,6 @@ export function PhotoSection({
                     />
                 ))}
             </div>
-        </section>
+        </Section>
     )
 }

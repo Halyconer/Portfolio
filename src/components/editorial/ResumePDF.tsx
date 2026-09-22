@@ -1,22 +1,19 @@
 import { asset } from '../../lib/assets'
+import { Section } from '../ui/Section'
+import { SectionHeading } from '../ui/SectionHeading'
 
 export function ResumePDF() {
     const pdfUrl = asset('AdrianEddy.pdf')
 
     return (
-        <section
-            id="resume"
-            className="px-8 py-10 border-t border-rule-strong max-md:px-5 max-md:py-8 max-sm:px-4 max-sm:py-6"
-        >
+        <Section id="resume">
             {/* Single centered 920px column shared by heading, document card,
              * and fallback line. The action footer mirrors the demo cards'
              * full-bleed hairline footers. */}
             <div className="max-w-[920px] mx-auto">
-                <div className="mb-4">
-                    <h2 className="font-serif font-light text-heading m-0 text-ink">
-                        Résumé
-                    </h2>
-                </div>
+                <SectionHeading rule={false} className="mb-4">
+                    Résumé
+                </SectionHeading>
 
                 <div
                     className="border border-rule bg-paper-warm"
@@ -27,7 +24,7 @@ export function ResumePDF() {
                 >
                     <div className="flex justify-between text-xs text-muted py-2.5 px-3.5 border-b border-rule whitespace-nowrap gap-4">
                         <span>AdrianEddy.pdf</span>
-                        <span>Updated May 2026</span>
+                        <span>Updated September 2026</span>
                     </div>
 
                     <div className="aspect-[8.5/11] bg-white relative">
@@ -43,14 +40,14 @@ export function ResumePDF() {
                             href={pdfUrl}
                             target="_blank"
                             rel="noopener"
-                            className="flex-1 text-center text-sm text-ink py-3.5 px-5 no-underline hover:bg-ink hover:text-paper transition-colors whitespace-nowrap"
+                            className="card-action"
                         >
                             Open in new tab ↗
                         </a>
                         <a
                             href={pdfUrl}
                             download="AdrianEddy_Resume.pdf"
-                            className="flex-1 text-center text-sm text-ink py-3.5 px-5 border-l border-rule no-underline hover:bg-ink hover:text-paper transition-colors whitespace-nowrap"
+                            className="card-action border-l border-rule"
                         >
                             Download .pdf ↓
                         </a>
@@ -63,14 +60,13 @@ export function ResumePDF() {
                         href={pdfUrl}
                         target="_blank"
                         rel="noopener"
-                        className="text-accent underline hover:text-accent-deep transition-colors"
-                        style={{ textUnderlineOffset: 4 }}
+                        className="link-underline"
                     >
                         Open the PDF directly
                     </a>
                     .
                 </div>
             </div>
-        </section>
+        </Section>
     )
 }
